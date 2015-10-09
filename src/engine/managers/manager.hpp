@@ -5,4 +5,5 @@ class Manager
 public:
 	Manager();
 	~Manager();
+
 };
