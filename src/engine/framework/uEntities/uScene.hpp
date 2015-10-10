@@ -6,5 +6,6 @@ public:
 	~UScene();
 
 private:
+	std::list<std::shared_ptr<UObject>> uObjects_;
 
 };
