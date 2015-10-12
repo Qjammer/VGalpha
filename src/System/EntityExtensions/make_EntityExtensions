@@ -1,0 +1,7 @@
+EntitityExtensions_DIR = ./system/EntityExtensions/
+
+$(ODIR)ObjectExtension.o: $(EntitityExtensions_DIR)ObjectExtension.cpp $(EntitityExtensions_DIR)ObjectExtension.hpp
+	$(CC) $(CFLAGS) $(EntitityExtensions_DIR)ObjectExtension.cpp $(FFLAGS)
+
+$(ODIR)SceneExtension.o: $(EntitityExtensions_DIR)SceneExtension.cpp $(EntitityExtensions_DIR)SceneExtension.hpp
+	$(CC) $(CFLAGS) $(EntitityExtensions_DIR)SceneExtension.cpp $(FFLAGS)

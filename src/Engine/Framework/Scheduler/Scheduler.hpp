@@ -3,7 +3,7 @@
 class Scheduler {
 public:
 	Scheduler();
-	Scheduler(const Scheduler&);//Copy constructor. Should not really be used
+	Scheduler(const Scheduler&);
 
 	~Scheduler();
 	Scheduler& operator = (const Scheduler&);

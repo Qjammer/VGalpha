@@ -1,5 +1,0 @@
-uEntitites_DIR = ./engine/framework/uEntities/
-
-$(ODIR)uObject.o: $(uEntitites_DIR)uObject.cpp $(uEntitites_DIR)uObject.hpp
-	echo "$?"
-	$(CC) $(CFLAGS) $(uEntitites_DIR)uObject.cpp $(FFLAGS)

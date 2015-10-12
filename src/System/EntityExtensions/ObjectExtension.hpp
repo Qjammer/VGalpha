@@ -1,9 +1,9 @@
 #pragma once
 
-class Object {
+class ObjectExtension {
 public:
-	Object();
-	~Object();
+	ObjectExtension();
+	~ObjectExtension();
 
 private:
 	enum Type {
@@ -15,5 +15,4 @@ private:
 	};
 	Type type_;
 	unsigned int id_;
-
 };

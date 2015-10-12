@@ -1,0 +1,7 @@
+UEntitites_DIR = ./engine/framework/UEntities/
+
+$(ODIR)UObject.o: $(UEntitites_DIR)UObject.cpp $(UEntitites_DIR)UObject.hpp
+	$(CC) $(CFLAGS) $(UEntitites_DIR)UObject.cpp $(FFLAGS)
+
+$(ODIR)UScene.o: $(UEntitites_DIR)UScene.cpp $(UEntitites_DIR)UScene.hpp
+	$(CC) $(CFLAGS) $(UEntitites_DIR)UScene.cpp $(FFLAGS)

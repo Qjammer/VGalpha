@@ -8,7 +8,8 @@ EXEC = ??
 ODIR = ../obj/
 
 
-include engine/framework/uEntities/make_uEntities
+include engine/framework/UEntities/make_UEntities
+include system/EntityExtensions/make_EntityExtensions
 
 clean:
 	rm $(ODIR)*.o

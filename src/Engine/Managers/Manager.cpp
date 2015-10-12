@@ -1,4 +1,4 @@
-#include "manager.hpp"
+#include "Manager.hpp"
 
 Manager::Manager()
 {
