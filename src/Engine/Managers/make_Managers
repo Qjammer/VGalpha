@@ -1,0 +1,4 @@
+Managers_DIR = ./Engine/Managers/
+
+$(ODIR)Manager.o: $(Managers_DIR)Manager.cpp $(Managers_DIR)Manager.hpp
+	$(CC) $(CFLAGS) $(Managers_DIR)Manager.cpp $(FFLAGS)

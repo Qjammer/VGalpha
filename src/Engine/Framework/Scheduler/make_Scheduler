@@ -1,0 +1,4 @@
+Scheduler_DIR = ./Engine/Framework/Scheduler
+
+$(ODIR)Scheduler.o: $(Scheduler_DIR)Scheduler.cpp $(Scheduler_DIR)Scheduler.hpp
+	$(CC) $(CFLAGS) $(Scheduler_DIR)Scheduler.cpp $(FFLAGS)

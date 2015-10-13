@@ -1,4 +1,4 @@
-UEntitites_DIR = ./engine/framework/UEntities/
+UEntitites_DIR = ./Engine/Framework/UEntities/
 
 $(ODIR)UObject.o: $(UEntitites_DIR)UObject.cpp $(UEntitites_DIR)UObject.hpp
 	$(CC) $(CFLAGS) $(UEntitites_DIR)UObject.cpp $(FFLAGS)
