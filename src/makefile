@@ -19,4 +19,3 @@ clean:
 	rm $(ODIR)*.o
 
 .PHONY:clean
-

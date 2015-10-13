@@ -19,5 +19,4 @@ private:
 	std::list<std::shared_ptr<UObject>> uObjects_;
 	std::list<std::shared_ptr<SceneExtension>> extensions_;
 
-
 };

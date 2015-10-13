@@ -2,7 +2,6 @@
 #include <list>
 #include <memory>
 
-
 class ObjectExtension;
 
 class UObject {
