@@ -11,6 +11,12 @@ ODIR = ../obj/
 include System/EntityExtensions/make_EntityExtensions
 include Engine/make_Engine
 
+
+
+
+
 clean:
 	rm $(ODIR)*.o
+
+.PHONY:clean
 
