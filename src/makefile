@@ -18,4 +18,6 @@ include Engine/make_Engine
 clean:
 	rm $(ODIR)*.o
 
-.PHONY:clean
+all: EnginePH SystemsPH
+
+.PHONY:clean all

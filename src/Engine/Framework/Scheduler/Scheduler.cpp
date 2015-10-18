@@ -4,14 +4,23 @@ Scheduler::Scheduler(){
 
 }
 
-Scheduler::Scheduler(const Scheduler& sch){
-
-}
-
 Scheduler::~Scheduler(){
 
 }
 
-Scheduler& Scheduler::operator = (const Scheduler&){
+void Scheduler::getMainTasks(){
+	for_each(this->systems_.begin(),this->systems_.end(),std::bind(&Scheduler::pushMainTaskFromSystem,this,std::placeholders::_1));
 
+}
+
+void Scheduler::infiniteLoop(){
+
+}
+
+void Scheduler::pushMainTaskFromSystem(std::weak_ptr<System> Sys){
+	this->pushMainTask(std::function<std::list<std::function<void(void)>>(void)>(std::bind(&System::mainTask,Sys.lock().get())));
+}
+
+void Scheduler::pushMainTask(std::function<std::list<std::function<void(void)>>(void)> mainTask){
+	this->mainTasks_.push_back(mainTask);
 }

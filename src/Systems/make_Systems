@@ -4,3 +4,5 @@ include Systems/EntityExtensions/make_EntityExtensions
 
 $(ODIR)System.o: $(Systems_DIR)System.cpp $(Systems_DIR)System.hpp
 	$(CC) $(CFLAGS) $(Systems_DIR)System.cpp $(FFLAGS)
+
+SystemsPH: $(ODIR)System.o EntityExtensionsPH
