@@ -11,11 +11,18 @@ ODIR = ../obj/
 include Systems/make_Systems
 include Engine/make_Engine
 
+Main_DIR=./
+
+$(ODIR)Main.o: $(Main_DIR)main.cpp
+	$(CC) $(CFLAGS) $(Main_DIR)main.cpp $(FFLAGS)
+
+
+MainPH: $(ODIR)Main.o
 
 clean:
 	rm $(ODIR)*.o
 
-compile: EnginePH SystemsPH
+compile: EnginePH SystemsPH MainPH
 
 link:compile
 	$(CC) $(LFLAGS) -o $(EXEC) $(ODIR)*.o
