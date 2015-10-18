@@ -12,12 +12,12 @@ include Systems/make_Systems
 include Engine/make_Engine
 
 
-
-
-
 clean:
 	rm $(ODIR)*.o
 
-all: EnginePH SystemsPH
+compile: EnginePH SystemsPH
 
-.PHONY:clean all
+link:compile
+	$(CC) $(LFLAGS) -o $(EXEC) $(ODIR)*.o
+
+.PHONY:clean all link

@@ -8,5 +8,5 @@ class System
 public:
 	System();
 	~System();
-	virtual std::list<std::function<void(void)>>& mainTask();//Returns sub-tasks
+	virtual std::list<std::function<void(void)>>& mainTask()=0;//Returns sub-tasks
 };
