@@ -20,4 +20,6 @@ compile: EnginePH SystemsPH
 link:compile
 	$(CC) $(LFLAGS) -o $(EXEC) $(ODIR)*.o
 
-.PHONY:clean all link
+all:link
+
+.PHONY:clean compile link all
