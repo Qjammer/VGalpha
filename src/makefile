@@ -4,7 +4,7 @@ CFLAGS = -Wall -pedantic -std=c++14 -c $(DEBUG)
 LFLAGS = -Wall $(DEBUG)
 FFLAGS = -o $@
 LIBS = -lsfml-system -lsfml-window -lsfml-graphics -lsfml-network -lsfml-audio
-EXEC = ??
+EXEC = game
 ODIR = ../obj/
 
 
