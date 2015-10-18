@@ -23,3 +23,5 @@ link:compile
 all:link
 
 .PHONY:clean compile link all
+
+.DEFAULT_GOAL:=all
