@@ -8,8 +8,7 @@
 #include <vector>
 
 #include "ThreadPool/ThreadPool.hpp"
-#include "../../../Systems/System.hpp"
-//class System;
+#include "../../../Systems/SystemInterface.hpp"
 
 class Scheduler : private ThreadPool {
 public:
@@ -22,9 +21,9 @@ public:
 
 private:
 	void pushMainTask(std::function<std::list<std::function<void(void)>>(void)>);
-	void pushMainTaskFromSystem(std::weak_ptr<System> Sys);
+	void pushMainTaskFromSystem(std::weak_ptr<SystemInterface> Sys);
 	std::mutex queueMutex_;
-	std::vector<std::weak_ptr<System>> systems_;
+	std::vector<std::weak_ptr<SystemInterface>> systems_;
 	std::list<std::function<std::list<std::function<void(void)>>(void)>> mainTasks_;
 	std::atomic <char> remainingMainTasks_;
 	std::list<std::function<void(void)>> expandedTasks_;

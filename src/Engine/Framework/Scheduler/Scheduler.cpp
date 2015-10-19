@@ -17,8 +17,8 @@ void Scheduler::infiniteLoop(){
 
 }
 
-void Scheduler::pushMainTaskFromSystem(std::weak_ptr<System> Sys){
-	this->pushMainTask(std::function<std::list<std::function<void(void)>>(void)>(std::bind(&System::mainTask,Sys.lock().get())));
+void Scheduler::pushMainTaskFromSystem(std::weak_ptr<SystemInterface> Sys){
+	this->pushMainTask(std::function<std::list<std::function<void(void)>>(void)>(std::bind(&SystemInterface::mainTask,Sys.lock().get())));
 }
 
 void Scheduler::pushMainTask(std::function<std::list<std::function<void(void)>>(void)> mainTask){

@@ -24,7 +24,7 @@ clean:
 
 compile: EnginePH SystemsPH MainPH
 
-link:compile
+link: compile
 	$(CC) $(LFLAGS) -o $(EXEC) $(ODIR)*.o
 
 all:link
