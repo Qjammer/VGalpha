@@ -35,6 +35,6 @@ link: compile
 
 all:link
 
-.PHONY:clean compile link all
+.PHONY:clean compile link all OBJDIR
 
 .DEFAULT_GOAL:=all
