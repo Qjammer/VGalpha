@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include "../helixStructures.hpp"
 
 class ObjectExtension {
