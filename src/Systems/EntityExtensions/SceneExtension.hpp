@@ -1,18 +1,13 @@
 #pragma once
 
+#include "../helixStructures.hpp"
+
 class SceneExtension {
 public:
 	SceneExtension();
 	~SceneExtension();
 
 private:
-	enum Type {
-		GRAPHICS,
-		PHYSICS,
-		INPUT,
-		AI,
-		AUDIO
-	};
-	Type type_;
+	EntityType type_;
 	unsigned int id_;
 };
