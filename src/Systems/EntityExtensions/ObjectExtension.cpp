@@ -1,9 +1,11 @@
 #include "ObjectExtension.hpp"
 
-ObjectExtension::ObjectExtension(){
-
+ObjectExtension::ObjectExtension(EntityType _type, unsigned int _id) : type_(_type), id_(_id)
+{
+	
 }
 
-ObjectExtension::~ObjectExtension(){
+ObjectExtension::~ObjectExtension()
+{
 
 }

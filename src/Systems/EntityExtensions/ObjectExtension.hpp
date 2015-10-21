@@ -4,7 +4,7 @@
 
 class ObjectExtension {
 public:
-	ObjectExtension();
+	ObjectExtension(EntityType _type, unsigned int _id);
 	~ObjectExtension();
 
 private:

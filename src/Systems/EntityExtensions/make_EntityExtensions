@@ -6,4 +6,7 @@ $(ODIR)ObjectExtension.o: $(EntitityExtensions_DIR)ObjectExtension.cpp $(Entitit
 $(ODIR)SceneExtension.o: $(EntitityExtensions_DIR)SceneExtension.cpp $(EntitityExtensions_DIR)SceneExtension.hpp
 	$(CC) $(CFLAGS) $(EntitityExtensions_DIR)SceneExtension.cpp $(FFLAGS)
 
-EntityExtensionsPH: $(ODIR)ObjectExtension.o $(ODIR)SceneExtension.o
+$(ODIR)GraphicObjectExtension.o: $(EntitityExtensions_DIR)GraphicObjectExtension.cpp $(EntitityExtensions_DIR)GraphicObjectExtension.hpp $(EntitityExtensions_DIR)ObjectExtension.hpp
+	$(CC) $(CFLAGS) $(EntitityExtensions_DIR)GraphicObjectExtension.cpp $(FFLAGS)
+
+EntityExtensionsPH: $(ODIR)ObjectExtension.o $(ODIR)SceneExtension.o $(ODIR)GraphicObjectExtension.o
