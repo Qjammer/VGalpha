@@ -31,7 +31,7 @@ clean:
 compile: OBJDIR EnginePH SystemsPH MainPH
 
 link: compile
-	$(CC) $(LFLAGS) $(LIBS) -o $(EXEC) $(ODIR)*.o
+	$(CC) $(LFLAGS) -o $(EXEC) $(ODIR)*.o $(LIBS)
 
 all:link
 
