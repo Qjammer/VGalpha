@@ -1,12 +1,16 @@
 #pragma once
 
 #include "ObjectExtension.hpp"
+#include "SFML/Graphics.hpp"
 
-class GraphicObjectExtension : ObjectExtension
+class GraphicObjectExtension : public ObjectExtension
 {
 public:
 	GraphicObjectExtension(unsigned int _id);
 	~GraphicObjectExtension();
+	sf::Sprite getSprite ();
+	unsigned int setTexture();
 
-private:
+protected:
+	sf::Sprite sprite_;
 };
