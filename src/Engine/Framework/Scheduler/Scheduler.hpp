@@ -15,20 +15,22 @@ public:
 	Scheduler();
 
 	~Scheduler();
-	void getMainTasks();
 
 	void infiniteLoop();
 
 private:
+	void fillMainQueue();
+	void callMainTask();
+	void callExpandedTask();
+
 	void pushMainTask(std::function<std::list<std::function<void(void)>>(void)>);
 	void pushMainTaskFromManager(std::weak_ptr<ManagerInterface> mngr);
-	std::mutex queueMutex_;
 	std::vector<std::weak_ptr<ManagerInterface>> managers_;
 	std::list<std::function<std::list<std::function<void(void)>>(void)>> mainTasks_;
-	std::atomic <char> remainingMainTasks_;
+	std::mutex mainQueueMutex_;
 	std::list<std::function<void(void)>> expandedTasks_;
-	std::atomic <int> remainingExpandedTasks_;
+	std::mutex expandedQueueMutex_;
 	unsigned int threadCount_;
-	std::atomic<char> idleThreads_; 
+	std::atomic<bool> running_;
 
 };
