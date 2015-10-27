@@ -11,14 +11,26 @@ Scheduler::~Scheduler(){
 void Scheduler::infiniteLoop(){
 	while(this->running_){
 		//condition variable if queue is empty
+		{
+			std::unique_lock<std::mutex> lck(this->refillMutex_);
+			while(this->emptyQueue_){
+				this->emptyQcv.wait(lck);
+			}
+		}
 		if(this->expandedTasks_.size()==0){
 			//lock condition variable
+			std::unique_lock<std::mutex> lck(this->refillMutex_);
+			this->emptyQueue_=true;
+
 			if(this->mainTasks_.size()==0){
 				this->fillMainQueue();
-			} else {
-				this->callMainTask();
 			}
+			this->callMainTask();
+
 			//notify all condition variable
+			this->emptyQueue_=false;
+			this->emptyQcv.notify_all();
+			
 		} else {
 			this->callExpandedTask();
 		}
@@ -52,7 +64,6 @@ void Scheduler::callMainTask(){
 	std::lock_guard<std::mutex> lock(this->expandedQueueMutex_);
 	this->expandedTasks_.splice(this->expandedTasks_.begin(),task());
 	}
-
 }
 
 void Scheduler::callExpandedTask(){
