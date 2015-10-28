@@ -11,20 +11,20 @@
 #include "ThreadPool/ThreadPool.hpp"
 #include "../../Managers/ManagerInterface.hpp"
 
-class Scheduler : private ThreadPool {
+class Scheduler : protected ThreadPool {
 public:
 	Scheduler();
 
 	~Scheduler();
 
-	void infiniteLoop();
+	void infiniteLoop(const unsigned int);
 
-private:
+protected:
 	void fillMainQueue();
 	void callMainTask();
 	void callExpandedTask();
 
-	void pushMainTask(std::function<std::list<std::function<void(void)>>(void)>);
+	void pushMainTask(const std::function<std::list<std::function<void(void)>>(void)>&);
 	void pushMainTaskFromManager(std::weak_ptr<ManagerInterface> mngr);
 
 	std::list<std::function<std::list<std::function<void(void)>>(void)>> mainTasks_;

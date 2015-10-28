@@ -8,8 +8,8 @@ Scheduler::~Scheduler(){
 
 }
 
-void Scheduler::infiniteLoop(){
-	while(this->running_){
+void Scheduler::infiniteLoop(const unsigned int id){
+	while(this->getThreadStatus(id)){
 		//condition variable if queue is empty
 		{
 			std::unique_lock<std::mutex> lck(this->refillMutex_);
@@ -38,7 +38,7 @@ void Scheduler::infiniteLoop(){
 
 }
 
-void Scheduler::pushMainTask(std::function<std::list<std::function<void(void)>>(void)> mainTask){
+void Scheduler::pushMainTask(const std::function<std::list<std::function<void(void)>>(void)>& mainTask){
 	this->mainTasks_.push_back(mainTask);
 }
 
