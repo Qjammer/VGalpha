@@ -28,6 +28,15 @@
     <Filter Include="SRC\Engine\Framework\Scheduler\ThreadPool">
       <UniqueIdentifier>{c9bdf2b9-f6fc-4d46-ad41-e678a08d054a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SRC\Engine\Framework\UEntities">
+      <UniqueIdentifier>{417d997a-88f1-4ac5-b10f-8e24a9f5672b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SRC\Systems">
+      <UniqueIdentifier>{16a90ef8-8390-478e-bfea-22296c53989f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SRC\Systems\EntityExtensions">
+      <UniqueIdentifier>{165fe05c-aa5b-4c98-8937-64b511aca648}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Engine\Managers\Manager.cpp">
@@ -38,6 +47,27 @@
     </ClCompile>
     <ClCompile Include="..\..\..\Engine\Framework\Scheduler\ThreadPool\ThreadPool.cpp">
       <Filter>SRC\Engine\Framework\Scheduler\ThreadPool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Engine\Framework\UEntities\UObject.cpp">
+      <Filter>SRC\Engine\Framework\UEntities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Engine\Framework\UEntities\UScene.cpp">
+      <Filter>SRC\Engine\Framework\UEntities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Systems\System.cpp">
+      <Filter>SRC\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Systems\SystemInterface.cpp">
+      <Filter>SRC\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Systems\EntityExtensions\GraphicObjectExtension.cpp">
+      <Filter>SRC\Systems\EntityExtensions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Systems\EntityExtensions\ObjectExtension.cpp">
+      <Filter>SRC\Systems\EntityExtensions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Systems\EntityExtensions\SceneExtension.cpp">
+      <Filter>SRC\Systems\EntityExtensions</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -52,6 +82,30 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Engine\Framework\Scheduler\ThreadPool\ThreadPool.hpp">
       <Filter>SRC\Engine\Framework\Scheduler\ThreadPool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Framework\UEntities\UObject.hpp">
+      <Filter>SRC\Engine\Framework\UEntities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Framework\UEntities\UScene.hpp">
+      <Filter>SRC\Engine\Framework\UEntities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Systems\helixStructures.hpp">
+      <Filter>SRC\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Systems\System.hpp">
+      <Filter>SRC\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Systems\SystemInterface.hpp">
+      <Filter>SRC\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Systems\EntityExtensions\GraphicObjectExtension.hpp">
+      <Filter>SRC\Systems\EntityExtensions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Systems\EntityExtensions\ObjectExtension.hpp">
+      <Filter>SRC\Systems\EntityExtensions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Systems\EntityExtensions\SceneExtension.hpp">
+      <Filter>SRC\Systems\EntityExtensions</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -120,13 +120,28 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\Engine\Framework\Scheduler\Scheduler.cpp" />
     <ClCompile Include="..\..\..\Engine\Framework\Scheduler\ThreadPool\ThreadPool.cpp" />
+    <ClCompile Include="..\..\..\Engine\Framework\UEntities\UObject.cpp" />
+    <ClCompile Include="..\..\..\Engine\Framework\UEntities\UScene.cpp" />
     <ClCompile Include="..\..\..\Engine\Managers\Manager.cpp" />
+    <ClCompile Include="..\..\..\Systems\EntityExtensions\GraphicObjectExtension.cpp" />
+    <ClCompile Include="..\..\..\Systems\EntityExtensions\ObjectExtension.cpp" />
+    <ClCompile Include="..\..\..\Systems\EntityExtensions\SceneExtension.cpp" />
+    <ClCompile Include="..\..\..\Systems\System.cpp" />
+    <ClCompile Include="..\..\..\Systems\SystemInterface.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Engine\Framework\Scheduler\Scheduler.hpp" />
     <ClInclude Include="..\..\..\Engine\Framework\Scheduler\ThreadPool\ThreadPool.hpp" />
+    <ClInclude Include="..\..\..\Engine\Framework\UEntities\UObject.hpp" />
+    <ClInclude Include="..\..\..\Engine\Framework\UEntities\UScene.hpp" />
     <ClInclude Include="..\..\..\Engine\Managers\Manager.hpp" />
     <ClInclude Include="..\..\..\Engine\Managers\ManagerInterface.hpp" />
+    <ClInclude Include="..\..\..\Systems\EntityExtensions\GraphicObjectExtension.hpp" />
+    <ClInclude Include="..\..\..\Systems\EntityExtensions\ObjectExtension.hpp" />
+    <ClInclude Include="..\..\..\Systems\EntityExtensions\SceneExtension.hpp" />
+    <ClInclude Include="..\..\..\Systems\helixStructures.hpp" />
+    <ClInclude Include="..\..\..\Systems\System.hpp" />
+    <ClInclude Include="..\..\..\Systems\SystemInterface.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
