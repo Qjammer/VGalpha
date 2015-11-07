@@ -1,21 +1,25 @@
 #include "Scheduler.hpp"
 
 Scheduler::Scheduler(){
-
+	this->emptyQueue_=false;
 }
 
 Scheduler::~Scheduler(){
 
 }
 
+void Scheduler::addManager(std::weak_ptr<ManagerInterface> mngr){
+	this->managers_.emplace(this->managers_.end(),mngr);
+}
+
 void Scheduler::infiniteLoop(const unsigned int id){
 	while(this->getThreadStatus(id)){
 		//condition variable if queue is empty
 		{
-			std::unique_lock<std::mutex> lck(this->refillMutex_);
-			while(this->emptyQueue_){
-				this->emptyQcv.wait(lck);
-			}
+		std::unique_lock<std::mutex> lck(this->refillMutex_);
+		while(this->emptyQueue_){
+			this->emptyQcv.wait(lck);
+		}
 		}
 		if(this->expandedTasks_.size()==0){
 			//lock condition variable

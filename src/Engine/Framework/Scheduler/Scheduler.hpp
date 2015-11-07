@@ -7,6 +7,7 @@
 #include <list>
 #include <vector>
 #include <condition_variable>
+#include <iostream>
 
 #include "ThreadPool/ThreadPool.hpp"
 #include "../../Managers/ManagerInterface.hpp"
@@ -18,6 +19,7 @@ public:
 	~Scheduler();
 
 	void infiniteLoop(const unsigned int);
+	void addManager(std::weak_ptr<ManagerInterface> mngr);
 
 protected:
 	void fillMainQueue();

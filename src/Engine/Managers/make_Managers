@@ -3,4 +3,7 @@ Managers_DIR = ./Engine/Managers/
 $(ODIR)Manager.o: $(Managers_DIR)Manager.cpp $(Managers_DIR)Manager.hpp
 	$(CC) $(CFLAGS) $(Managers_DIR)Manager.cpp $(FFLAGS)
 
-ManagersPH:$(ODIR)Manager.o
+$(ODIR)ManagerInterface.o: $(Managers_DIR)ManagerInterface.cpp $(Managers_DIR)ManagerInterface.hpp
+	$(CC) $(CFLAGS) $(Managers_DIR)ManagerInterface.cpp $(FFLAGS)
+
+ManagersPH:$(ODIR)Manager.o $(ODIR)ManagerInterface.o
