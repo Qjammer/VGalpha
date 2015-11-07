@@ -18,9 +18,6 @@ void Scheduler::infiniteLoop(const unsigned int id){
 		//condition variable if queue is empty
 		{
 		std::unique_lock<std::mutex> lck(this->refillMutex_);
-		while(this->refillingQueue_){
-			this->emptyQcv.wait(lck);
-		}
 		}
 		if(this->emptyQueue_){
 			//lock condition variable
