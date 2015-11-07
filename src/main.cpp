@@ -21,7 +21,7 @@ int main(){
 
 	std::shared_ptr<ManagerInterface> tstMngr(new testManagerInterface);
 	schedulerInstance.addManager(tstMngr);
-
+	schedulerInstance.infiniteLoop(0);
 
 	for(int i=0;i<10;++i){
 		std::cout<<i<<" ";
