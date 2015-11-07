@@ -39,7 +39,6 @@ protected:
 	unsigned int threadCount_;
 	std::mutex refillMutex_;
 	std::atomic<bool> emptyQueue_;
-	std::atomic<bool> refillingQueue_;
 	std::condition_variable emptyQcv;
 	std::atomic<bool> running_;
 
