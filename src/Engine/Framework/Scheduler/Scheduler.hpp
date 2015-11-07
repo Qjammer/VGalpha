@@ -12,7 +12,7 @@
 #include "ThreadPool/ThreadPool.hpp"
 #include "../../Managers/ManagerInterface.hpp"
 
-class Scheduler : protected ThreadPool {
+class Scheduler : public ThreadPool {
 public:
 	Scheduler();
 
@@ -39,6 +39,7 @@ protected:
 	unsigned int threadCount_;
 	std::mutex refillMutex_;
 	std::atomic<bool> emptyQueue_;
+	std::atomic<bool> refillingQueue_;
 	std::condition_variable emptyQcv;
 	std::atomic<bool> running_;
 

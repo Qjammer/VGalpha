@@ -1,7 +1,7 @@
 #include "Scheduler.hpp"
 
-Scheduler::Scheduler(){
-	this->emptyQueue_=false;
+Scheduler::Scheduler():threadCount_(1),emptyQueue_(false),refillingQueue_(false),running_(true){
+	
 }
 
 Scheduler::~Scheduler(){
@@ -13,26 +13,26 @@ void Scheduler::addManager(std::weak_ptr<ManagerInterface> mngr){
 }
 
 void Scheduler::infiniteLoop(const unsigned int id){
+	printf("entering infinite loop,thread:%i\n",id);
 	while(this->getThreadStatus(id)){
 		//condition variable if queue is empty
 		{
 		std::unique_lock<std::mutex> lck(this->refillMutex_);
-		while(this->emptyQueue_){
+		while(this->refillingQueue_){
 			this->emptyQcv.wait(lck);
 		}
 		}
-		if(this->expandedTasks_.size()==0){
+		if(this->emptyQueue_){
 			//lock condition variable
 			std::unique_lock<std::mutex> lck(this->refillMutex_);
-			this->emptyQueue_=true;
-
+			this->refillingQueue_=true;
 			if(this->mainTasks_.size()==0){
 				this->fillMainQueue();
 			}
 			this->callMainTask();
-
 			//notify all condition variable
 			this->emptyQueue_=false;
+			this->refillingQueue_=false;
 			this->emptyQcv.notify_all();
 			
 		} else {
@@ -74,8 +74,13 @@ void Scheduler::callExpandedTask(){
 	std::function<void(void)> task;
 	{
 	std::lock_guard<std::mutex> lock(this->expandedQueueMutex_);
+	if(this->expandedTasks_.size()!=0){
 	task=*(this->expandedTasks_.begin());
 	this->expandedTasks_.pop_front();
+	} else {
+		this->emptyQueue_=true;
+		task=[](){};
+	}
 	}
 	task();
 }
