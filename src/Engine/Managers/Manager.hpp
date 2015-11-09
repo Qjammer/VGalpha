@@ -1,10 +1,15 @@
 #pragma once
 
+#include <vector>
+#include <mutex>
+
 class Manager
 {
 public:
-	Manager();
+	Manager(unsigned int _entrancePoints);
 	~Manager();
-	virtual void work()=0;
+	virtual void generalProcedure()=0;
 
+protected:
+	
 };
