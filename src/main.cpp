@@ -1,10 +1,11 @@
-#include <iostream>
 #include <list>
 #include <functional>
 #include <memory>
 #include <cstdio>
 #include "./Engine/Managers/ManagerInterface.hpp"
 #include "./Engine/Framework/Scheduler/Scheduler.hpp"
+
+#include <chrono>
 
 class testManagerInterface : public ManagerInterface{
 	std::function<void(void)> randomTask=[](){static std::atomic<int> i;if((++i%100000)==0)(printf("%i ",i.load()));};
@@ -18,22 +19,17 @@ class testManagerInterface : public ManagerInterface{
 
 int main(){
 	setbuf(stdout,NULL);
-	Scheduler schedulerInstance;
+	Scheduler schedulerInstance(3);
 
 	std::shared_ptr<ManagerInterface> tstMngr(new testManagerInterface);
 	schedulerInstance.addManager(tstMngr);
-	std::shared_ptr<std::thread> thread1(new std::thread([&](){schedulerInstance.infiniteLoop(1);}));
-	schedulerInstance.infiniteLoop(0);
+	schedulerInstance.initThreadLoop(2);
+	schedulerInstance.initThreadLoop(1);
+	//schedulerInstance.initThreadLoop(0);
+	std::this_thread::sleep_for(std::chrono::milliseconds(5000));
 
-	for(int i=0;i<10;++i){
-		std::cout<<i<<" ";
-	}
-	std::cout<<std::endl;
-
-	std::list<int> lst;
-	std::cout<<&*lst.begin()<<" "<<&*lst.end();
-	std::cout<<std::endl;
-
-	thread1->join();
+	schedulerInstance.stopThreadLoop(2);
+	std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+	schedulerInstance.stopThreadLoop(1);
 	return 1;
 }

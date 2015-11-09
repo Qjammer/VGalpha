@@ -11,7 +11,7 @@ public:
 	~GraphicObjectExtension();
 
 	// Set and get functions. Nothing really hard
-	sf::Sprite getSprite ();
+	sf::Sprite& getSprite ();
 	unsigned int setTexture(std::string _fileDir);
 	std::shared_ptr<sf::Texture> getTexture();
 
