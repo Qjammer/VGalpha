@@ -38,8 +38,8 @@ protected:
 	std::vector<std::weak_ptr<ManagerInterface>> managers_;
 	unsigned int threadCount_;
 	std::mutex refillMutex_;
-	std::atomic<bool> emptyQueue_;
-	std::condition_variable emptyQcv;
+	std::atomic<bool> emptyExpandedQueue_;
+	std::atomic<bool> emptyMainQueue_;
 	std::atomic<bool> running_;
 
 };

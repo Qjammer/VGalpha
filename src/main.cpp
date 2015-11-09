@@ -7,7 +7,7 @@
 #include "./Engine/Framework/Scheduler/Scheduler.hpp"
 
 class testManagerInterface : public ManagerInterface{
-	std::function<void(void)> randomTask=[](){static std::atomic<int> i;i++;printf("%i ",i.load());};
+	std::function<void(void)> randomTask=[](){static std::atomic<int> i;if((++i%100000)==0)(printf("%i ",i.load()));};
 
 	virtual std::list<std::function<void(void)>> mainTask(){
 		std::list<std::function<void(void)>> rList(10,this->randomTask);
@@ -17,6 +17,7 @@ class testManagerInterface : public ManagerInterface{
 };
 
 int main(){
+	setbuf(stdout,NULL);
 	Scheduler schedulerInstance;
 
 	std::shared_ptr<ManagerInterface> tstMngr(new testManagerInterface);

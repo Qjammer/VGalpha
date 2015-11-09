@@ -1,6 +1,6 @@
 #include "Scheduler.hpp"
 
-Scheduler::Scheduler():threadCount_(1),emptyQueue_(false),running_(true){
+Scheduler::Scheduler():threadCount_(1),emptyExpandedQueue_(false),emptyMainQueue_(false),running_(true){
 	
 }
 
@@ -14,26 +14,21 @@ void Scheduler::addManager(std::weak_ptr<ManagerInterface> mngr){
 
 void Scheduler::infiniteLoop(const unsigned int id){
 	printf("entering infinite loop,thread:%i\n",id);
-	std::unique_lock<std::mutex> lck(this->refillMutex_,std::defer_lock);
+	std::unique_lock<std::mutex> lck(this->refillMutex_,std::defer_lock);//doesnt lock on construction
 	while(this->getThreadStatus(id)){
-		//condition variable if queue is empty
-		{
+		lck.lock();
+		lck.unlock();
+		if(this->emptyExpandedQueue_){
 			lck.lock();
-			lck.unlock();
-		}
-		if(this->emptyQueue_){
-			lck.lock();
-			if(this->mainTasks_.size()==0){
+			if(this->emptyMainQueue_){
 				this->fillMainQueue();
 			}
 			this->callMainTask();
-			this->emptyQueue_=false;
+			this->emptyExpandedQueue_=false;
 			lck.unlock();
-		} else {
-			this->callExpandedTask();
 		}
+		this->callExpandedTask();
 	}
-
 }
 
 void Scheduler::pushMainTask(const std::function<std::list<std::function<void(void)>>(void)>& mainTask){
@@ -55,9 +50,15 @@ void Scheduler::callMainTask(){
 	std::function<std::list<std::function<void(void)>>(void)> task;
 	{
 	std::lock_guard<std::mutex> lock(this->mainQueueMutex_);
-	task=*(this->mainTasks_.begin());
-	this->mainTasks_.pop_front();
+	if(this->mainTasks_.size()!=0){
+		task=*(this->mainTasks_.begin());
+		this->mainTasks_.pop_front();
+	} else {
+		this->emptyMainQueue_=true;
+		task=[](){return std::list<std::function<void(void)>>();};
 	}
+	}
+
 	{
 	std::lock_guard<std::mutex> lock(this->expandedQueueMutex_);
 	this->expandedTasks_.splice(this->expandedTasks_.begin(),task());
@@ -72,7 +73,7 @@ void Scheduler::callExpandedTask(){
 	task=*(this->expandedTasks_.begin());
 	this->expandedTasks_.pop_front();
 	} else {
-		this->emptyQueue_=true;
+		this->emptyExpandedQueue_=true;
 		task=[](){};
 	}
 	}
