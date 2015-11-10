@@ -11,6 +11,7 @@ public:
 	bool getThreadStatus(const unsigned int) const;
 	void initThread(const unsigned int,std::function<void(int)>);
 	void stopThread(const unsigned int);
+	void joinThread(const unsigned int);
 
 protected:
 	unsigned int threadCount_;

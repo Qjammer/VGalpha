@@ -19,8 +19,7 @@ void Scheduler::infiniteLoop(const unsigned int id){
 	printf("entering infinite loop,thread:%i\n",id);
 	std::unique_lock<std::mutex> lck(this->refillMutex_,std::defer_lock);//doesnt lock on construction
 	while(this->getThreadStatus(id)){
-		lck.lock();
-		lck.unlock();
+		
 		if(this->emptyExpandedQueue_){
 			lck.lock();
 			if(this->emptyMainQueue_){
@@ -31,6 +30,8 @@ void Scheduler::infiniteLoop(const unsigned int id){
 			lck.unlock();
 		}
 		this->callExpandedTask();
+		lck.lock();//Stop before they know their status
+		lck.unlock();
 	}
 }
 
@@ -41,8 +42,44 @@ void Scheduler::addManager(std::weak_ptr<ManagerInterface> mngr){
 void Scheduler::initThreadLoop(const unsigned int _thread){
 	this->initThread(_thread,[this](int _th){this->infiniteLoop(_th);});
 }
+
 void Scheduler::stopThreadLoop(const unsigned int _thread){
 	this->stopThread(_thread);
+}
+
+void Scheduler::initAllThreads(){
+	auto initAll([this](){
+		std::lock_guard<std::mutex>(this->refillMutex_);
+		for(unsigned int i=1;i<this->threadCount_;i++){
+			this->initThreadLoop(i);
+		}
+	});
+	{
+	std::lock_guard<std::mutex>(this->expandedQueueMutex_);
+	this->expandedTasks_.push_back(initAll);
+	}
+	this->initThreadLoop(0);
+}
+void Scheduler::stopAllThreads(){
+	auto stopAll([this](){
+		std::lock_guard<std::mutex>(this->refillMutex_);
+		for(unsigned int i=this->threadCount_-1;i>0;i--){
+			this->stopThreadLoop(i);
+		}
+		this->stopThreadLoop(0);
+
+	});
+	{
+	std::lock_guard<std::mutex>(this->expandedQueueMutex_);
+	this->expandedTasks_.push_back(stopAll);
+	}
+
+}
+
+void Scheduler::joinAllThreads(){
+	for(unsigned int i=this->threadCount_-1;i>0;--i){
+		this->joinThread(i);
+	}
 }
 
 void Scheduler::pushMainTask(const std::function<std::list<std::function<void(void)>>(void)>& mainTask){

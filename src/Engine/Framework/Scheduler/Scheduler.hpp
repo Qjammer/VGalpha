@@ -25,6 +25,10 @@ public:
 	void initThreadLoop(const unsigned int);
 	void stopThreadLoop(const unsigned int);
 
+	void initAllThreads();
+	void stopAllThreads();
+	void joinAllThreads();
+
 protected:
 	void fillMainQueue();
 	void callMainTask();

@@ -26,7 +26,15 @@ void ThreadPool::initThread(const unsigned int _thread,std::function<void(int)> 
 void ThreadPool::stopThread(const unsigned int _thread){
 	printf("stopping thread %i\n",_thread);
 	this->active_[_thread]=false;
-	this->threads_[_thread]->join();
+}
+
+void ThreadPool::joinThread(const unsigned int _thread){
+	if(_thread==0){
+		printf("You tried joining the main thread, moron\n");
+	} else {
+		printf("Joining thread %i\n",_thread);
+		this->threads_[_thread]->join();
+	}
 }
 
 ThreadPool::~ThreadPool()
