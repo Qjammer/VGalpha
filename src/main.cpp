@@ -8,27 +8,38 @@
 #include <chrono>
 
 class testManagerInterface : public ManagerInterface{
-	std::function<void(void)> randomTask=[](){static std::atomic<int> i;if((++i%100000)==0)(printf("%i ",i.load()));};
-
+	static std::atomic<int> i;
+	Scheduler& sch;
+	std::function<void(void)> randomTask=[&](){
+		for(int j=0; j<10000;j++){
+			j++;
+			j--;
+		}
+		if((++(this->i)%10)==0){
+			printf("%i ",i.load());
+		}
+	};
+public:
+	testManagerInterface(Scheduler& _sch):sch(_sch){};
 	virtual std::list<std::function<void(void)>> mainTask(){
-		std::list<std::function<void(void)>> rList(10,this->randomTask);
+		std::list<std::function<void(void)>> rList(25,this->randomTask);
+		if(this->i>3000){
+			rList.push_back([this](){this->sch.stopAllThreads();});
+		}
 		return rList;
 	};
 
 };
 
+std::atomic<int> testManagerInterface::i;
+
 int main(){
 	Scheduler schedulerInstance(3);
-
-	std::shared_ptr<ManagerInterface> tstMngr(new testManagerInterface);
+	std::this_thread::sleep_for(std::chrono::milliseconds(500));
+	std::shared_ptr<ManagerInterface> tstMngr(new testManagerInterface(schedulerInstance));
 	schedulerInstance.addManager(tstMngr);
-	schedulerInstance.initThreadLoop(2);
-	schedulerInstance.initThreadLoop(1);
-	//schedulerInstance.initThreadLoop(0);
-	std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+	schedulerInstance.initAllThreads();
+	schedulerInstance.joinAllThreads();
 
-	schedulerInstance.stopThreadLoop(2);
-	std::this_thread::sleep_for(std::chrono::milliseconds(5000));
-	schedulerInstance.stopThreadLoop(1);
 	return 1;
 }
