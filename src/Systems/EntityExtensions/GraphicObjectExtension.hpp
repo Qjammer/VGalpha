@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <string>
 #include "ObjectExtension.hpp"
 #include <SFML/Graphics.hpp> // HAPPINESS
 
@@ -12,12 +13,11 @@ public:
 
 	// Set and get functions. Nothing really hard
 	sf::Sprite getSprite ();
-	unsigned int setTexture(std::string _fileDir);
-	std::shared_ptr<sf::Texture> getTexture();
+	std::weak_ptr<sf::Texture> getTexturePtr(std::string _fileDir);
 
 	
 
 protected:
-	std::shared_ptr<sf::Texture> texture_;
+	std::weak_ptr<sf::Texture> texture_;
 	sf::Sprite sprite_;
 };
