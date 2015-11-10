@@ -18,7 +18,6 @@ class testManagerInterface : public ManagerInterface{
 };
 
 int main(){
-	setbuf(stdout,NULL);
 	Scheduler schedulerInstance(3);
 
 	std::shared_ptr<ManagerInterface> tstMngr(new testManagerInterface);

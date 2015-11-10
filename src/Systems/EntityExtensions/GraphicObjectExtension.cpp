@@ -10,18 +10,12 @@ GraphicObjectExtension::~GraphicObjectExtension ()
 	
 }
 
-sf::Sprite& GraphicObjectExtension::getSprite ()
+sf::Sprite GraphicObjectExtension::getSprite ()
 {
 	return this->sprite_;
 }
 
-unsigned int GraphicObjectExtension::setTexture (std::string _fileName)
+std::weak_ptr<sf::Texture> GraphicObjectExtension::getTexturePtr(std::string _fileDir)
 {
-	//has to communicate with texture manager, inc soon
-	return 0;
-}
-
-std::shared_ptr<sf::Texture> GraphicObjectExtension::getTexture()
-{
-	return this->texture_;
+	return std::weak_ptr<sf::Texture> ();
 }

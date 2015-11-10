@@ -72,6 +72,9 @@
     <ClCompile Include="..\..\..\Engine\Managers\ManagerInterface.cpp">
       <Filter>SRC\Engine\Manager</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\main.cpp">
+      <Filter>SRC</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Engine\Managers\Manager.hpp">

@@ -85,12 +85,16 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>C:\Users\Helix Monk\Documents\Git\VGAlpha\VGalpha\dependencies\SFML-2.3.2-VS_2015\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>None</DebugInformationFormat>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>C:\Users\Helix Monk\Documents\Git\VGAlpha\VGalpha\dependencies\SFML-2.3.2-VS_2015\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>sfml-audio.lib;sfml-graphics.lib;sfml-network.lib;sfml-system.lib;sfml-window.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>sfml-audio.lib;sfml-system.lib;sfml-window.lib;sfml-network.lib;sfml-graphics.lib;sfml-main.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <ProjectReference>
+      <UseLibraryDependencyInputs>true</UseLibraryDependencyInputs>
+    </ProjectReference>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -113,11 +117,15 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>C:\Users\Helix Monk\Documents\Git\VGAlpha\VGalpha\dependencies\SFML-2.3.2-VS_2015\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>None</DebugInformationFormat>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>C:\Users\Helix Monk\Documents\Git\VGAlpha\VGalpha\dependencies\SFML-2.3.2-VS_2015\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sfml-audio.lib;sfml-system.lib;sfml-window.lib;sfml-network.lib;sfml-graphics.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -127,6 +135,7 @@
     <ClCompile Include="..\..\..\Engine\Framework\UEntities\UScene.cpp" />
     <ClCompile Include="..\..\..\Engine\Managers\Manager.cpp" />
     <ClCompile Include="..\..\..\Engine\Managers\ManagerInterface.cpp" />
+    <ClCompile Include="..\..\..\main.cpp" />
     <ClCompile Include="..\..\..\Systems\EntityExtensions\GraphicObjectExtension.cpp" />
     <ClCompile Include="..\..\..\Systems\EntityExtensions\ObjectExtension.cpp" />
     <ClCompile Include="..\..\..\Systems\EntityExtensions\SceneExtension.cpp" />
