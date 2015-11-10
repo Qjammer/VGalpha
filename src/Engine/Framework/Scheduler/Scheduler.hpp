@@ -15,11 +15,15 @@
 class Scheduler : public ThreadPool {
 public:
 	Scheduler();
+	Scheduler(int _threads);
 
 	~Scheduler();
 
 	void infiniteLoop(const unsigned int);
 	void addManager(std::weak_ptr<ManagerInterface> mngr);
+
+	void initThreadLoop(const unsigned int);
+	void stopThreadLoop(const unsigned int);
 
 protected:
 	void fillMainQueue();
@@ -36,7 +40,7 @@ protected:
 	std::mutex expandedQueueMutex_;
 
 	std::vector<std::weak_ptr<ManagerInterface>> managers_;
-	unsigned int threadCount_;
+
 	std::mutex refillMutex_;
 	std::atomic<bool> emptyExpandedQueue_;
 	std::atomic<bool> emptyMainQueue_;

@@ -1,8 +1,8 @@
 #include "GraphicObjectExtension.hpp"
 
-GraphicObjectExtension::GraphicObjectExtension (unsigned int _id)  : ObjectExtension(EntityType::GRAPHICS, _id)
+GraphicObjectExtension::GraphicObjectExtension (unsigned int _id)  : ObjectExtension(EntityType::GRAPHICS, _id),sprite_()
 {
-	this->sprite_ = sf::Sprite ();
+
 }
 
 GraphicObjectExtension::~GraphicObjectExtension ()
@@ -10,7 +10,7 @@ GraphicObjectExtension::~GraphicObjectExtension ()
 	
 }
 
-sf::Sprite GraphicObjectExtension::getSprite ()
+sf::Sprite& GraphicObjectExtension::getSprite ()
 {
 	return this->sprite_;
 }

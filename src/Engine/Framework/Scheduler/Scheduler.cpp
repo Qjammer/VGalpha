@@ -1,16 +1,19 @@
 #include "Scheduler.hpp"
 
-Scheduler::Scheduler():threadCount_(1),emptyExpandedQueue_(false),emptyMainQueue_(false),running_(true){
+Scheduler::Scheduler():Scheduler(1){
 	
 }
+
+Scheduler::Scheduler(int _threads):ThreadPool(_threads),emptyExpandedQueue_(false),emptyMainQueue_(false),running_(true){
+	
+}
+
 
 Scheduler::~Scheduler(){
 
 }
 
-void Scheduler::addManager(std::weak_ptr<ManagerInterface> mngr){
-	this->managers_.emplace(this->managers_.end(),mngr);
-}
+
 
 void Scheduler::infiniteLoop(const unsigned int id){
 	printf("entering infinite loop,thread:%i\n",id);
@@ -29,6 +32,17 @@ void Scheduler::infiniteLoop(const unsigned int id){
 		}
 		this->callExpandedTask();
 	}
+}
+
+void Scheduler::addManager(std::weak_ptr<ManagerInterface> mngr){
+	this->managers_.emplace(this->managers_.end(),mngr);
+}
+
+void Scheduler::initThreadLoop(const unsigned int _thread){
+	this->initThread(_thread,[this](int _th){this->infiniteLoop(_th);});
+}
+void Scheduler::stopThreadLoop(const unsigned int _thread){
+	this->stopThread(_thread);
 }
 
 void Scheduler::pushMainTask(const std::function<std::list<std::function<void(void)>>(void)>& mainTask){
