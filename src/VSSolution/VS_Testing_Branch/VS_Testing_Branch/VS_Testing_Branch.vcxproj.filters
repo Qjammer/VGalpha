@@ -69,6 +69,9 @@
     <ClCompile Include="..\..\..\Systems\EntityExtensions\SceneExtension.cpp">
       <Filter>SRC\Systems\EntityExtensions</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Engine\Managers\ManagerInterface.cpp">
+      <Filter>SRC\Engine\Manager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Engine\Managers\Manager.hpp">
