@@ -89,7 +89,7 @@ void Scheduler::pushMainTask(const std::function<std::list<std::function<int(voi
 }
 
 void Scheduler::pushMainTaskFromManager(std::weak_ptr<ManagerInterface> mngr){
-	this->pushMainTask(std::function<std::list<std::function<int(void)>>(void)>(std::bind(&ManagerInterface::mainTask,mngr.lock().get())));
+	this->pushMainTask(std::function<std::list<std::function<int(void)>>(void)>(std::bind(&ManagerInterface::getTaskListFromMngr,mngr.lock().get())));
 }
 
 void Scheduler::fillMainQueue(){

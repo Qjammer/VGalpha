@@ -2,7 +2,7 @@
 
 Manager::Manager()
 {
-	this->taskList_.push_back(this->updateTaskList);
+	this->taskList_.push_back(std::bind(&Manager::updateTaskList,*this));
 }
 
 Manager::~Manager()
