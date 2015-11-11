@@ -1,12 +1,18 @@
 #pragma once
+
+#include "Manager.hpp"
 #include <list>
 #include <functional>
 
 class ManagerInterface{
 public:
-	ManagerInterface();
+	//Methods ONLY
+	ManagerInterface(Manager* _mngr);
 	~ManagerInterface();
 
-	virtual std::list<std::function<void(void)>> mainTask()=0;
+	std::list<std::function<int(void)>> getTaskListFromMngr();
 
+protected:
+	//Variables (obv)
+	Manager* mngr_;
 };

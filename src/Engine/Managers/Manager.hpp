@@ -2,14 +2,20 @@
 
 #include <vector>
 #include <mutex>
+#include <list>
 
 class Manager
 {
 public:
-	Manager(unsigned int _entrancePoints);
+	//Methods ONLY
+	Manager();
 	~Manager();
-	virtual void generalProcedure()=0;
+	std::list<std::function<int(void)>> getTaskList();
 
 protected:
-	
+	//Methods
+	virtual int updateTaskList();
+
+	//Variables
+	std::list<std::function<int(void)>> taskList_;
 };
