@@ -29,18 +29,23 @@ public:
 	void stopAllThreads();
 	void joinAllThreads();
 
+	enum SCH_ERR:int{
+		NO_ERR,
+		PHONY_TASK
+	};
+
 protected:
 	void fillMainQueue();
-	void callMainTask();
-	void callExpandedTask();
+	int callMainTask();
+	int callExpandedTask();
 
-	void pushMainTask(const std::function<std::list<std::function<void(void)>>(void)>&);
+	void pushMainTask(const std::function<std::list<std::function<int(void)>>(void)>&);
 	void pushMainTaskFromManager(std::weak_ptr<ManagerInterface> mngr);
 
-	std::list<std::function<std::list<std::function<void(void)>>(void)>> mainTasks_;
+	std::list<std::function<std::list<std::function<int(void)>>(void)>> mainTasks_;
 	std::mutex mainQueueMutex_;
 
-	std::list<std::function<void(void)>> expandedTasks_;
+	std::list<std::function<int(void)>> expandedTasks_;
 	std::mutex expandedQueueMutex_;
 
 	std::vector<std::weak_ptr<ManagerInterface>> managers_;

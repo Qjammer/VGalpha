@@ -7,6 +7,6 @@ public:
 	ManagerInterface();
 	~ManagerInterface();
 
-	virtual std::list<std::function<void(void)>> mainTask()=0;
+	virtual std::list<std::function<int(void)>> mainTask()=0;
 
 };
