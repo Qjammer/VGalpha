@@ -15,4 +15,5 @@ public:
 protected:
 	//Variables (obv)
 	Manager* mngr_;
+
 };

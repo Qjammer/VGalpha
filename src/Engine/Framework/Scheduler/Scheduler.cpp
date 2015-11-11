@@ -53,6 +53,7 @@ void Scheduler::initAllThreads(){
 		for(unsigned int i=1;i<this->threadCount_;i++){
 			this->initThreadLoop(i);
 		}
+		return 0;
 	});
 	{
 	std::lock_guard<std::mutex>(this->expandedQueueMutex_);
@@ -67,6 +68,7 @@ void Scheduler::stopAllThreads(){
 			this->stopThreadLoop(i);
 		}
 		this->stopThreadLoop(0);
+		return 0;
 
 	});
 	{
@@ -82,12 +84,12 @@ void Scheduler::joinAllThreads(){
 	}
 }
 
-void Scheduler::pushMainTask(const std::function<std::list<std::function<void(void)>>(void)>& mainTask){
+void Scheduler::pushMainTask(const std::function<std::list<std::function<int(void)>>(void)>& mainTask){
 	this->mainTasks_.push_back(mainTask);
 }
 
 void Scheduler::pushMainTaskFromManager(std::weak_ptr<ManagerInterface> mngr){
-	this->pushMainTask(std::function<std::list<std::function<void(void)>>(void)>(std::bind(&ManagerInterface::mainTask,mngr.lock().get())));
+	this->pushMainTask(std::function<std::list<std::function<int(void)>>(void)>(std::bind(&ManagerInterface::mainTask,mngr.lock().get())));
 }
 
 void Scheduler::fillMainQueue(){
@@ -97,16 +99,19 @@ void Scheduler::fillMainQueue(){
 	}
 }
 
-void Scheduler::callMainTask(){
-	std::function<std::list<std::function<void(void)>>(void)> task;
+int Scheduler::callMainTask(){
+	std::function<std::list<std::function<int(void)>>(void)> task;
+	Scheduler::SCH_ERR ret;
 	{
 	std::lock_guard<std::mutex> lock(this->mainQueueMutex_);
 	if(this->mainTasks_.size()!=0){
 		task=*(this->mainTasks_.begin());
 		this->mainTasks_.pop_front();
+		ret=Scheduler::SCH_ERR::NO_ERR;
 	} else {
 		this->emptyMainQueue_=true;
-		task=[](){return std::list<std::function<void(void)>>();};
+		task=[](){return std::list<std::function<int(void)>>();};
+		ret=Scheduler::SCH_ERR::PHONY_TASK;
 	}
 	}
 
@@ -114,10 +119,11 @@ void Scheduler::callMainTask(){
 	std::lock_guard<std::mutex> lock(this->expandedQueueMutex_);
 	this->expandedTasks_.splice(this->expandedTasks_.begin(),task());
 	}
+	return ret;
 }
 
-void Scheduler::callExpandedTask(){
-	std::function<void(void)> task;
+int Scheduler::callExpandedTask(){
+	std::function<int(void)> task;
 	{
 	std::lock_guard<std::mutex> lock(this->expandedQueueMutex_);
 	if(this->expandedTasks_.size()!=0){
@@ -125,8 +131,8 @@ void Scheduler::callExpandedTask(){
 	this->expandedTasks_.pop_front();
 	} else {
 		this->emptyExpandedQueue_=true;
-		task=[](){};
+		task=[](){return Scheduler::SCH_ERR::PHONY_TASK;};
 	}
 	}
-	task();
+	return task();
 }
