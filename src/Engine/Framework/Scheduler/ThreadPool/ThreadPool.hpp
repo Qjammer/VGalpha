@@ -6,7 +6,7 @@
 class ThreadPool {
 public:
 	ThreadPool();
-	ThreadPool(int);
+	ThreadPool(const unsigned int);
 	~ThreadPool();
 	bool getThreadStatus(const unsigned int) const;
 	void initThread(const unsigned int,std::function<void(int)>);

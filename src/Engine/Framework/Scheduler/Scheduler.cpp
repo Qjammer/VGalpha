@@ -4,7 +4,7 @@ Scheduler::Scheduler():Scheduler(1){
 	
 }
 
-Scheduler::Scheduler(int _threads):ThreadPool(_threads),emptyExpandedQueue_(false),emptyMainQueue_(false),running_(true){
+Scheduler::Scheduler(const unsigned int _threads):ThreadPool(_threads),emptyExpandedQueue_(false),emptyMainQueue_(false),running_(true){
 	
 }
 
@@ -15,10 +15,10 @@ Scheduler::~Scheduler(){
 
 
 
-void Scheduler::infiniteLoop(const unsigned int id){
-	printf("entering infinite loop,thread:%i\n",id);
+void Scheduler::infiniteLoop(const unsigned int _id){
+	printf("entering infinite loop,thread:%i\n",_id);
 	std::unique_lock<std::mutex> lck(this->refillMutex_,std::defer_lock);//doesnt lock on construction
-	while(this->getThreadStatus(id)){
+	while(this->getThreadStatus(_id)){
 		
 		if(this->emptyExpandedQueue_){
 			lck.lock();
@@ -35,7 +35,7 @@ void Scheduler::infiniteLoop(const unsigned int id){
 	}
 }
 
-void Scheduler::addManager(std::weak_ptr<ManagerInterface> mngr){
+void Scheduler::addManager(const std::weak_ptr<ManagerInterface> mngr){
 	this->managers_.emplace(this->managers_.end(),mngr);
 }
 
@@ -88,8 +88,8 @@ void Scheduler::pushMainTask(const std::function<std::list<std::function<int(voi
 	this->mainTasks_.push_back(mainTask);
 }
 
-void Scheduler::pushMainTaskFromManager(std::weak_ptr<ManagerInterface> mngr){
-	this->pushMainTask(std::function<std::list<std::function<int(void)>>(void)>(std::bind(&ManagerInterface::mainTask,mngr.lock().get())));
+void Scheduler::pushMainTaskFromManager(const std::weak_ptr<ManagerInterface> mngr){
+	this->pushMainTask(std::function<std::list<std::function<int(void)>>(void)>(std::bind(&ManagerInterface::getTaskListFromMngr,mngr.lock().get())));
 }
 
 void Scheduler::fillMainQueue(){
