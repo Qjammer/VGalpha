@@ -2,11 +2,12 @@
 #include <thread>
 #include <vector>
 #include <cstdio>
+#include <atomic>
 
 class ThreadPool {
 public:
-	ThreadPool();
 	ThreadPool(int);
+	ThreadPool();
 	~ThreadPool();
 	bool getThreadStatus(const unsigned int) const;
 	void initThread(const unsigned int,std::function<void(int)>);

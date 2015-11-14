@@ -1,9 +1,15 @@
 Managers_DIR = ./Engine/Managers/
 
+include Engine/Managers/ThreadPool/make_ThreadPool
+
 $(ODIR)Manager.o: $(Managers_DIR)Manager.cpp $(Managers_DIR)Manager.hpp
 	$(CC) $(CFLAGS) $(Managers_DIR)Manager.cpp $(FFLAGS)
 
 $(ODIR)ManagerInterface.o: $(Managers_DIR)ManagerInterface.cpp $(Managers_DIR)ManagerInterface.hpp
 	$(CC) $(CFLAGS) $(Managers_DIR)ManagerInterface.cpp $(FFLAGS)
 
-ManagersPH:$(ODIR)Manager.o $(ODIR)ManagerInterface.o
+$(ODIR)TaskManager.o: $(Managers_DIR)TaskManager.cpp $(Managers_DIR)TaskManager.hpp
+	$(CC) $(CFLAGS) $(Managers_DIR)TaskManager.cpp $(FFLAGS)
+
+ManagersPH:$(ODIR)Manager.o $(ODIR)ManagerInterface.o $(ODIR)TaskManager.o ThreadPoolPH
+

@@ -7,10 +7,9 @@
 class ManagerInterface{
 public:
 	//Methods ONLY
-	ManagerInterface(Manager* _mngr);
+	ManagerInterface();
 	~ManagerInterface();
 
-	std::list<std::function<int(void)>> getTaskListFromMngr();
 
 protected:
 	//Variables (obv)
