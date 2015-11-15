@@ -41,6 +41,7 @@ void TaskManager::addTask(std::function<int(void)> _task){
 	this->taskQueue_.push_back(_task);
 }
 void TaskManager::addTaskList(std::list<std::function<int(void)>> _list){
+	std::unique_lock<std::mutex> lk(this->queueMtx_);
 	this->taskQueue_.splice(this->taskQueue_.end(),_list);
 }
 
@@ -50,17 +51,16 @@ int TaskManager::callTask(unsigned int _thread){
 	std::function<int(void)> task;
 	printf("calling task\n");
 	{
-
-		std::unique_lock<std::mutex> lk(this->queueMtx_);
-		printf("queue size:%i\n",this->taskQueue_.size());
-		if(this->taskQueue_.empty()){
-			printf("Mark Thread Idle\n");
-			this->markThreadIdle(_thread);
-			task=[](){return 1;};
-		} else {
-		task=this->taskQueue_.front();
-		this->taskQueue_.pop_front();
-		}
+	std::unique_lock<std::mutex> lk(this->queueMtx_);
+	printf("queue size:%i\n",this->taskQueue_.size());
+	if(this->taskQueue_.empty()){
+		printf("Mark Thread Idle\n");
+		this->markThreadIdle(_thread);
+		task=[](){return 1;};
+	} else {
+	task=this->taskQueue_.front();
+	this->taskQueue_.pop_front();
+	}
 	}
 	return task();
 }

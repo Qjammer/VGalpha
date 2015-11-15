@@ -13,7 +13,6 @@ public:
 	TaskManager();
 	~TaskManager();
 
-	void threadLoop(unsigned int);
 	void markAllIdle();
 	void markStartActive();
 	void addTask(std::function<int(void)>);
@@ -24,6 +23,8 @@ public:
 
 
 protected:
+
+	void threadLoop(unsigned int);
 
 	int callTask(unsigned int);
 
