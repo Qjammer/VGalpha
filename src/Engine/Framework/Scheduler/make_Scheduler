@@ -1,8 +1,7 @@
 Scheduler_DIR = ./Engine/Framework/Scheduler/
 
-include Engine/Framework/Scheduler/ThreadPool/make_ThreadPool
 
-$(ODIR)Scheduler.o: $(Scheduler_DIR)Scheduler.cpp $(Scheduler_DIR)Scheduler.hpp $(ThreadPool_DIR)ThreadPool.hpp
+$(ODIR)Scheduler.o: $(Scheduler_DIR)Scheduler.cpp $(Scheduler_DIR)Scheduler.hpp
 	$(CC) $(CFLAGS) $(Scheduler_DIR)Scheduler.cpp $(FFLAGS)
 
-SchedulerPH: ThreadPoolPH $(ODIR)Scheduler.o
+SchedulerPH: $(ODIR)Scheduler.o

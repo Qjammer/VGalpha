@@ -7,15 +7,19 @@
 class Manager
 {
 public:
+	enum MNGR_TYPE {
+		TASK,
+		STATE,
+		SERVICE,
+		ENVIRONMENT,
+		PLATFORM
+	};
 	//Methods ONLY
-	Manager();
+	Manager(MNGR_TYPE);
 	~Manager();
-	std::list<std::function<int(void)>> getTaskList();
+	const MNGR_TYPE getType();
+	
 
 protected:
-	//Methods
-	virtual int updateTaskList();
-
-	//Variables
-	std::list<std::function<int(void)>> taskList_;
+	MNGR_TYPE mngr_type_;
 };

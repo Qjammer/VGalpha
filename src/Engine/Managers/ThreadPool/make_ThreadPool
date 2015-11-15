@@ -1,4 +1,4 @@
-ThreadPool_DIR = ./Engine/Framework/Scheduler/ThreadPool/
+ThreadPool_DIR = ./Engine/Managers/ThreadPool/
 
 $(ODIR)ThreadPool.o: $(ThreadPool_DIR)ThreadPool.cpp $(ThreadPool_DIR)ThreadPool.hpp
 	$(CC) $(CFLAGS) $(ThreadPool_DIR)ThreadPool.cpp $(FFLAGS)

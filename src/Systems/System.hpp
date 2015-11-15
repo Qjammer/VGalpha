@@ -1,9 +1,10 @@
 #pragma once
 #include <functional>
 #include <list>
+#include <memory>
 
 #include "helixStructures.hpp"
-
+class TaskManagerInterface;
 
 class System
 {
@@ -12,7 +13,7 @@ public:
 	System();
 	System(EntityType _type);
 	~System();
-	virtual std::list<std::function<void(void)>>& mainTask()=0;//Returns sub-tasks
+	virtual int mainTask(std::weak_ptr<TaskManagerInterface>)=0;
 	const EntityType& getType() const;
 protected:
 	EntityType type_;

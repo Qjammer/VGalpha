@@ -1,8 +1,8 @@
 #include "Manager.hpp"
 
-Manager::Manager()
+Manager::Manager(MNGR_TYPE _type):mngr_type_(_type)
 {
-	this->taskList_.push_back(std::bind(&Manager::updateTaskList,*this));
+
 }
 
 Manager::~Manager()
@@ -10,12 +10,7 @@ Manager::~Manager()
 
 }
 
-std::list<std::function<int(void)>> Manager::getTaskList()
-{
-	return this->taskList_;
+const Manager::MNGR_TYPE Manager::getType(){
+	return this->mngr_type_;
 }
 
-int Manager::updateTaskList()
-{
-	return 1;
-}

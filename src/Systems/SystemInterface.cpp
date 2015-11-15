@@ -1,6 +1,6 @@
 #include "SystemInterface.hpp"
 
-SystemInterface::SystemInterface()
+SystemInterface::SystemInterface(System* _system, std::weak_ptr<TaskManagerInterface> _tskmngrintf):system_(_system),taskManager_(_tskmngrintf)
 {
 
 }
@@ -11,10 +11,10 @@ SystemInterface::~SystemInterface()
 
 }
 
-std::list<std::function<void(void)>>& SystemInterface::mainTask(){
-	return this->system_->mainTask();
+int SystemInterface::mainTask(){
+	return this->system_->mainTask(this->taskManager_);
 }
 
 const EntityType& SystemInterface::getType() const{
-	return system_->getType();
+	return this->system_->getType();
 }
