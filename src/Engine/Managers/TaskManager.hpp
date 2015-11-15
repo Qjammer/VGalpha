@@ -9,21 +9,29 @@ class System;
 
 class TaskManager: public Manager, public ThreadPool{
 public:
-	TaskManager(int _threads);
+	TaskManager(unsigned int _threads);
 	TaskManager();
 	~TaskManager();
 
-	int threadLoop(int);
+	void threadLoop(unsigned int);
 	void markAllIdle();
 	void markStartActive();
 	void addTask(std::function<int(void)>);
+	void addTaskList(std::list<std::function<int(void)>>);
+	void initThreadLoop(unsigned int);
+	void wakeUpandJoinThread(unsigned int);
+
+
 
 protected:
 
-	void makeThreadIdle(int);
-	void makeThreadActive(int);
+	int callTask(unsigned int);
 
-	std::mutex queueMutex_;
+	void makeThreadActive(unsigned int);
+	void makeThreadIdle(unsigned int);
+	void markThreadIdle(unsigned int);
+
+	std::mutex queueMtx_;
 	std::list<std::function<int(void)>> taskQueue_;
 
 	std::condition_variable areAllIdleCV_;//Condition variable for working threads

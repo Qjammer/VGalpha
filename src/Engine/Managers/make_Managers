@@ -11,5 +11,8 @@ $(ODIR)ManagerInterface.o: $(Managers_DIR)ManagerInterface.cpp $(Managers_DIR)Ma
 $(ODIR)TaskManager.o: $(Managers_DIR)TaskManager.cpp $(Managers_DIR)TaskManager.hpp
 	$(CC) $(CFLAGS) $(Managers_DIR)TaskManager.cpp $(FFLAGS)
 
-ManagersPH:$(ODIR)Manager.o $(ODIR)ManagerInterface.o $(ODIR)TaskManager.o ThreadPoolPH
+$(ODIR)TaskManagerInterface.o: $(Managers_DIR)TaskManagerInterface.cpp $(Managers_DIR)TaskManagerInterface.hpp
+	$(CC) $(CFLAGS) $(Managers_DIR)TaskManagerInterface.cpp $(FFLAGS)
+
+ManagersPH:$(ODIR)Manager.o $(ODIR)ManagerInterface.o $(ODIR)TaskManager.o $(ODIR)TaskManagerInterface.o ThreadPoolPH
 
