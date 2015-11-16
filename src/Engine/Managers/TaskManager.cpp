@@ -49,7 +49,7 @@ void TaskManager::addTaskList(std::list<std::function<int(void)>> _list){
 
 int TaskManager::callTask(unsigned int _thread){
 	std::function<int(void)> task;
-	printf("calling task\n");
+	printf("calling task,thread:%u\n",_thread);
 	{
 	std::unique_lock<std::mutex> lk(this->queueMtx_);
 	printf("queue size:%i\n",this->taskQueue_.size());
@@ -69,12 +69,9 @@ void TaskManager::makeThreadIdle(unsigned int _thread){
 	{
 		std::unique_lock<std::mutex> lk(this->areAllIdleMtx_);
 		while(this->areAllIdle_||!(this->isThreadActive_[_thread])){
-
-			printf("inside this big while\n");
-			printf(this->isThreadActive_[_thread] ? "true\n":"false\n");
-			printf(this->areAllIdle_ ? "true\n":"false\n");
+			printf("Sleeping thread %u\n",_thread);
 			this->areAllIdleCV_.wait(lk);
-			printf("Woken up\n");
+			printf("Waking up thread %u\n",_thread);
 		}
 	}
 }
@@ -99,6 +96,7 @@ void TaskManager::makeThreadActive(unsigned int _thread){
 
 void TaskManager::markAllIdle(){
 	if(this->activeThreads_==0){
+		this->areAllIdle_=true;
 		this->proceedMain_=true;
 		this->proceedMainCV_.notify_all();
 	} else {

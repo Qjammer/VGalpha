@@ -3,6 +3,7 @@
 #include "Manager.hpp"
 #include <list>
 #include <functional>
+#include <memory>
 
 class ManagerInterface{
 public:
