@@ -25,8 +25,7 @@ bool EnvironmentManager::isTextureFileLoaded(std::string _fileName)
 
 std::shared_ptr<sf::Texture> EnvironmentManager::loadTexture(std::string _fileName)
 {
-	std::unordered_map<std::string, std::pair<std::shared_ptr<sf::Texture>, unsigned int>>::iterator __it;
-	__it = this->texturePtrMap_.find(_fileName);
+	auto __it(this->texturePtrMap_.find(_fileName));
 
 	if (__it != this->texturePtrMap_.end())
 	{
