@@ -138,11 +138,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Engine\Framework\Scheduler\Scheduler.cpp" />
-    <ClCompile Include="..\..\..\Engine\Framework\Scheduler\ThreadPool\ThreadPool.cpp" />
     <ClCompile Include="..\..\..\Engine\Framework\UEntities\UObject.cpp" />
     <ClCompile Include="..\..\..\Engine\Framework\UEntities\UScene.cpp" />
+    <ClCompile Include="..\..\..\Engine\Managers\EnvironmentManager.cpp" />
     <ClCompile Include="..\..\..\Engine\Managers\Manager.cpp" />
     <ClCompile Include="..\..\..\Engine\Managers\ManagerInterface.cpp" />
+    <ClCompile Include="..\..\..\Engine\Managers\TaskManager.cpp" />
+    <ClCompile Include="..\..\..\Engine\Managers\TaskManagerInterface.cpp" />
+    <ClCompile Include="..\..\..\Engine\Managers\ThreadPool\ThreadPool.cpp" />
     <ClCompile Include="..\..\..\main.cpp" />
     <ClCompile Include="..\..\..\Systems\EntityExtensions\GraphicObjectExtension.cpp" />
     <ClCompile Include="..\..\..\Systems\EntityExtensions\ObjectExtension.cpp" />
@@ -152,11 +155,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Engine\Framework\Scheduler\Scheduler.hpp" />
-    <ClInclude Include="..\..\..\Engine\Framework\Scheduler\ThreadPool\ThreadPool.hpp" />
     <ClInclude Include="..\..\..\Engine\Framework\UEntities\UObject.hpp" />
     <ClInclude Include="..\..\..\Engine\Framework\UEntities\UScene.hpp" />
+    <ClInclude Include="..\..\..\Engine\Managers\EnvironmentManager.hpp" />
     <ClInclude Include="..\..\..\Engine\Managers\Manager.hpp" />
     <ClInclude Include="..\..\..\Engine\Managers\ManagerInterface.hpp" />
+    <ClInclude Include="..\..\..\Engine\Managers\TaskManager.hpp" />
+    <ClInclude Include="..\..\..\Engine\Managers\TaskManagerInterface.hpp" />
+    <ClInclude Include="..\..\..\Engine\Managers\ThreadPool\ThreadPool.hpp" />
     <ClInclude Include="..\..\..\Systems\EntityExtensions\GraphicObjectExtension.hpp" />
     <ClInclude Include="..\..\..\Systems\EntityExtensions\ObjectExtension.hpp" />
     <ClInclude Include="..\..\..\Systems\EntityExtensions\SceneExtension.hpp" />

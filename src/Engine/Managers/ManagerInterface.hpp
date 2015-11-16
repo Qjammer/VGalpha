@@ -13,6 +13,6 @@ public:
 
 protected:
 	//Variables (obv)
-	Manager* mngr_;
+	std::shared_ptr<Manager> mngr_;
 
 };

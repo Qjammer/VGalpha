@@ -25,9 +25,6 @@
     <Filter Include="SRC\Engine\Framework\Scheduler">
       <UniqueIdentifier>{0dcbe23b-895d-467e-81c4-0d571a66e116}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SRC\Engine\Framework\Scheduler\ThreadPool">
-      <UniqueIdentifier>{c9bdf2b9-f6fc-4d46-ad41-e678a08d054a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="SRC\Engine\Framework\UEntities">
       <UniqueIdentifier>{417d997a-88f1-4ac5-b10f-8e24a9f5672b}</UniqueIdentifier>
     </Filter>
@@ -37,6 +34,9 @@
     <Filter Include="SRC\Systems\EntityExtensions">
       <UniqueIdentifier>{165fe05c-aa5b-4c98-8937-64b511aca648}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SRC\Engine\Manager\Thread Pool">
+      <UniqueIdentifier>{c9e42ae8-5e6c-4741-868b-60634420a28c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Engine\Managers\Manager.cpp">
@@ -44,9 +44,6 @@
     </ClCompile>
     <ClCompile Include="..\..\..\Engine\Framework\Scheduler\Scheduler.cpp">
       <Filter>SRC\Engine\Framework\Scheduler</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Engine\Framework\Scheduler\ThreadPool\ThreadPool.cpp">
-      <Filter>SRC\Engine\Framework\Scheduler\ThreadPool</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Engine\Framework\UEntities\UObject.cpp">
       <Filter>SRC\Engine\Framework\UEntities</Filter>
@@ -75,6 +72,18 @@
     <ClCompile Include="..\..\..\main.cpp">
       <Filter>SRC</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Engine\Managers\EnvironmentManager.cpp">
+      <Filter>SRC\Engine\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Engine\Managers\ThreadPool\ThreadPool.cpp">
+      <Filter>SRC\Engine\Manager\Thread Pool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Engine\Managers\TaskManager.cpp">
+      <Filter>SRC\Engine\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Engine\Managers\TaskManagerInterface.cpp">
+      <Filter>SRC\Engine\Manager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Engine\Managers\Manager.hpp">
@@ -85,9 +94,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Engine\Framework\Scheduler\Scheduler.hpp">
       <Filter>SRC\Engine\Framework\Scheduler</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Engine\Framework\Scheduler\ThreadPool\ThreadPool.hpp">
-      <Filter>SRC\Engine\Framework\Scheduler\ThreadPool</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Engine\Framework\UEntities\UObject.hpp">
       <Filter>SRC\Engine\Framework\UEntities</Filter>
@@ -112,6 +118,18 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Systems\EntityExtensions\SceneExtension.hpp">
       <Filter>SRC\Systems\EntityExtensions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Managers\EnvironmentManager.hpp">
+      <Filter>SRC\Engine\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Managers\ThreadPool\ThreadPool.hpp">
+      <Filter>SRC\Engine\Manager\Thread Pool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Managers\TaskManager.hpp">
+      <Filter>SRC\Engine\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Managers\TaskManagerInterface.hpp">
+      <Filter>SRC\Engine\Manager</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

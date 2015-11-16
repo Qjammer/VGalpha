@@ -1,6 +1,6 @@
 #include "Manager.hpp"
 
-Manager::Manager(MNGR_TYPE _type):mngr_type_(_type)
+Manager::Manager(Manager::MNGR_TYPE _type):mngr_type_(_type)
 {
 
 }
