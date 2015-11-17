@@ -1,7 +1,11 @@
 #include "EnvironmentManager.hpp"
 
-EnvironmentManager::EnvironmentManager() : Manager(ENVIRONMENT), errorTexture_(new sf::Texture), 
-cacheTickCounter(0), cacheTickCheck(1*600), cacheTickMax(3*600)
+EnvironmentManager::EnvironmentManager():
+	Manager(ENVIRONMENT),
+	errorTexture_(new sf::Texture),
+	cacheTickCounter(0),
+	cacheTickCheck(1*600),
+	cacheTickMax(3*600)
 {
 
 }

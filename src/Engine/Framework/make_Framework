@@ -1,4 +1,4 @@
 include Engine/Framework/UEntities/make_UEntities
 include Engine/Framework/Scheduler/make_Scheduler
 
-FrameworkPH: SchedulerPH ManagersPH
+FrameworkPH: SchedulerPH ManagersPH UEntitiesPH
