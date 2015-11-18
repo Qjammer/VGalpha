@@ -1,10 +1,11 @@
 #pragma once
 
 #include "Manager.hpp"
-#include "SFML\Graphics.hpp"
+#include <SFML/Graphics.hpp>
 #include <string>
 #include <list>
 #include <unordered_map>
+#include <memory>
 
 class EnvironmentManager : public Manager
 {

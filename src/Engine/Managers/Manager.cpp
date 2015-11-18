@@ -10,7 +10,7 @@ Manager::~Manager()
 
 }
 
-const Manager::MNGR_TYPE Manager::getType(){
+const Manager::MNGR_TYPE Manager::getType() const{
 	return this->mngr_type_;
 }
 

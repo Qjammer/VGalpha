@@ -3,7 +3,7 @@
 
 class TaskManagerInterface{
 public:
-	TaskManagerInterface(int);
+	TaskManagerInterface(unsigned int);
 	TaskManagerInterface();
 	~TaskManagerInterface();
 	void addTask(std::function<int(void)>);
