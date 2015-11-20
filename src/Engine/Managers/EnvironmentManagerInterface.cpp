@@ -1,5 +1,5 @@
 
-#include "EnvironmentManagerInterface.hpp"
+#include "./EnvironmentManagerInterface.hpp"
 
 EnvironmentManagerInterface::EnvironmentManagerInterface(std::shared_ptr<EnvironmentManager> _mngr) : 
 	ManagerInterface(_mngr),

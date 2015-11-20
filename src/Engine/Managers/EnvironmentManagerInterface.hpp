@@ -1,7 +1,7 @@
 #pragma once
 
-#include "ManagerInterface.hpp"
-#include "EnvironmentManager.hpp"
+#include "./ManagerInterface.hpp"
+#include "./EnvironmentManager.hpp"
 
 class EnvironmentManagerInterface : public ManagerInterface
 {
