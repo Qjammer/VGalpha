@@ -10,6 +10,7 @@ ODIR = ../obj/
 
 include Systems/make_Systems
 include Engine/make_Engine
+include Utilities/make_Utilities
 
 Main_DIR=./
 
@@ -28,7 +29,7 @@ OBJDIR:|$(ODIR)
 clean:
 	rm $(ODIR)*.o
 
-compile: OBJDIR EnginePH SystemsPH MainPH
+compile: OBJDIR EnginePH SystemsPH UtilitiesPH MainPH
 
 link: compile
 	$(CC) $(LFLAGS) -o $(EXEC) $(ODIR)*.o $(LIBS)
