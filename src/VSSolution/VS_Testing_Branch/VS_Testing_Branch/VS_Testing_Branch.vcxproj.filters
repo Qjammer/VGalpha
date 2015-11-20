@@ -84,6 +84,9 @@
     <ClCompile Include="..\..\..\Engine\Managers\TaskManagerInterface.cpp">
       <Filter>SRC\Engine\Manager</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Engine\Managers\EnvironmentManagerInterface.cpp">
+      <Filter>SRC\Engine\Manager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Engine\Managers\Manager.hpp">
@@ -129,6 +132,9 @@
       <Filter>SRC\Engine\Manager</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Engine\Managers\TaskManagerInterface.hpp">
+      <Filter>SRC\Engine\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Managers\EnvironmentManagerInterface.hpp">
       <Filter>SRC\Engine\Manager</Filter>
     </ClInclude>
   </ItemGroup>
