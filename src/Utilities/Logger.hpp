@@ -20,6 +20,7 @@ protected:
 	std::string fileOutputDir_;
 	std::ofstream fileOutputStream_;
 	time_t timer;
+	std::string date_;
 
 };
 

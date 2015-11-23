@@ -29,7 +29,9 @@ void Logger::logWarning(std::string _message){
 
 std::string Logger::getTimestamp(){
 	time(&(this->timer));
-	return ctime(&(this->timer));
+	this->date_=ctime(&(this->timer));
+	this->date_.pop_back();
+	return this->date_;
 }
 
 Logger LoggerInstance;
