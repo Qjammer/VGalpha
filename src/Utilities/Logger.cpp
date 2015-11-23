@@ -2,7 +2,8 @@
 
 Logger::Logger(std::string _fileDir):
 	fileOutputDir_(_fileDir),
-	fileOutputStream_(_fileDir,std::ofstream::out|std::ofstream::app)
+	fileOutputStream_(_fileDir,std::ofstream::out|std::ofstream::app),
+	date_("")
 {
 
 }
