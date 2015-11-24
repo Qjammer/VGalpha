@@ -1,14 +1,13 @@
 #pragma once
-#include <chrono>
+#include <ctime>
 #include <fstream>
 
 #define DEFAULT_LOGGER_OUTPUT "./log.log"
-
-
+#define LOGGER_STATUS true
 
 class Logger {
 public:
-	Logger(std::string);
+	Logger(std::string,bool);
 	Logger();
 	~Logger();
 	void logError(std::string);
@@ -21,7 +20,7 @@ protected:
 	std::ofstream fileOutputStream_;
 	time_t timer;
 	std::string date_;
-
+	bool logStatus_;
 };
 
 extern Logger LoggerInstance;

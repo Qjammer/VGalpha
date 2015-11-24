@@ -1,14 +1,15 @@
 #include "./Logger.hpp"
 
-Logger::Logger(std::string _fileDir):
+Logger::Logger(std::string _fileDir,bool _status):
 	fileOutputDir_(_fileDir),
 	fileOutputStream_(_fileDir,std::ofstream::out|std::ofstream::app),
-	date_("")
+	date_(""),
+	logStatus_(_status)
 {
 
 }
 
-Logger::Logger():Logger(DEFAULT_LOGGER_OUTPUT){
+Logger::Logger():Logger(DEFAULT_LOGGER_OUTPUT,LOGGER_STATUS){
 
 }
 
@@ -16,14 +17,16 @@ Logger::~Logger(){
 
 }
 
-
 void Logger::logString(std::string _type, std::string _message){
-	this->fileOutputStream_<<this->getTimestamp()<<" "<<_type<<": "<<_message<<std::endl;
+	if(this->logStatus_){
+		this->fileOutputStream_<<this->getTimestamp()<<" "<<_type<<": "<<_message<<std::endl;
+	}
 }
 
 void Logger::logError(std::string _message){
 	this->logString("Error",_message);
 }
+
 void Logger::logWarning(std::string _message){
 	this->logString("Warning",_message);
 }
