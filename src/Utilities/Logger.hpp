@@ -31,3 +31,25 @@ protected:
 };
 
 extern Logger LoggerInstance;
+
+//ConcatenateTemplate should not be used, use concatenate(T...args)
+
+template<typename S>
+inline void concatenateTemplate(std::stringstream& ss, S s){
+	ss<<s;
+}
+
+template<typename S,typename ...T>
+inline void concatenateTemplate(std::stringstream& ss, S s,T... args){
+	ss<<s;
+	concatenateTemplate(ss,args...);
+}
+
+
+//IMPORTANT! ONLY USE WITH OBJECTS WITH OVERLOADED OPERATOR<<
+template<typename ...T>
+inline std::string concatenate(T...args){
+	std::stringstream ss;
+	concatenateTemplate(ss,args...);
+	return ss.str();
+}
