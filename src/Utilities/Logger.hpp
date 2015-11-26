@@ -10,7 +10,7 @@
 
 class Logger {
 public:
-	Logger(std::string,bool,bool);
+	Logger(std::string,bool,bool,std::weak_ptr<std::stringstream>);
 	Logger();
 	~Logger();
 	void logError(std::string);

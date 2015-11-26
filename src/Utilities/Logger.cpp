@@ -1,17 +1,19 @@
 #include "./Logger.hpp"
 
-Logger::Logger(std::string _fileDir,bool _logStatus,bool _consoleStatus):
+Logger::Logger(std::string _fileDir,bool _logStatus,bool _consoleStatus,std::weak_ptr<std::stringstream> _console):
 	fileOutputDir_(_fileDir),
 	fileOutputStream_(_fileDir,std::ofstream::out|std::ofstream::app),
 	date_(""),
 	logStatus_(_logStatus),
 	consoleStatus_(_consoleStatus),
+	consoleStream_(_console),
 	tempString_("")
+
 {
 
 }
 
-Logger::Logger():Logger(DEFAULT_LOGGER_OUTPUT,LOGGER_STATUS,CONSOLE_STATUS){
+Logger::Logger():Logger(DEFAULT_LOGGER_OUTPUT,LOGGER_STATUS,CONSOLE_STATUS,std::make_shared<std::stringstream>()){
 
 }
 
