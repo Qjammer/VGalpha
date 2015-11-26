@@ -6,7 +6,7 @@
 
 #define DEFAULT_LOGGER_OUTPUT "./log.log"
 #define LOGGER_STATUS true
-#define CONSOLE_STATUS true
+#define CONSOLE_STATUS false
 
 class Logger {
 public:
@@ -18,7 +18,7 @@ public:
 	std::string getTimestamp();
 
 protected:
-	void logString(std::string,std::string);
+	void logString(std::string);
 	std::string fileOutputDir_;
 	std::ofstream fileOutputStream_;
 	time_t timer;
