@@ -13,7 +13,7 @@ public:
 	TaskManager();
 	~TaskManager();
 
-	void mainTask();
+	void mainProcess();
 
 	void addTask(std::function<int(void)>);
 	void addTaskList(std::list<std::function<int(void)>>);

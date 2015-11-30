@@ -23,7 +23,7 @@ TaskManager::~TaskManager()
 	this->wakeUpandJoinAll();
 }
 
-void TaskManager::mainTask(){
+void TaskManager::mainProcess(){
 	this->markStartActive();
 	{
 	std::unique_lock<std::mutex> lk(this->queueMtx_);
@@ -133,15 +133,19 @@ void TaskManager::wakeUpandJoinThread(unsigned int _thread){
 }
 
 void TaskManager::wakeUpandJoinAll(){
-	unsigned int i;
-	for(i=0;i<threadCount_;++i){
-		this->stopThread(i);
-	}
-	for(i=0;i<threadCount_;++i){
-		this->makeThreadActive(i);
-	}
-	this->areAllIdleCV_.notify_all();
-	for(i=0;i<threadCount_;++i){
-		this->joinThread(i);
+	if(this->activeThreads_==0){
+		unsigned int i;
+		for(i=0;i<threadCount_;++i){
+			this->stopThread(i);
+		}
+		for(i=0;i<threadCount_;++i){
+			this->makeThreadActive(i);
+		}
+		this->areAllIdleCV_.notify_all();
+		for(i=0;i<threadCount_;++i){
+			this->joinThread(i);
+		}
+	} else {
+		printf("Trying to wake up non idle threads: %i threads active", this->activeThreads_.load());
 	}
 }
