@@ -20,6 +20,7 @@ public:
 	void initThreadLoop(unsigned int);
 	void wakeUpandJoinThread(unsigned int);
 	void wakeUpandJoinAll();
+	void markAllActive();
 protected:
 
 	void threadLoop(unsigned int);

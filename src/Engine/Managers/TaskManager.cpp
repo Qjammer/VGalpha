@@ -34,16 +34,15 @@ void TaskManager::mainProcess(){
 }
 
 void TaskManager::initThreadLoop(unsigned int _thread){
-	this->makeThreadActive(_thread);
 	this->initThread(_thread,std::bind(&TaskManager::threadLoop,this,std::placeholders::_1));
 }
 
 void TaskManager::threadLoop(unsigned int _thread){
 	printf("Starting loop, thread %i\n",_thread);
-	while(this->getThreadStatus(_thread)){
+	do {
 		this->callTask(_thread);
 		this->makeThreadIdle(_thread);
-	}
+	} while(this->getThreadStatus(_thread));
 	printf("Out of the loop, thread %i\n",_thread);
 	this->markThreadIdle(_thread);
 }
@@ -51,11 +50,13 @@ void TaskManager::threadLoop(unsigned int _thread){
 void TaskManager::addTask(std::function<int(void)> _task){
 	std::unique_lock<std::mutex> lk(this->queueMtx_);
 	this->taskQueue_.push_back(_task);
+	this->markAllActive();
 }
 
 void TaskManager::addTaskList(std::list<std::function<int(void)>> _list){
 	std::unique_lock<std::mutex> lk(this->queueMtx_);
 	this->taskQueue_.splice(this->taskQueue_.end(),_list);
+	this->markAllActive();
 }
 
 int TaskManager::callTask(unsigned int _thread){
@@ -98,9 +99,13 @@ void TaskManager::markThreadIdle(unsigned int _thread){
 }
 
 void TaskManager::makeThreadActive(unsigned int _thread){
-	++(this->activeThreads_);
-	this->isThreadActive_[_thread]=true;
-	this->areAllIdle_=false;
+	if(this->isThreadActive_[_thread]==false){
+		++(this->activeThreads_);
+		this->isThreadActive_[_thread]=true;
+		this->areAllIdle_=false;
+	} else {
+		printf("Thread Already active\n");
+	}
 }
 
 void TaskManager::markAllIdle(){
@@ -113,12 +118,16 @@ void TaskManager::markAllIdle(){
 	}
 }
 
+void TaskManager::markAllActive(){
+	for(unsigned int i=0;i<this->threadCount_;++i){
+		this->makeThreadActive(i);
+	}
+}
+
 void TaskManager::markStartActive(){
 	if(this->activeThreads_==0){
 		this->proceedMain_=false;
-		for(unsigned int i=0;i<this->threadCount_;++i){
-			this->makeThreadActive(i);
-		}
+		this->markAllActive();
 		this->areAllIdleCV_.notify_all();
 	} else {
 		printf("Some threads are still running:%u threads\n",this->activeThreads_.load());
