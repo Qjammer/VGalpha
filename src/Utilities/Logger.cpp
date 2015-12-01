@@ -40,6 +40,10 @@ void Logger::logWarning(std::string _message){
 	this->logString("Warning: "+_message);
 }
 
+void Logger::logMessage(std::string _message){
+	this->logString(_message);
+}
+
 std::string Logger::getTimestamp(){
 	time(&(this->timer));
 	this->date_=ctime(&(this->timer));

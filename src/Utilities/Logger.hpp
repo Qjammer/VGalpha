@@ -15,6 +15,7 @@ public:
 	~Logger();
 	void logError(std::string);
 	void logWarning(std::string);
+	void logMessage(std::string);
 	std::string getTimestamp();
 
 protected:
