@@ -4,6 +4,7 @@
 
 #include "./Manager.hpp"
 #include "./ThreadPool/ThreadPool.hpp"
+#include "../../Utilities/Logger.hpp"
 
 class System;
 
