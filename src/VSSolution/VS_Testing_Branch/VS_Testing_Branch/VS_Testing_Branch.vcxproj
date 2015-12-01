@@ -141,6 +141,7 @@
     <ClCompile Include="..\..\..\Engine\Framework\UEntities\UObject.cpp" />
     <ClCompile Include="..\..\..\Engine\Framework\UEntities\UScene.cpp" />
     <ClCompile Include="..\..\..\Engine\Managers\EnvironmentManager.cpp" />
+    <ClCompile Include="..\..\..\Engine\Managers\EnvironmentManagerInterface.cpp" />
     <ClCompile Include="..\..\..\Engine\Managers\Manager.cpp" />
     <ClCompile Include="..\..\..\Engine\Managers\ManagerInterface.cpp" />
     <ClCompile Include="..\..\..\Engine\Managers\TaskManager.cpp" />
@@ -158,6 +159,7 @@
     <ClInclude Include="..\..\..\Engine\Framework\UEntities\UObject.hpp" />
     <ClInclude Include="..\..\..\Engine\Framework\UEntities\UScene.hpp" />
     <ClInclude Include="..\..\..\Engine\Managers\EnvironmentManager.hpp" />
+    <ClInclude Include="..\..\..\Engine\Managers\EnvironmentManagerInterface.hpp" />
     <ClInclude Include="..\..\..\Engine\Managers\Manager.hpp" />
     <ClInclude Include="..\..\..\Engine\Managers\ManagerInterface.hpp" />
     <ClInclude Include="..\..\..\Engine\Managers\TaskManager.hpp" />

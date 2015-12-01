@@ -1,6 +1,6 @@
 #include "./TaskManagerInterface.hpp"
 
-TaskManagerInterface::TaskManagerInterface(int _thr):instance_(std::make_shared<TaskManager>(_thr)){
+TaskManagerInterface::TaskManagerInterface(unsigned int _thr):instance_(std::make_shared<TaskManager>(_thr)){
 	
 }
 
@@ -10,6 +10,10 @@ TaskManagerInterface::TaskManagerInterface():TaskManagerInterface(1){
 
 TaskManagerInterface::~TaskManagerInterface(){
 	
+}
+
+void TaskManagerInterface::mainProcess(){
+	this->instance_->mainProcess();
 }
 
 void TaskManagerInterface::addTask(std::function<int(void)> tsk){

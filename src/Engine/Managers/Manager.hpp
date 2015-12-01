@@ -17,7 +17,7 @@ public:
 	//Methods ONLY
 	Manager(MNGR_TYPE);
 	~Manager();
-	const MNGR_TYPE getType();
+	const MNGR_TYPE getType() const;
 	
 
 protected:

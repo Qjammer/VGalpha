@@ -7,9 +7,10 @@ TaskManager::TaskManager(unsigned int _threads):
 	proceedMain_(true),
 	activeThreads_(0),
 	isThreadActive_(_threads,false)
-
 {
-
+	for(unsigned int i=0;i<this->threadCount_;++i){
+		this->initThreadLoop(i);
+	}
 }
 
 TaskManager::TaskManager():TaskManager(1)
@@ -19,33 +20,44 @@ TaskManager::TaskManager():TaskManager(1)
 
 TaskManager::~TaskManager()
 {
+	this->wakeUpandJoinAll();
+}
 
+void TaskManager::mainProcess(){
+	this->markStartActive();
+	{
+	std::unique_lock<std::mutex> lk(this->queueMtx_);
+	while(!this->proceedMain_){
+		this->proceedMainCV_.wait(lk);
+	}
+	}
 }
 
 void TaskManager::initThreadLoop(unsigned int _thread){
-	this->makeThreadActive(_thread);
 	this->initThread(_thread,std::bind(&TaskManager::threadLoop,this,std::placeholders::_1));
-	
 }
 
 void TaskManager::threadLoop(unsigned int _thread){
-	while(this->getThreadStatus(_thread)){
+	printf("Starting loop, thread %i\n",_thread);
+	do {
 		this->callTask(_thread);
 		this->makeThreadIdle(_thread);
-	}
+	} while(this->getThreadStatus(_thread));
+	printf("Out of the loop, thread %i\n",_thread);
 	this->markThreadIdle(_thread);
 }
 
 void TaskManager::addTask(std::function<int(void)> _task){
 	std::unique_lock<std::mutex> lk(this->queueMtx_);
 	this->taskQueue_.push_back(_task);
+	this->markAllActive();
 }
+
 void TaskManager::addTaskList(std::list<std::function<int(void)>> _list){
 	std::unique_lock<std::mutex> lk(this->queueMtx_);
 	this->taskQueue_.splice(this->taskQueue_.end(),_list);
+	this->markAllActive();
 }
-
-
 
 int TaskManager::callTask(unsigned int _thread){
 	std::function<int(void)> task;
@@ -54,7 +66,6 @@ int TaskManager::callTask(unsigned int _thread){
 	std::unique_lock<std::mutex> lk(this->queueMtx_);
 	printf("queue size:%i\n",this->taskQueue_.size());
 	if(this->taskQueue_.empty()){
-		printf("Mark Thread Idle\n");
 		this->markThreadIdle(_thread);
 		task=[](){return 1;};
 	} else {
@@ -67,20 +78,19 @@ int TaskManager::callTask(unsigned int _thread){
 
 void TaskManager::makeThreadIdle(unsigned int _thread){
 	{
-		std::unique_lock<std::mutex> lk(this->areAllIdleMtx_);
-		while(this->areAllIdle_||!(this->isThreadActive_[_thread])){
-			printf("Sleeping thread %u\n",_thread);
-			this->areAllIdleCV_.wait(lk);
-			printf("Waking up thread %u\n",_thread);
-		}
+	std::unique_lock<std::mutex> lk(this->areAllIdleMtx_);
+	while(this->areAllIdle_||!(this->isThreadActive_[_thread])){
+		printf("Sleeping thread %u\n",_thread);
+		this->areAllIdleCV_.wait(lk);
+		printf("Waking up thread %u\n",_thread);
+	}
 	}
 }
 
 void TaskManager::markThreadIdle(unsigned int _thread){
 	if(this->isThreadActive_[_thread]==true){
-	this->isThreadActive_[_thread]=false;
+		this->isThreadActive_[_thread]=false;
 		if(--(this->activeThreads_)==0){
-			printf("markAllIdle\n");
 			this->markAllIdle();
 		}
 	} else {
@@ -89,9 +99,13 @@ void TaskManager::markThreadIdle(unsigned int _thread){
 }
 
 void TaskManager::makeThreadActive(unsigned int _thread){
-	++(this->activeThreads_);
-	this->isThreadActive_[_thread]=true;
-	this->areAllIdle_=false;
+	if(this->isThreadActive_[_thread]==false){
+		++(this->activeThreads_);
+		this->isThreadActive_[_thread]=true;
+		this->areAllIdle_=false;
+	} else {
+		printf("Thread Already active\n");
+	}
 }
 
 void TaskManager::markAllIdle(){
@@ -104,19 +118,20 @@ void TaskManager::markAllIdle(){
 	}
 }
 
+void TaskManager::markAllActive(){
+	for(unsigned int i=0;i<this->threadCount_;++i){
+		this->makeThreadActive(i);
+	}
+}
+
 void TaskManager::markStartActive(){
 	if(this->activeThreads_==0){
 		this->proceedMain_=false;
-		for(unsigned int i=0;i<this->threadCount_;++i){
-			this->makeThreadActive(i);
-		}
-
-		printf("NotifyCV\n");
+		this->markAllActive();
 		this->areAllIdleCV_.notify_all();
 	} else {
-		printf("Some threads are still running:%u\n",this->activeThreads_.load());
+		printf("Some threads are still running:%u threads\n",this->activeThreads_.load());
 	}
-
 }
 
 void TaskManager::wakeUpandJoinThread(unsigned int _thread){
@@ -126,3 +141,20 @@ void TaskManager::wakeUpandJoinThread(unsigned int _thread){
 	this->joinThread(_thread);
 }
 
+void TaskManager::wakeUpandJoinAll(){
+	if(this->activeThreads_==0){
+		unsigned int i;
+		for(i=0;i<threadCount_;++i){
+			this->stopThread(i);
+		}
+		for(i=0;i<threadCount_;++i){
+			this->makeThreadActive(i);
+		}
+		this->areAllIdleCV_.notify_all();
+		for(i=0;i<threadCount_;++i){
+			this->joinThread(i);
+		}
+	} else {
+		printf("Trying to wake up non idle threads: %i threads active", this->activeThreads_.load());
+	}
+}

@@ -13,15 +13,14 @@ public:
 	TaskManager();
 	~TaskManager();
 
-	void markAllIdle();
-	void markStartActive();
+	void mainProcess();
+
 	void addTask(std::function<int(void)>);
 	void addTaskList(std::list<std::function<int(void)>>);
 	void initThreadLoop(unsigned int);
 	void wakeUpandJoinThread(unsigned int);
-
-
-
+	void wakeUpandJoinAll();
+	void markAllActive();
 protected:
 
 	void threadLoop(unsigned int);
@@ -31,6 +30,9 @@ protected:
 	void makeThreadActive(unsigned int);
 	void makeThreadIdle(unsigned int);
 	void markThreadIdle(unsigned int);
+
+	void markAllIdle();
+	void markStartActive();
 
 	std::mutex queueMtx_;
 	std::list<std::function<int(void)>> taskQueue_;

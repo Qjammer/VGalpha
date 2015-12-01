@@ -3,12 +3,12 @@
 #include <vector>
 #include <cstdio>
 #include <atomic>
+#include <functional>
 
 class ThreadPool {
 public:
-
-	ThreadPool(unsigned int);
 	ThreadPool();
+	ThreadPool(unsigned int);
 	~ThreadPool();
 	bool getThreadStatus(unsigned int) const;
 	void initThread(unsigned int,std::function<void(int)>);

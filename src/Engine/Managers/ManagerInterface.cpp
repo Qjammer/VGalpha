@@ -1,6 +1,7 @@
 #include "./ManagerInterface.hpp"
 
-ManagerInterface::ManagerInterface()
+ManagerInterface::ManagerInterface(std::shared_ptr<Manager> _mngr) :
+	mngr_(_mngr)
 {
 
 }

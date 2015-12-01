@@ -1,4 +1,4 @@
-#include "EnvironmentManager.hpp"
+#include "./EnvironmentManager.hpp"
 
 EnvironmentManager::EnvironmentManager():
 	Manager(ENVIRONMENT),
@@ -33,7 +33,7 @@ std::shared_ptr<sf::Texture> EnvironmentManager::loadTexture(std::string _fileNa
 
 	if (__it != this->texturePtrMap_.end())
 	{
-		return __it._Ptr->_Myval.second.first;
+		return __it->second.first;
 	}
 	else
 	{

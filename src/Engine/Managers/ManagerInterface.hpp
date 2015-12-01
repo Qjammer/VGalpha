@@ -8,7 +8,7 @@
 class ManagerInterface{
 public:
 	//Methods ONLY
-	ManagerInterface();
+	ManagerInterface(std::shared_ptr<Manager> _mngr);
 	~ManagerInterface();
 
 
