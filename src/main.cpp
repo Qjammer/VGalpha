@@ -5,6 +5,7 @@
 #include <chrono>
 #include "./Systems/SystemInterface.hpp"
 #include "./Engine/Managers/TaskManagerInterface.hpp"
+#include "./Utilities/Logger.hpp"
 
 class testSystem:public System{
 public:
@@ -27,18 +28,13 @@ public:
 int main(){
 	std::shared_ptr<TaskManagerInterface> tskmgr(std::make_shared<TaskManagerInterface>(2));
 	testSystemInterface interf(tskmgr);
-	tskmgr->addTask(std::bind(&testSystemInterface::mainTask,interf));
-	tskmgr->addTask(std::bind(&testSystemInterface::mainTask,interf));
-	tskmgr->instance_->initThreadLoop(0);
-	tskmgr->instance_->initThreadLoop(1);
 	std::this_thread::sleep_for(std::chrono::seconds(1));
-	//tskmgr->instance_->markStartActive();
-
+	tskmgr->addTask(std::bind(&testSystemInterface::mainTask,interf));
+	tskmgr->addTask(std::bind(&testSystemInterface::mainTask,interf));
+	//tskmgr->instance_->beginCycle();
+	tskmgr->mainProcess();
 	std::this_thread::sleep_for(std::chrono::seconds(2));
-	//tskmgr->instance_->markStartActive();
-
-	std::this_thread::sleep_for(std::chrono::seconds(2));
-	tskmgr->instance_->wakeUpandJoinThread(0);
-	tskmgr->instance_->wakeUpandJoinThread(1);
+	tskmgr->instance_->wakeUpandStopAll();
+	tskmgr->instance_->joinThreads();
 	return 1;
 }
