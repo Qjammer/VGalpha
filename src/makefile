@@ -1,6 +1,6 @@
 CC = g++
 DEBUG = -g
-CFLAGS = -Wall -pedantic -std=c++11 -c $(DEBUG)
+CFLAGS = -Wall -pedantic -pthread -std=c++11 -c $(DEBUG)
 LFLAGS = -Wall $(DEBUG) -pthread
 FFLAGS = -o $@
 LIBS = -lsfml-system -lsfml-window -lsfml-graphics -lsfml-network -lsfml-audio
