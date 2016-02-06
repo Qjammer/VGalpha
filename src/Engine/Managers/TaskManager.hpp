@@ -19,21 +19,22 @@ public:
 	void addTask(std::function<int(void)>);
 	void addTaskList(std::list<std::function<int(void)>>);
 	void initThreadLoop(unsigned int);
-	void wakeUpandJoinThread(unsigned int);
-	void wakeUpandJoinAll();
-	void markAllActive();
+	void wakeUpandStopThread(unsigned int);
+	void wakeUpandStopAll();
+	void markAllRunning();
 protected:
 
 	void threadLoop(unsigned int);
 
 	int callTask(unsigned int);
 
-	void makeThreadActive(unsigned int);
-	void makeThreadIdle(unsigned int);
+	void markThreadRunning(unsigned int);
+	void idleThread(unsigned int);
 	void markThreadIdle(unsigned int);
 
-	void markAllIdle();
-	void markStartActive();
+	void signalAllIdle();
+	void beginCycle();
+	void joinAll();
 
 	std::mutex queueMtx_;
 	std::list<std::function<int(void)>> taskQueue_;
@@ -47,6 +48,6 @@ protected:
 	std::atomic<bool> proceedMain_;
 
 	std::vector<std::weak_ptr<System>> systems_;
-	std::atomic<unsigned int> activeThreads_;
-	std::vector<bool> isThreadActive_;
+	std::atomic<unsigned int> runningThreads_;
+	std::vector<bool> isThreadRunning_;
 };

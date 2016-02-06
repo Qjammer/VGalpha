@@ -2,15 +2,20 @@
 
 TaskManager::TaskManager(unsigned int _threads):
 	Manager(Manager::MNGR_TYPE::TASK),
-	ThreadPool(_threads),
+	ThreadPool(_threads,std::bind(&TaskManager::threadLoop,this,std::placeholders::_1)),
+	queueMtx_(),
+	taskQueue_(0),
+	areAllIdleCV_(),
+	areAllIdleMtx_(),
 	areAllIdle_(true),
+	proceedMainCV_(),
+	proceedMainMtx_(),
 	proceedMain_(true),
-	activeThreads_(0),
-	isThreadActive_(_threads,false)
+	systems_(),
+	runningThreads_(0),
+	isThreadRunning_(_threads,false)
 {
-	for(unsigned int i=0;i<this->threadCount_;++i){
-		this->initThreadLoop(i);
-	}
+
 }
 
 TaskManager::TaskManager():TaskManager(1)
@@ -20,28 +25,31 @@ TaskManager::TaskManager():TaskManager(1)
 
 TaskManager::~TaskManager()
 {
-	this->wakeUpandJoinAll();
-}
 
-void TaskManager::mainProcess(){
-	this->markStartActive();
-	{
-	std::unique_lock<std::mutex> lk(this->queueMtx_);
-	while(!this->proceedMain_){
-		this->proceedMainCV_.wait(lk);
-	}
-	}
 }
 
 void TaskManager::initThreadLoop(unsigned int _thread){
 	this->initThread(_thread,std::bind(&TaskManager::threadLoop,this,std::placeholders::_1));
 }
 
+void TaskManager::mainProcess(){
+	//TODO:Add main system tasks here
+	this->beginCycle();
+	LoggerInstance.logMessage("Main Thread Stopping");
+	{
+	std::unique_lock<std::mutex> lk(this->proceedMainMtx_);
+	while(!this->proceedMain_){
+		this->proceedMainCV_.wait(lk);
+	}
+	}
+	LoggerInstance.logMessage("Main Thread Proceeding");
+}
+
 void TaskManager::threadLoop(unsigned int _thread){
 	LoggerInstance.logMessage(concatenate("Starting loop, thread ",_thread));
 	do {
 		this->callTask(_thread);
-		this->makeThreadIdle(_thread);
+		this->idleThread(_thread);
 	} while(this->getThreadStatus(_thread));
 	LoggerInstance.logMessage(concatenate("Exiting loop, thread ",_thread));
 	this->markThreadIdle(_thread);
@@ -50,13 +58,12 @@ void TaskManager::threadLoop(unsigned int _thread){
 void TaskManager::addTask(std::function<int(void)> _task){
 	std::unique_lock<std::mutex> lk(this->queueMtx_);
 	this->taskQueue_.push_back(_task);
-	this->markAllActive();
 }
 
 void TaskManager::addTaskList(std::list<std::function<int(void)>> _list){
 	std::unique_lock<std::mutex> lk(this->queueMtx_);
 	this->taskQueue_.splice(this->taskQueue_.end(),_list);
-	this->markAllActive();
+
 }
 
 int TaskManager::callTask(unsigned int _thread){
@@ -64,7 +71,6 @@ int TaskManager::callTask(unsigned int _thread){
 	LoggerInstance.logMessage(concatenate("calling task,thread ",_thread));
 	{
 	std::unique_lock<std::mutex> lk(this->queueMtx_);
-	LoggerInstance.logMessage(concatenate("queue size: ",this->taskQueue_.size()));
 	if(this->taskQueue_.empty()){
 		this->markThreadIdle(_thread);
 		task=[](){return 1;};
@@ -76,10 +82,10 @@ int TaskManager::callTask(unsigned int _thread){
 	return task();
 }
 
-void TaskManager::makeThreadIdle(unsigned int _thread){
+void TaskManager::idleThread(unsigned int _thread){
 	{
 	std::unique_lock<std::mutex> lk(this->areAllIdleMtx_);
-	while(this->areAllIdle_||!(this->isThreadActive_[_thread])){
+	while(!(this->isThreadRunning_[_thread])){
 		LoggerInstance.logMessage(concatenate("Sleeping thread: ",_thread));
 		this->areAllIdleCV_.wait(lk);
 		LoggerInstance.logMessage(concatenate("Waking up thread: ",_thread));
@@ -88,28 +94,18 @@ void TaskManager::makeThreadIdle(unsigned int _thread){
 }
 
 void TaskManager::markThreadIdle(unsigned int _thread){
-	if(this->isThreadActive_[_thread]==true){
-		this->isThreadActive_[_thread]=false;
-		if(--(this->activeThreads_)==0){
-			this->markAllIdle();
+	if(this->isThreadRunning_[_thread]==true){
+		this->isThreadRunning_[_thread]=false;
+		if(--(this->runningThreads_)==0){
+			this->signalAllIdle();
 		}
 	} else {
 		LoggerInstance.logWarning(concatenate("Thread ",_thread," already idle"));
 	}
 }
 
-void TaskManager::makeThreadActive(unsigned int _thread){
-	if(this->isThreadActive_[_thread]==false){
-		++(this->activeThreads_);
-		this->isThreadActive_[_thread]=true;
-		this->areAllIdle_=false;
-	} else {
-		LoggerInstance.logWarning(concatenate("Thread ",_thread," already active"));
-	}
-}
-
-void TaskManager::markAllIdle(){
-	if(this->activeThreads_==0){
+void TaskManager::signalAllIdle(){
+	if(this->runningThreads_==0){
 		this->areAllIdle_=true;
 		this->proceedMain_=true;
 		this->proceedMainCV_.notify_all();
@@ -118,44 +114,59 @@ void TaskManager::markAllIdle(){
 	}
 }
 
-void TaskManager::markAllActive(){
-	for(unsigned int i=0;i<this->threadCount_;++i){
-		this->makeThreadActive(i);
+
+void TaskManager::markThreadRunning(unsigned int _thread){
+	if(this->isThreadRunning_[_thread]==false){
+		++(this->runningThreads_);
+		this->isThreadRunning_[_thread]=true;
+		this->areAllIdle_=false;
+	} else {
+		LoggerInstance.logWarning(concatenate("Thread ",_thread," already running"));
 	}
 }
 
-void TaskManager::markStartActive(){
-	if(this->activeThreads_==0){
+
+void TaskManager::markAllRunning(){
+	for(unsigned int i=0;i<this->threadCount_;++i){
+		this->markThreadRunning(i);
+	}
+}
+
+void TaskManager::beginCycle(){
+	if(this->runningThreads_==0){
 		this->proceedMain_=false;
-		this->markAllActive();
+		this->markAllRunning();
 		this->areAllIdleCV_.notify_all();
 	} else {
-		LoggerInstance.logWarning(concatenate("Some threads are still running: ",this->activeThreads_.load()));
+		LoggerInstance.logWarning(concatenate("Some threads are still running: ",this->runningThreads_.load()));
 	}
 }
 
-void TaskManager::wakeUpandJoinThread(unsigned int _thread){
+void TaskManager::wakeUpandStopThread(unsigned int _thread){
 	this->stopThread(_thread);
-	this->makeThreadActive(_thread);
+	this->markThreadRunning(_thread);
 	this->areAllIdleCV_.notify_all();
 	this->joinThread(_thread);
 }
 
-void TaskManager::wakeUpandJoinAll(){
-	if(this->activeThreads_==0){
+void TaskManager::wakeUpandStopAll(){
+	if(this->runningThreads_==0){
 		unsigned int i;
 		for(i=0;i<threadCount_;++i){
 			this->stopThread(i);
 		}
 		for(i=0;i<threadCount_;++i){
-			this->makeThreadActive(i);
+			this->isThreadRunning_[i]=true;
 		}
 		this->areAllIdleCV_.notify_all();
-		for(i=0;i<threadCount_;++i){
-			this->joinThread(i);
-		}
 	} else {
-		LoggerInstance.logWarning(concatenate("Trying to wake up non idle threads: ",this->activeThreads_.load()));
-		printf("Trying to wake up non idle threads: %i threads active", this->activeThreads_.load());
+		LoggerInstance.logWarning(concatenate("Trying to wake up non idle threads: ",this->runningThreads_.load()));
+	}
+}
+
+void TaskManager::joinAll(){
+	for(unsigned int i=0;i<threadCount_;++i){
+		LoggerInstance.logMessage(concatenate("Trying to join thread",i));
+		this->joinThread(i);
 	}
 }

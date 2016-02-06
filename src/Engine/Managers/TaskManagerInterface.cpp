@@ -1,15 +1,15 @@
 #include "./TaskManagerInterface.hpp"
 
-TaskManagerInterface::TaskManagerInterface(unsigned int _thr):instance_(std::make_shared<TaskManager>(_thr)){
-	
+TaskManagerInterface::TaskManagerInterface(unsigned int _thr):instance_(std::shared_ptr<TaskManager>(new TaskManager(_thr))){
+
 }
 
 TaskManagerInterface::TaskManagerInterface():TaskManagerInterface(1){
-	
+
 }
 
 TaskManagerInterface::~TaskManagerInterface(){
-	
+
 }
 
 void TaskManagerInterface::mainProcess(){
