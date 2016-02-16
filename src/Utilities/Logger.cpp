@@ -44,12 +44,11 @@ void Logger::logMessage(std::string _message){
 	this->logString(_message);
 }
 
-//TODO:This function probably causes race conditions. Not incredibly important, since the result is still the same
 std::string Logger::getTimestamp(){
 	time(&(this->timer));
-	this->date_=ctime(&(this->timer));
-	this->date_.pop_back();
-	return this->date_;
+	std::string tdate(ctime(&(this->timer)));
+	tdate.pop_back();
+	return tdate;
 }
 
 Logger LoggerInstance;
