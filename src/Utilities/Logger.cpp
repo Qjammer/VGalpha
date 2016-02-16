@@ -3,11 +3,9 @@
 Logger::Logger(std::string _fileDir,bool _logStatus,bool _consoleStatus,std::weak_ptr<std::stringstream> _console):
 	fileOutputDir_(_fileDir),
 	fileOutputStream_(_fileDir,std::ofstream::out | std::ofstream::app),
-	date_(std::string()),
 	logStatus_(_logStatus),
 	consoleStatus_(_consoleStatus),
-	consoleStream_(_console),
-	tempString_(std::string())
+	consoleStream_(_console)
 {
 
 }
