@@ -16,6 +16,10 @@ void TaskManagerInterface::mainProcess(){
 	this->instance_->mainProcess();
 }
 
+std::shared_ptr<TaskManager> TaskManagerInterface::getInstance(){
+	return this->instance_;
+}
+
 void TaskManagerInterface::addTask(std::function<int(void)> tsk){
 	this->instance_->addTask(tsk);
 }

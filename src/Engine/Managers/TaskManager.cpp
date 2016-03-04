@@ -11,7 +11,7 @@ TaskManager::TaskManager(unsigned int _threads):
 	proceedMainCV_(),
 	proceedMainMtx_(),
 	proceedMain_(true),
-	systems_(),
+	//systems_(),
 	runningThreads_(0),
 	isThreadRunning_(_threads,false)
 {
