@@ -11,7 +11,7 @@ public:
 protected:
 
 	void Execute();
-
+	std::atomic<bool> active;
 	unsigned int ticksPerCycle;
 	unsigned int unusedTicks;
 	std::chrono::duration<unsigned int,std::milli> tick_;
