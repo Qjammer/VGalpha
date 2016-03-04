@@ -9,7 +9,7 @@ public:
 	void mainProcess();
 	void addTask(std::function<int(void)>);
 	void addTaskList(std::list<std::function<int(void)>>);
-//protected:
-	std::shared_ptr<TaskManager> instance_;
+	std::shared_ptr<TaskManager> getInstance();
 protected:
+	std::shared_ptr<TaskManager> instance_;
 };
