@@ -47,7 +47,7 @@ protected:
 	std::mutex proceedMainMtx_;
 	std::atomic<bool> proceedMain_;
 
-	std::vector<std::weak_ptr<System>> systems_;
+	//std::vector<std::weak_ptr<System>> systems_;
 	std::atomic<unsigned int> runningThreads_;
 	std::vector<bool> isThreadRunning_;
 };
