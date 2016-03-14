@@ -36,6 +36,7 @@ protected:
 	void beginCycle();
 	void joinAll();
 
+	unsigned int getCores() const;
 	std::mutex queueMtx_;
 	std::list<std::function<int(void)>> taskQueue_;
 
@@ -47,7 +48,6 @@ protected:
 	std::mutex proceedMainMtx_;
 	std::atomic<bool> proceedMain_;
 
-	//std::vector<std::weak_ptr<System>> systems_;
 	std::atomic<unsigned int> runningThreads_;
 	std::vector<bool> isThreadRunning_;
 };

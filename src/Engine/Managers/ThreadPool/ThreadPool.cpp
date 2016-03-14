@@ -40,7 +40,7 @@ void ThreadPool::initThread(unsigned int _thread,std::function<void(int)> _func)
 }
 
 void ThreadPool::stopThread(unsigned int _thread){
-	LoggerInstance.logMessage(concatenate("Stopping thread",_thread));
+	LoggerInstance.logMessage(concatenate("Stopping thread ",_thread));
 	this->active_[_thread]=false;
 }
 

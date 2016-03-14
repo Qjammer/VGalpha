@@ -11,14 +11,13 @@ TaskManager::TaskManager(unsigned int _threads):
 	proceedMainCV_(),
 	proceedMainMtx_(),
 	proceedMain_(true),
-	//systems_(),
 	runningThreads_(0),
 	isThreadRunning_(_threads,false)
 {
 
 }
 
-TaskManager::TaskManager():TaskManager(1)
+TaskManager::TaskManager():TaskManager(this->getCores())
 {
 
 }
@@ -166,7 +165,17 @@ void TaskManager::wakeUpandStopAll(){
 
 void TaskManager::joinAll(){
 	for(unsigned int i=0;i<threadCount_;++i){
-		LoggerInstance.logMessage(concatenate("Trying to join thread",i));
+		LoggerInstance.logMessage(concatenate("Trying to join thread ",i));
 		this->joinThread(i);
 	}
+}
+
+unsigned int TaskManager::getCores() const{
+	unsigned int cores=std::thread::hardware_concurrency();
+	LoggerInstance.logMessage(concatenate("Detected ",cores," cores."));
+	if (cores==0){
+		LoggerInstance.logMessage("Defaulting to 1 core");
+		return 1;
+	}
+	return cores;
 }
