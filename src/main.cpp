@@ -6,14 +6,15 @@
 #include "./Systems/SystemInterface.hpp"
 #include "./Engine/Managers/TaskManagerInterface.hpp"
 #include "./Utilities/Logger.hpp"
+#include "./Engine/Framework/Scheduler/Scheduler.hpp"
 
 class testSystem:public System{
 public:
 	testSystem(){};
 	~testSystem(){};
 	int mainTask(std::weak_ptr<TaskManagerInterface> taskManager_){
-		printf("Main Task!\n");
-		taskManager_.lock()->addTaskList(std::list<std::function<int(void)>>(10,[](){printf("Secondary Task!\n");return 0;}));
+		printf("MnTsk!");
+		taskManager_.lock()->addTaskList(std::list<std::function<int(void)>>(300,[](){printf("SecTsk!");return 0;}));
 		return 0;
 	}
 };
@@ -26,15 +27,17 @@ public:
 };
 
 int main(){
-	std::shared_ptr<TaskManagerInterface> tskmgr(std::make_shared<TaskManagerInterface>(2));
-	testSystemInterface interf(tskmgr);
-	std::this_thread::sleep_for(std::chrono::seconds(1));
-	tskmgr->addTask(std::bind(&testSystemInterface::mainTask,interf));
-	tskmgr->addTask(std::bind(&testSystemInterface::mainTask,interf));
-	//tskmgr->instance_->beginCycle();
-	tskmgr->mainProcess();
-	std::this_thread::sleep_for(std::chrono::seconds(2));
-	tskmgr->instance_->wakeUpandStopAll();
-	tskmgr->instance_->joinThreads();
+	std::shared_ptr<TaskManagerInterface> tskmgr(std::make_shared<TaskManagerInterface>());
+	std::shared_ptr<SystemInterface> inter(std::make_shared<testSystemInterface>(tskmgr));
+	std::vector<std::weak_ptr<SystemInterface>> vect;
+	vect.push_back(std::weak_ptr<SystemInterface>(inter));
+
+	Scheduler testScheduler(std::weak_ptr<TaskManagerInterface>(tskmgr),vect);
+
+	for(int i=0;i<200;i++){
+		testScheduler.Execute();
+	}
+	tskmgr->getInstance()->wakeUpandStopAll();
+	tskmgr->getInstance()->joinThreads();
 	return 1;
 }

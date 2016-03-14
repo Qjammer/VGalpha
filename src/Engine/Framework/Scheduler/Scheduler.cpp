@@ -1,6 +1,10 @@
 #include "Scheduler.hpp"
 
 Scheduler::Scheduler(std::weak_ptr<TaskManagerInterface> _tskmgr, std::vector<std::weak_ptr<SystemInterface>> _sys):
+	active_(true),
+	unusedTime_(0),
+	timePerTick_(std::chrono::milliseconds(17)),//Roughly 60fps
+	pastTick_(std::chrono::system_clock::now()),
 	taskManager_(_tskmgr),
 	systems_(_sys)
 {
@@ -12,6 +16,16 @@ Scheduler::~Scheduler(){
 }
 
 void Scheduler::Execute(){
+	//0.Wait until last tick is finished
+	this->updateTimer();
+	if(this->unusedTime_.count()>0){
+		std::this_thread::sleep_for(this->unusedTime_);
+		this->unusedTime_=std::chrono::system_clock::duration(0);
+	} else if(std::chrono::milliseconds(10)<-this->unusedTime_){
+		LoggerInstance.logWarning("Clock is lagging by more than 10 ms");
+	}
+
+	this->pastTick_=std::chrono::system_clock::now();
 	//1.Determine systems to execute
 	std::list<std::weak_ptr<SystemInterface>> viable(this->viableSystems());
 
@@ -28,4 +42,22 @@ void Scheduler::Execute(){
 
 std::list<std::weak_ptr<SystemInterface>> Scheduler::viableSystems(){//TODO: Make it actually intelligent. Right now it's returning all systems.
 	return std::list<std::weak_ptr<SystemInterface>>(systems_.begin(),systems_.end());
+}
+
+std::chrono::system_clock::duration Scheduler::timeSinceLastTick() const{
+	return std::chrono::system_clock::now()-this->pastTick_;
+}
+
+std::chrono::system_clock::duration Scheduler::leftoverTickTime() const{
+	return this->timePerTick_-this->timeSinceLastTick();
+}
+
+void Scheduler::updateTimer(){
+	this->unusedTime_+=this->leftoverTickTime();
+	LoggerInstance.logMessage(concatenate(this->unusedTime_.count()));
+	std::cout<<this->unusedTime_.count()<<std::endl;
+}
+
+std::string Scheduler::clockUnits() const{
+	return concatenate(std::chrono::system_clock::duration::period::num,"/",std::chrono::system_clock::duration::period::den);
 }
