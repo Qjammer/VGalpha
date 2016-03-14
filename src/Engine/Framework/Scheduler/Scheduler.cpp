@@ -1,6 +1,9 @@
 #include "Scheduler.hpp"
 
-Scheduler::Scheduler(){
+Scheduler::Scheduler(std::weak_ptr<TaskManagerInterface> _tskmgr, std::vector<std::weak_ptr<SystemInterface>> _sys):
+	taskManager_(_tskmgr),
+	systems_(_sys)
+{
 
 }
 
@@ -17,12 +20,12 @@ void Scheduler::Execute(){
 	for(auto it=viable.begin();it!=viable.end();++it){
 		viableTasks.push_back(std::bind(&SystemInterface::mainTask,it->lock()));
 	}
-	auto tskmgr(taskManager_.lock()->getInstance());
-	tskmgr->addTaskList(viableTasks);
+	taskManager_.lock()->addTaskList(viableTasks);
+
 	//3.Wait for completion
 	taskManager_.lock()->mainProcess();
 }
 
-std::list<std::weak_ptr<SystemInterface>> Scheduler::viableSystems(){
-	return std::list<std::weak_ptr<SystemInterface>>();
+std::list<std::weak_ptr<SystemInterface>> Scheduler::viableSystems(){//TODO: Make it actually intelligent. Right now it's returning all systems.
+	return std::list<std::weak_ptr<SystemInterface>>(systems_.begin(),systems_.end());
 }

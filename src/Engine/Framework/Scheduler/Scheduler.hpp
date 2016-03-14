@@ -7,7 +7,7 @@
 
 class Scheduler {
 public:
-	Scheduler();
+	Scheduler(std::weak_ptr<TaskManagerInterface>, std::vector<std::weak_ptr<SystemInterface>>);
 	~Scheduler();
 
 	void Execute();
@@ -19,6 +19,6 @@ protected:
 	unsigned int ticksPerCycle;
 	unsigned int unusedTicks;
 	std::chrono::duration<unsigned int,std::milli> tick_;
-	std::vector<std::weak_ptr<SystemInterface>> systems_;
 	std::weak_ptr<TaskManagerInterface> taskManager_;
+	std::vector<std::weak_ptr<SystemInterface>> systems_;
 };
