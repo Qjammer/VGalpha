@@ -67,7 +67,7 @@ void TaskManager::addTaskList(std::list<std::function<int(void)>> _list){
 
 int TaskManager::callTask(unsigned int _thread){
 	std::function<int(void)> task;
-	LoggerInstance.logMessage(concatenate("calling task,thread ",_thread));
+	//LoggerInstance.logMessage(concatenate("calling task,thread ",_thread)); //Too many calls to this appears to make data races show up.
 	{
 	std::unique_lock<std::mutex> lk(this->queueMtx_);
 	if(this->taskQueue_.empty()){
