@@ -43,8 +43,9 @@ void Logger::logMessage(std::string _message){
 }
 
 std::string Logger::getTimestamp(){
-	time(&(this->timer));
-	std::string tdate(ctime(&(this->timer)));
+	time_t timer;
+	time(&timer);
+	std::string tdate(ctime(&timer));
 	tdate.pop_back();
 	return tdate;
 }

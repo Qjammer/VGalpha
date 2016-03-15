@@ -22,7 +22,6 @@ protected:
 	void logString(std::string);
 	std::string fileOutputDir_;
 	std::ofstream fileOutputStream_;
-	time_t timer;
 	bool logStatus_;
 	bool consoleStatus_;
 	std::weak_ptr<std::stringstream> consoleStream_;
