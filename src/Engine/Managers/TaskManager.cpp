@@ -2,18 +2,30 @@
 
 TaskManager::TaskManager(unsigned int _threads):
 	Manager(Manager::MNGR_TYPE::TASK),
-	ThreadPool(_threads,std::bind(&TaskManager::threadLoop,this,std::placeholders::_1)),
+
+	active_(_threads,true),
+	threadCount_(_threads),
+
 	queueMtx_(),
 	taskQueue_(0),
+
 	areAllIdleCV_(),
 	areAllIdleMtx_(),
 	areAllIdle_(true),
+
 	proceedMainCV_(),
 	proceedMainMtx_(),
 	proceedMain_(true),
+
 	runningThreads_(0),
-	isThreadRunning_(_threads,false)
+	isThreadRunning_(_threads,false),
+
+	threads_(_threads,std::shared_ptr<std::thread>())
 {
+	for(unsigned int i=0;i<_threads;++i){
+		this->threads_[i]=std::make_shared<std::thread>(std::bind(&TaskManager::threadLoop,this,std::placeholders::_1),i);
+	}
+	LoggerInstance.logMessage("End of ThreadPool Constructor");
 
 }
 
@@ -25,10 +37,6 @@ TaskManager::TaskManager():TaskManager(this->getCores())
 TaskManager::~TaskManager()
 {
 
-}
-
-void TaskManager::initThreadLoop(unsigned int _thread){
-	this->initThread(_thread,std::bind(&TaskManager::threadLoop,this,std::placeholders::_1));
 }
 
 void TaskManager::mainProcess(){
@@ -179,3 +187,39 @@ unsigned int TaskManager::getCores() const{
 	}
 	return cores;
 }
+
+//ThreadPool Methods
+
+void TaskManager::initThread(unsigned int _thread){
+	if(this->active_[_thread]==true){
+		LoggerInstance.logMessage("Initializing already active thread");
+		this->stopThread(_thread);
+		this->joinThread(_thread);
+	}
+	this->active_[_thread]=true;
+	printf("starting thread %i\n",_thread);
+	this->threads_[_thread]=(std::make_shared<std::thread>(std::bind(&TaskManager::threadLoop,this,std::placeholders::_1),_thread));
+}
+
+void TaskManager::stopThread(unsigned int _thread){
+	LoggerInstance.logMessage(concatenate("Stopping thread ",_thread));
+	this->active_[_thread]=false;
+}
+
+void TaskManager::joinThread(unsigned int _thread){
+	LoggerInstance.logMessage(concatenate("Joining Thread ",_thread));
+	this->threads_[_thread]->join();
+}
+
+void TaskManager::joinThreads(){
+	LoggerInstance.logMessage("Joining or detaching threads");
+	for(unsigned int i=0;i<threadCount_;++i){
+		if(this->threads_[i]->joinable()){
+			this->threads_[i]->join();
+		} else {
+			this->threads_[i]->detach();
+		}
+	}
+}
+
+

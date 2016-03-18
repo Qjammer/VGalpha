@@ -34,7 +34,7 @@ int main(){
 	//tskmgr->instance_->beginCycle();
 	tskmgr->mainProcess();
 	std::this_thread::sleep_for(std::chrono::seconds(2));
-	tskmgr->instance_->wakeUpandStopAll();
-	tskmgr->instance_->joinThreads();
+	tskmgr->getInstance()->wakeUpandStopAll();
+	tskmgr->getInstance()->joinThreads();
 	return 1;
 }

@@ -1,14 +1,15 @@
 #pragma once
 #include <mutex>
+#include <atomic>
+#include <thread>
 #include <condition_variable>
 
 #include "./Manager.hpp"
-#include "./ThreadPool/ThreadPool.hpp"
 #include "../../Utilities/Logger.hpp"
 
 class System;
 
-class TaskManager: public Manager, public ThreadPool{
+class TaskManager: public Manager{
 public:
 	TaskManager(unsigned int _threads);
 	TaskManager();
@@ -18,17 +19,28 @@ public:
 
 	void addTask(std::function<int(void)>);
 	void addTaskList(std::list<std::function<int(void)>>);
+
 	void initThreadLoop(unsigned int);
 	void wakeUpandStopThread(unsigned int);
 	void wakeUpandStopAll();
-	void markAllRunning();
+	//Threadpool methods
+
+	bool getThreadStatus(unsigned int) const;
+
 protected:
+
+	void initThread(unsigned int);
+	void stopThread(unsigned int);
+	void joinThread(unsigned int);
+	void joinThreads();
 
 	void threadLoop(unsigned int);
 
 	int callTask(unsigned int);
 
 	void markThreadRunning(unsigned int);
+	void markAllRunning();
+
 	void idleThread(unsigned int);
 	void markThreadIdle(unsigned int);
 
@@ -37,6 +49,11 @@ protected:
 	void joinAll();
 
 	unsigned int getCores() const;
+
+	//Threadpool members
+	std::vector<bool> active_;
+	unsigned int threadCount_;
+
 	std::mutex queueMtx_;
 	std::list<std::function<int(void)>> taskQueue_;
 
@@ -50,4 +67,13 @@ protected:
 
 	std::atomic<unsigned int> runningThreads_;
 	std::vector<bool> isThreadRunning_;
+
+	std::vector<std::shared_ptr<std::thread>> threads_;
 };
+
+inline bool TaskManager::getThreadStatus(unsigned int _id) const{
+	return this->active_[_id];
+}
+
+
+
