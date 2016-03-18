@@ -1,0 +1,30 @@
+Task manager documentation
+
+Threads can be in two states: Active and Inactive. While Active a thread can be running or idle.
+
+Like a car, it can be off or on, and while on, it can be stopped or in circulation.
+
+
+Main process: Called by main thread. wakes up all worker threads and puts itself to sleep until all worker threads are sleeping
+
+init thread loop:Shortcut for Threadpool::initThread with loop as function
+
+addTask & addTaskList: adds tasks to the queue and wakes up any idle threads
+
+callTask: retrieves task from queue. If queue is empty, dispatches an phony task and marks itself idle markThreadIdle
+
+idleThread: waits for CV to be unlocked and the thread be marked active
+
+markThreadIdle: marks the status of a thread to idle if it isnt
+
+signalAllIdle: If all threads are marked idle, signals main to proceed
+
+markThreadRunning: marks thread to be running if it isnt
+
+markAllRunning: calls markThreadRunning for every thread
+
+beginCycle: marks all threads running markAllRunning and wakes them up from the condition variable
+
+wakeUpandJoinThread: sets thread status to inactive. Makes it running and wakes it from the CV. The joins it.
+
+wakeUpandStopAll:Gets all threads out of the loop
