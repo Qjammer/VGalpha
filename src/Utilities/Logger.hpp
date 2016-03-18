@@ -22,13 +22,9 @@ protected:
 	void logString(std::string);
 	std::string fileOutputDir_;
 	std::ofstream fileOutputStream_;
-	time_t timer;
-	std::string date_;
 	bool logStatus_;
 	bool consoleStatus_;
 	std::weak_ptr<std::stringstream> consoleStream_;
-	std::stringstream tempStringStream_;
-	std::string tempString_;
 };
 
 extern Logger LoggerInstance;
