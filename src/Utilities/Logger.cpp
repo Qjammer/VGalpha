@@ -46,7 +46,11 @@ std::string Logger::getTimestamp(){
 	time_t timer;
 	time(&timer);
 	std::string tdate(ctime(&timer));
-	tdate.pop_back();
+	if(!tdate.empty()){
+		tdate.pop_back();
+	} else {
+		tdate="Date could not be retreived";
+	}
 	return tdate;
 }
 
