@@ -23,6 +23,7 @@ public:
 	void initThreadLoop(unsigned int);
 	void wakeUpandStopThread(unsigned int);
 	void wakeUpandStopAll();
+	void joinThreads();
 	//Threadpool methods
 
 	bool getThreadStatus(unsigned int) const;
@@ -32,7 +33,6 @@ protected:
 	void initThread(unsigned int);
 	void stopThread(unsigned int);
 	void joinThread(unsigned int);
-	void joinThreads();
 
 	void threadLoop(unsigned int);
 
