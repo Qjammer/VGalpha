@@ -12,7 +12,7 @@ public:
 	~SystemInterface();
 	int mainTask();
 
-	const EntityType& getType() const;
+	EntityType getType() const;
 protected:
 	std::shared_ptr<System> system_;
 	std::weak_ptr<TaskManagerInterface> taskManager_;

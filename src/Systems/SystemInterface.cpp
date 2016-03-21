@@ -15,6 +15,6 @@ int SystemInterface::mainTask(){
 	return this->system_->mainTask(this->taskManager_);
 }
 
-const EntityType& SystemInterface::getType() const{
+EntityType SystemInterface::getType() const{
 	return this->system_->getType();
 }

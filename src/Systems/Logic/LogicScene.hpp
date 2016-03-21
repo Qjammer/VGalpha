@@ -1,6 +1,10 @@
 #pragma once
 
+#include <list>
+#include <memory>
+
 #include "../EntityExtensions/SceneExtension.hpp"
+#include "./LogicObject.hpp"
 
 class LogicScene : public SceneExtension{
 public:

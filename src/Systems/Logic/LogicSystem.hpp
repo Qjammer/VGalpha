@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../System.hpp"
+#include "./LogicScene.hpp"
 
 class LogicSystem : public System{
 public:
