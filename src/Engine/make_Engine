@@ -1,4 +1,9 @@
 include Engine/Framework/make_Framework
 include Engine/Managers/make_Managers
 
-EnginePH:FrameworkPH ManagersPH
+Engine_DIR = ./Engine/
+
+$(ODIR)Engine.o: $(Engine_DIR)Engine.cpp $(Engine_DIR)Engine.hpp
+	$(CC) $(CFLAGS) $(Engine_DIR)Engine.cpp $(FFLAGS)
+
+EnginePH:FrameworkPH ManagersPH $(ODIR)Engine.o

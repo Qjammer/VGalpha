@@ -1,6 +1,6 @@
 #include "Scheduler.hpp"
 
-Scheduler::Scheduler(std::weak_ptr<TaskManagerInterface> _tskmgr, std::vector<std::weak_ptr<SystemInterface>> _sys):
+Scheduler::Scheduler(std::weak_ptr<TaskManager> _tskmgr, std::vector<std::weak_ptr<SystemInterface>> _sys):
 	active_(true),
 	timePerTick_(std::chrono::milliseconds(17)),//Roughly 60fps
 	unusedTime_(0),

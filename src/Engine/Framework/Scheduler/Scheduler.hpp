@@ -9,7 +9,7 @@
 
 class Scheduler {
 public:
-	Scheduler(std::weak_ptr<TaskManagerInterface>, std::vector<std::weak_ptr<SystemInterface>>);
+	Scheduler(std::weak_ptr<TaskManager>, std::vector<std::weak_ptr<SystemInterface>>);
 	~Scheduler();
 
 	void Execute();
@@ -28,6 +28,6 @@ protected:
 	std::chrono::system_clock::time_point sleepTick_;
 	std::chrono::system_clock::time_point pastTick_;
 
-	std::weak_ptr<TaskManagerInterface> taskManager_;
+	std::weak_ptr<TaskManager> taskManager_;
 	std::vector<std::weak_ptr<SystemInterface>> systems_;
 };

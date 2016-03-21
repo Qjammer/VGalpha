@@ -7,7 +7,7 @@
 #include "./Systems/SystemInterface.hpp"
 #include "./Engine/Managers/TaskManagerInterface.hpp"
 #include "./Utilities/Logger.hpp"
-#include "./Engine/Framework/Scheduler/Scheduler.hpp"
+#include "./Engine/Engine.hpp"
 
 class testSystem:public System{
 public:
@@ -34,16 +34,8 @@ int main(){
 	std::vector<std::weak_ptr<SystemInterface>> vect;
 	vect.push_back(std::weak_ptr<SystemInterface>(sysInter));
 
-	Scheduler testScheduler(std::weak_ptr<TaskManagerInterface>(tskmgr),vect);
-
-	int cycles=200;
-
-	auto t1=std::chrono::system_clock::now();
-	for(int i=0;i<cycles;i++){
-		testScheduler.Execute();
-	}
-	auto t2=std::chrono::system_clock::now();
-	std::cout<<std::endl<<"Ideal:"<<(testScheduler.timePerTick_*cycles).count()<<" Real:"<<(t2-t1).count()<<std::endl;
+	Framework frmwrk(std::weak_ptr<TaskManager>(tskmgr->getInstance()),vect);
+	frmwrk.gameLoop();
 
 	tskmgr->getInstance()->wakeUpandStopAll();
 	tskmgr->getInstance()->joinThreads();

@@ -9,7 +9,7 @@
 class Framework{
 public:
 
-	Framework(std::weak_ptr<TaskManagerInterface>, std::vector<std::weak_ptr<SystemInterface>>);
+	Framework(std::weak_ptr<TaskManager>, std::vector<std::weak_ptr<SystemInterface>>);
 	~Framework();
 
 	void gameLoop();
@@ -20,6 +20,6 @@ protected:
 	std::atomic<bool> active_;
 	Scheduler scheduler_;
 
-	std::vector<std::shared_ptr<UScene>> scenes_;
+	std::shared_ptr<UScene> scene_;
 
 };
