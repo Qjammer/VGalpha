@@ -1,6 +1,6 @@
 #include "SceneExtension.hpp"
 
-SceneExtension::SceneExtension(){
+SceneExtension::SceneExtension(EntityType _type):type_(_type){
 
 }
 

@@ -14,7 +14,7 @@ public:
 	System(EntityType _type);
 	~System();
 	virtual int mainTask(std::weak_ptr<TaskManagerInterface>)=0;
-	const EntityType& getType() const;
+	EntityType getType() const;
 protected:
 	EntityType type_;
 	std::list<std::function<void(void)>> taskList_;

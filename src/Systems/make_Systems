@@ -1,6 +1,7 @@
 Systems_DIR = ./Systems/
 
 include Systems/EntityExtensions/make_EntityExtensions
+include Systems/Logic/make_LogicSystem
 
 $(ODIR)System.o: $(Systems_DIR)System.cpp $(Systems_DIR)System.hpp
 	$(CC) $(CFLAGS) $(Systems_DIR)System.cpp $(FFLAGS)
@@ -8,4 +9,4 @@ $(ODIR)System.o: $(Systems_DIR)System.cpp $(Systems_DIR)System.hpp
 $(ODIR)SystemInterface.o: $(Systems_DIR)SystemInterface.cpp $(Systems_DIR)SystemInterface.hpp
 	$(CC) $(CFLAGS) $(Systems_DIR)SystemInterface.cpp $(FFLAGS)
 
-SystemsPH: $(ODIR)System.o $(ODIR)SystemInterface.o EntityExtensionsPH
+SystemsPH: $(ODIR)System.o $(ODIR)SystemInterface.o EntityExtensionsPH LogicSystemPH

@@ -4,7 +4,7 @@
 
 class SceneExtension {
 public:
-	SceneExtension();
+	SceneExtension(EntityType);
 	~SceneExtension();
 
 private:

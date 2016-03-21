@@ -1,0 +1,13 @@
+LogicSystem_DIR = ./Systems/Logic/
+
+
+$(ODIR)LogicSystem.o: $(LogicSystem_DIR)LogicSystem.cpp $(LogicSystem_DIR)LogicSystem.hpp
+	$(CC) $(CFLAGS) $(LogicSystem_DIR)LogicSystem.cpp $(FFLAGS)
+
+$(ODIR)LogicScene.o: $(LogicSystem_DIR)LogicScene.cpp $(LogicSystem_DIR)LogicScene.hpp
+	$(CC) $(CFLAGS) $(LogicSystem_DIR)LogicScene.cpp $(FFLAGS)
+
+$(ODIR)LogicObject.o: $(LogicSystem_DIR)LogicObject.cpp $(LogicSystem_DIR)LogicObject.hpp
+	$(CC) $(CFLAGS) $(LogicSystem_DIR)LogicObject.cpp $(FFLAGS)
+
+LogicSystemPH: $(ODIR)LogicSystem.o $(ODIR)LogicScene.o $(ODIR)LogicObject.o

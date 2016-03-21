@@ -1,9 +1,9 @@
 #pragma once
 
-enum EntityType {	
+enum EntityType {
 	GRAPHICS,
 	PHYSICS,
 	INPUT,
-	AI,
+	LOGIC,
 	AUDIO
 };

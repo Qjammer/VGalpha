@@ -15,6 +15,6 @@ System::~System()
 
 }
 
-const EntityType& System::getType() const{
+EntityType System::getType() const{
 	return this->type_;
 }
