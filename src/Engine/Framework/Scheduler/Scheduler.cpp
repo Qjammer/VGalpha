@@ -2,8 +2,9 @@
 
 Scheduler::Scheduler(std::weak_ptr<TaskManagerInterface> _tskmgr, std::vector<std::weak_ptr<SystemInterface>> _sys):
 	active_(true),
-	unusedTime_(0),
 	timePerTick_(std::chrono::milliseconds(17)),//Roughly 60fps
+	unusedTime_(0),
+	sleepTick_(std::chrono::system_clock::now()),
 	pastTick_(std::chrono::system_clock::now()),
 	taskManager_(_tskmgr),
 	systems_(_sys)
@@ -19,12 +20,14 @@ void Scheduler::Execute(){
 	//0.Wait until last tick is finished
 	this->updateTimer();
 	if(this->unusedTime_.count()>0){
+		this->sleepTick_=std::chrono::system_clock::now();
 		std::this_thread::sleep_for(this->unusedTime_);
-		this->unusedTime_=std::chrono::system_clock::duration(0);
-	} else if(std::chrono::milliseconds(10)<-this->unusedTime_){
-		LoggerInstance.logWarning("Clock is lagging by more than 10 ms");
+		this->unusedTime_+=this->sleepTick_-std::chrono::system_clock::now();//Difference between unused time and sleeping time
+	} else {
+		if(std::chrono::milliseconds(10)<-this->unusedTime_){
+			LoggerInstance.logWarning("Clock is lagging by more than 10 ms");
+		}
 	}
-
 	this->pastTick_=std::chrono::system_clock::now();
 	//1.Determine systems to execute
 	std::list<std::weak_ptr<SystemInterface>> viable(this->viableSystems());
@@ -55,7 +58,6 @@ std::chrono::system_clock::duration Scheduler::leftoverTickTime() const{
 void Scheduler::updateTimer(){
 	this->unusedTime_+=this->leftoverTickTime();
 	LoggerInstance.logMessage(concatenate(this->unusedTime_.count()));
-	std::cout<<this->unusedTime_.count()<<std::endl;
 }
 
 std::string Scheduler::clockUnits() const{

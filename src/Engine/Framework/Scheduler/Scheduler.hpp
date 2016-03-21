@@ -13,7 +13,7 @@ public:
 	~Scheduler();
 
 	void Execute();
-
+	std::chrono::system_clock::duration timePerTick_;
 protected:
 	std::list<std::weak_ptr<SystemInterface>> viableSystems();
 
@@ -24,8 +24,8 @@ protected:
 
 	std::atomic<bool> active_;
 
-	std::chrono::system_clock::duration unusedTime_;//I presume the units of these are nanoseconds on my machine
-	std::chrono::system_clock::duration timePerTick_;//It'd be nice to find a way to corroborate
+	std::chrono::system_clock::duration unusedTime_;//I presume the units of these are nanoseconds on my machine. It'd be nice to find a way to corroborate
+	std::chrono::system_clock::time_point sleepTick_;
 	std::chrono::system_clock::time_point pastTick_;
 
 	std::weak_ptr<TaskManagerInterface> taskManager_;
