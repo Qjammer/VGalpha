@@ -1,10 +1,10 @@
 #pragma once
 
 #include "./Framework/Framework.hpp"
-#include "./Managers/TaskManager.hpp"
+#include "./Managers/TaskManagerInterface.hpp"
 #include "./Managers/StateManager.hpp"
 class ServiceManager;
-#include "./Managers/EnvironmentManager.hpp"
+#include "./Managers/EnvironmentManagerInterface.hpp"
 class PlatformManager;
 
 class Engine {
@@ -29,6 +29,7 @@ protected:
 	std::weak_ptr<ServiceManager> serviceManager_;
 
 	std::weak_ptr<EnvironmentManager> environmentManager_;
+	EnvironmentManagerInterface environmentManagerInterface_;
 
 	std::weak_ptr<PlatformManager> platformManager_;
 

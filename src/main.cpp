@@ -29,15 +29,16 @@ public:
 
 int main(){
 
-	std::shared_ptr<TaskManagerInterface> tskmgr(std::make_shared<TaskManagerInterface>());
-	std::shared_ptr<SystemInterface> sysInter(std::make_shared<testSystemInterface>(tskmgr));
+	std::shared_ptr<TaskManager> tskmgr(std::make_shared<TaskManager>());
+	std::shared_ptr<TaskManagerInterface> tskmgrI(std::make_shared<TaskManagerInterface>(tskmgr));
+	std::shared_ptr<SystemInterface> sysInter(std::make_shared<testSystemInterface>(tskmgrI));
 	std::vector<std::weak_ptr<SystemInterface>> vect;
 	vect.push_back(std::weak_ptr<SystemInterface>(sysInter));
 
-	Framework frmwrk(std::weak_ptr<TaskManager>(tskmgr->getInstance()),vect);
+	Framework frmwrk(tskmgr,vect);
 	frmwrk.gameLoop();
 
-	tskmgr->getInstance()->wakeUpandStopAll();
-	tskmgr->getInstance()->joinThreads();
+	tskmgr->wakeUpandStopAll();
+	tskmgr->joinThreads();
 	return 1;
 }

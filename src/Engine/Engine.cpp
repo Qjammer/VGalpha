@@ -17,10 +17,15 @@ Engine::Engine(
 	serviceManager_(_srv),
 
 	environmentManager_(_env),
+	environmentManagerInterface_(_env),
 
 	platformManager_(_plt),
 
 	systems_(_sys)
 {
 
+}
+
+void Engine::gameLoop(){
+	this->framework_.gameLoop();
 }
