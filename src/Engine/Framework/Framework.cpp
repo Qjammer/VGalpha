@@ -21,3 +21,7 @@ void Framework::gameLoop(){
 
 	}
 }
+
+std::atomic<bool>& Framework::getStatus(){
+	return this->active_;
+}

@@ -16,8 +16,8 @@ public:
 
 
 protected:
-	std::atomic<bool> getStatus();
-	std::atomic<bool> active;
+	std::atomic<bool>& getStatus();
+	std::atomic<bool> active_;
 	Scheduler scheduler_;
 
 	std::vector<std::shared_ptr<UScene>> scenes_;
