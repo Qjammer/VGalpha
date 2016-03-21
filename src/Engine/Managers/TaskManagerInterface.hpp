@@ -4,6 +4,7 @@
 class TaskManagerInterface{
 public:
 	TaskManagerInterface(unsigned int);
+	TaskManagerInterface(std::shared_ptr<TaskManager>);
 	TaskManagerInterface();
 	~TaskManagerInterface();
 	void mainProcess();
@@ -11,5 +12,5 @@ public:
 	void addTaskList(std::list<std::function<int(void)>>);
 	std::shared_ptr<TaskManager> getInstance();
 protected:
-	std::shared_ptr<TaskManager> instance_;
+	std::weak_ptr<TaskManager> instance_;
 };
