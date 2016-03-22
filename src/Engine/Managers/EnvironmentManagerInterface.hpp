@@ -3,7 +3,7 @@
 #include "./ManagerInterface.hpp"
 #include "./EnvironmentManager.hpp"
 
-class EnvironmentManagerInterface : public ManagerInterface
+class EnvironmentManagerInterface : public ManagerInterface<EnvironmentManager>
 {
 public:
 	EnvironmentManagerInterface(std::shared_ptr<EnvironmentManager> _mngr);
@@ -16,5 +16,5 @@ public:
 	std::shared_ptr<sf::Texture> loadTexture(std::string _fileName);
 
 protected:
-	std::shared_ptr<EnvironmentManager> instance_;
+
 };

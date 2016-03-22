@@ -18,7 +18,6 @@ public:
 	Manager(MNGR_TYPE);
 	~Manager();
 	const MNGR_TYPE getType() const;
-	
 
 protected:
 	MNGR_TYPE mngr_type_;

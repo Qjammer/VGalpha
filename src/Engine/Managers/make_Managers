@@ -3,9 +3,6 @@ Managers_DIR = ./Engine/Managers/
 $(ODIR)Manager.o: $(Managers_DIR)Manager.cpp $(Managers_DIR)Manager.hpp
 	$(CC) $(CFLAGS) $(Managers_DIR)Manager.cpp $(FFLAGS)
 
-$(ODIR)ManagerInterface.o: $(Managers_DIR)ManagerInterface.cpp $(Managers_DIR)ManagerInterface.hpp
-	$(CC) $(CFLAGS) $(Managers_DIR)ManagerInterface.cpp $(FFLAGS)
-
 $(ODIR)TaskManager.o: $(Managers_DIR)TaskManager.cpp $(Managers_DIR)TaskManager.hpp
 	$(CC) $(CFLAGS) $(Managers_DIR)TaskManager.cpp $(FFLAGS)
 
@@ -21,4 +18,4 @@ $(ODIR)TaskManagerInterface.o: $(Managers_DIR)TaskManagerInterface.cpp $(Manager
 $(ODIR)EnvironmentManagerInterface.o: $(Managers_DIR)EnvironmentManagerInterface.cpp $(Managers_DIR)EnvironmentManagerInterface.hpp
 	$(CC) $(CFLAGS) $(Managers_DIR)EnvironmentManagerInterface.cpp $(FFLAGS)
 
-ManagersPH:$(ODIR)Manager.o $(ODIR)ManagerInterface.o $(ODIR)TaskManager.o $(ODIR)EnvironmentManager.o $(ODIR)StateManager.o $(ODIR)TaskManagerInterface.o  $(ODIR)EnvironmentManagerInterface.o
+ManagersPH:$(ODIR)Manager.o $(ODIR)TaskManager.o $(ODIR)EnvironmentManager.o $(ODIR)StateManager.o $(ODIR)TaskManagerInterface.o  $(ODIR)EnvironmentManagerInterface.o
