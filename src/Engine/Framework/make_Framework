@@ -1,9 +1,0 @@
-include Engine/Framework/UEntities/make_UEntities
-include Engine/Framework/Scheduler/make_Scheduler
-
-Framework_DIR = ./Engine/Framework/
-
-$(ODIR)Framework.o: $(Framework_DIR)Framework.cpp $(Framework_DIR)Framework.hpp
-	$(CC) $(CFLAGS) $(Framework_DIR)Framework.cpp $(FFLAGS)
-
-FrameworkPH: $(ODIR)Framework.o SchedulerPH ManagersPH UEntitiesPH
