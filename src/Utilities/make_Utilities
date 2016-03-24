@@ -1,8 +1,0 @@
-Utilities_DIR = ./Utilities/
-
-
-$(ODIR)Logger.o: $(Utilities_DIR)Logger.cpp $(Utilities_DIR)Logger.hpp
-	$(CC) $(CFLAGS) $(Utilities_DIR)Logger.cpp $(FFLAGS)
-
-
-UtilitiesPH: $(ODIR)Logger.o
