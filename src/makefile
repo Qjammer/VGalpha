@@ -77,9 +77,9 @@ clean:
 
 OBJDIR:|../obj/
 
-$(EXEC): ../obj/Logger.o ../obj/main.o ../obj/TaskManagerInterface.o ../obj/EnvironmentManager.o ../obj/StateManager.o ../obj/TaskManager.o ../obj/Manager.o ../obj/EnvironmentManagerInterface.o ../obj/UObject.o ../obj/UScene.o ../obj/Framework.o ../obj/Scheduler.o ../obj/Engine.o ../obj/SceneExtension.o ../obj/ObjectExtension.o ../obj/GraphicObjectExtension.o ../obj/LogicObject.o ../obj/LogicSystem.o ../obj/LogicScene.o ../obj/SystemInterface.o ../obj/System.o 
+$(EXEC): ../obj/Logger.o ../obj/main.o ../obj/TaskManagerInterface.o ../obj/EnvironmentManager.o ../obj/StateManager.o ../obj/TaskManager.o ../obj/Manager.o ../obj/EnvironmentManagerInterface.o ../obj/UObject.o ../obj/UScene.o ../obj/Framework.o ../obj/Scheduler.o ../obj/Engine.o ../obj/SceneExtension.o ../obj/ObjectExtension.o ../obj/GraphicObjectExtension.o ../obj/LogicObject.o ../obj/LogicSystem.o ../obj/LogicScene.o ../obj/SystemInterface.o ../obj/System.o
 	$(CC) $(LFLAGS) -o $(EXEC) ../obj/*.o $(LIBS)
 
 .DEFAULT_GOAL:=$(EXEC)
 
-.PHONY:clean compile link all OBJDIR
+.PHONY:clean OBJDIR
