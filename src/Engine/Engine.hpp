@@ -2,10 +2,10 @@
 
 #include "./Framework/Framework.hpp"
 #include "./Managers/TaskManagerInterface.hpp"
-#include "./Managers/StateManager.hpp"
-class ServiceManager;
+#include "./Managers/StateManagerInterface.hpp"
+#include "./Managers/ServiceManagerInterface.hpp"
 #include "./Managers/EnvironmentManagerInterface.hpp"
-class PlatformManager;
+#include "./Managers/PlatformManagerInterface.hpp"
 
 class Engine {
 public:
@@ -25,13 +25,16 @@ protected:
 	TaskManagerInterface taskManagerInterface_;
 
 	std::weak_ptr<StateManager> stateManager_;
+	StateManagerInterface stateManagerInterface_;
 
 	std::weak_ptr<ServiceManager> serviceManager_;
+	ServiceManagerInterface serviceManagerInterface_;
 
 	std::weak_ptr<EnvironmentManager> environmentManager_;
 	EnvironmentManagerInterface environmentManagerInterface_;
 
 	std::weak_ptr<PlatformManager> platformManager_;
+	PlatformManagerInterface platformManagerInterface_;
 
 	std::vector<std::weak_ptr<SystemInterface>> systems_;
 };
