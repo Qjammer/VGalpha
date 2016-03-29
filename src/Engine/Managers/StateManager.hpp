@@ -5,5 +5,5 @@ class StateManager: public Manager {
 public:
 	StateManager();
 	~StateManager();
-	
+
 };
