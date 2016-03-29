@@ -11,12 +11,27 @@ GraphicObjectExtension::~GraphicObjectExtension ()
 	
 }
 
+void GraphicObjectExtension::setSprite(sf::Sprite _sprite)
+{
+	this->sprite_ = _sprite;
+}
+
+void GraphicObjectExtension::setTexture(std::string _fileDir)
+{
+	this->sprite_.setTexture(getTexturePtr(_fileDir), true);
+}
+
+void GraphicObjectExtension::setRect(sf::IntRect _rect)
+{
+	this->sprite_.setTextureRect(_rect);
+}
+
 sf::Sprite GraphicObjectExtension::getSprite ()
 {
 	return this->sprite_;
 }
 
-std::weak_ptr<sf::Texture> GraphicObjectExtension::getTexturePtr(std::string _fileDir)
+std::shared_ptr<sf::Texture> GraphicObjectExtension::getTexturePtr(std::string _fileDir)
 {
-	return std::weak_ptr<sf::Texture> ();
+	return std::shared_ptr<sf::Texture> ();
 }

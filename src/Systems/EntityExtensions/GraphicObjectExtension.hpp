@@ -12,12 +12,18 @@ public:
 	~GraphicObjectExtension();
 
 	// Set and get functions. Nothing really hard
+	void setSprite(sf::Sprite _sprite);
+
+	void setTexture(std::string _fileDir);
+
+	void setRect(sf::IntRect _rect);
+
 	sf::Sprite getSprite ();
-	std::weak_ptr<sf::Texture> getTexturePtr(std::string _fileDir);
+	std::shared_ptr<sf::Texture> getTexturePtr(std::string _fileDir);
 
 	
 
 protected:
-	std::weak_ptr<sf::Texture> texture_;
+	std::shared_ptr<sf::Texture> texture_;
 	sf::Sprite sprite_;
 };
