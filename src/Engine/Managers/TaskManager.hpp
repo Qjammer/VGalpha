@@ -51,7 +51,7 @@ protected:
 	unsigned int getCores() const;
 
 	//Threadpool members
-	std::vector<bool> active_;
+	std::vector<std::atomic<bool>> active_;
 	unsigned int threadCount_;
 
 	std::mutex queueMtx_;
@@ -66,7 +66,7 @@ protected:
 	std::atomic<bool> proceedMain_;
 
 	std::atomic<unsigned int> runningThreads_;
-	std::vector<bool> isThreadRunning_;
+	std::vector<std::atomic<bool>> isThreadRunning_;
 
 	std::vector<std::shared_ptr<std::thread>> threads_;
 };

@@ -3,7 +3,7 @@
 TaskManager::TaskManager(unsigned int _threads):
 	Manager(Manager::MNGR_TYPE::TASK),
 
-	active_(_threads,true),
+	active_(_threads),
 	threadCount_(_threads),
 
 	queueMtx_(),
@@ -18,11 +18,14 @@ TaskManager::TaskManager(unsigned int _threads):
 	proceedMain_(true),
 
 	runningThreads_(0),
-	isThreadRunning_(_threads,false),
+	isThreadRunning_(_threads),
 
 	threads_(_threads,std::shared_ptr<std::thread>())
 {
+
 	for(unsigned int i=0;i<_threads;++i){
+		this->active_[i]=true;//INIT active_
+		this->isThreadRunning_[i]=false;
 		this->threads_[i]=std::make_shared<std::thread>(std::bind(&TaskManager::threadLoop,this,std::placeholders::_1),i);
 	}
 	LoggerInstance.logMessage("End of ThreadPool Constructor");
@@ -82,6 +85,9 @@ int TaskManager::callTask(unsigned int _thread){
 		this->markThreadIdle(_thread);
 		task=[](){return 1;};
 	} else {
+	if(this->runningThreads_!=this->threadCount_){
+		this->markAllRunning();
+	}
 	task=this->taskQueue_.front();
 	this->taskQueue_.pop_front();
 	}
@@ -93,6 +99,9 @@ void TaskManager::idleThread(unsigned int _thread){
 	{
 	std::unique_lock<std::mutex> lk(this->areAllIdleMtx_);
 	while(!(this->isThreadRunning_[_thread])){
+		if(this->runningThreads_==0){
+			this->signalAllIdle();
+		}
 		LoggerInstance.logMessage(concatenate("Sleeping thread: ",_thread));
 		this->areAllIdleCV_.wait(lk);
 		LoggerInstance.logMessage(concatenate("Waking up thread: ",_thread));
@@ -101,11 +110,11 @@ void TaskManager::idleThread(unsigned int _thread){
 }
 
 void TaskManager::markThreadIdle(unsigned int _thread){
+		LoggerInstance.logMessage(concatenate("MarkThreadIdle: ",_thread));
 	if(this->isThreadRunning_[_thread]==true){
 		this->isThreadRunning_[_thread]=false;
-		if(--(this->runningThreads_)==0){
-			this->signalAllIdle();
-		}
+		--this->runningThreads_;
+		LoggerInstance.logMessage(concatenate("Running Threads: ",this->runningThreads_.load()));
 	} else {
 		LoggerInstance.logWarning(concatenate("Thread ",_thread," already idle"));
 	}
