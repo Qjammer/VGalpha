@@ -4,7 +4,7 @@
 #include <memory>
 
 #include "helixStructures.hpp"
-class TaskManagerInterface;
+#include "../Engine/Managers/TaskManagerInterface.hpp"
 
 class System
 {
