@@ -5,6 +5,7 @@
 #include "ObjectExtension.hpp"
 #include <SFML/Graphics.hpp> // HAPPINESS
 
+
 class GraphicObjectExtension : public ObjectExtension
 {
 public:
@@ -29,7 +30,9 @@ public:
 	const sf::Sprite& getSprite ();
 	std::shared_ptr<sf::Texture> getTexturePtr(std::string _fileDir);
 
-	
+	virtual void draw();
+	virtual void onGraphicTick();
+	virtual void updateData(int _flag, void* _data);
 
 protected:
 	std::shared_ptr<sf::Texture> texture_;

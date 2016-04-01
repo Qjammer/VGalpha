@@ -1,3 +1,7 @@
+#include "Systems/EntityExtensions/GraphicObjectExtension.hpp"
+
+
+/* TR4C3S 0F R4M1R0'S T35T
 #include <list>
 #include <functional>
 #include <memory>
@@ -8,6 +12,7 @@
 #include "./Engine/Managers/TaskManagerInterface.hpp"
 #include "./Utilities/Logger.hpp"
 #include "./Engine/Engine.hpp"
+
 
 class testSystem:public System{
 public:
@@ -26,19 +31,11 @@ public:
 
 	}
 };
+*/
 
-int main(){
+int main()
+{
 
-	std::shared_ptr<TaskManager> tskmgr(std::make_shared<TaskManager>());
-	std::shared_ptr<TaskManagerInterface> tskmgrI(std::make_shared<TaskManagerInterface>(tskmgr));
-	std::shared_ptr<SystemInterface> sysInter(std::make_shared<testSystemInterface>(tskmgrI));
-	std::vector<std::weak_ptr<SystemInterface>> vect;
-	vect.push_back(std::weak_ptr<SystemInterface>(sysInter));
 
-	Framework frmwrk(tskmgr,vect);
-	frmwrk.gameLoop();
-
-	tskmgr->wakeUpandStopAll();
-	tskmgr->joinThreads();
 	return 1;
 }
