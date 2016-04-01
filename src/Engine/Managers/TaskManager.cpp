@@ -22,14 +22,11 @@ TaskManager::TaskManager(unsigned int _threads):
 
 	threads_(_threads,std::shared_ptr<std::thread>())
 {
-
 	for(unsigned int i=0;i<_threads;++i){
 		this->active_[i]=true;//INIT active_
 		this->isThreadRunning_[i]=false;
-		this->threads_[i]=std::make_shared<std::thread>(std::bind(&TaskManager::threadLoop,this,std::placeholders::_1),i);
+		this->threads_[i]=std::make_shared<std::thread>(std::bind(&TaskManager::threadLoop,this,i));
 	}
-	LoggerInstance.logMessage("End of ThreadPool Constructor");
-
 }
 
 TaskManager::TaskManager():TaskManager(this->getCores())
@@ -44,7 +41,15 @@ TaskManager::~TaskManager()
 
 void TaskManager::mainProcess(){
 	//TODO:Add main system tasks here
-	this->beginCycle();
+
+	if(this->runningThreads_!=0){
+		LoggerInstance.logWarning(concatenate("Some threads are still running: ",this->runningThreads_.load()));
+	}
+
+	this->proceedMain_=false;
+	this->markAllRunning();
+	this->areAllIdleCV_.notify_all();
+
 	LoggerInstance.logMessage("Main Thread Stopping");
 	{
 	std::unique_lock<std::mutex> lk(this->proceedMainMtx_);
@@ -87,6 +92,7 @@ int TaskManager::callTask(unsigned int _thread){
 	} else {
 	if(this->runningThreads_!=this->threadCount_){
 		this->markAllRunning();
+		this->areAllIdleCV_.notify_all();
 	}
 	task=this->taskQueue_.front();
 	this->taskQueue_.pop_front();
@@ -110,11 +116,9 @@ void TaskManager::idleThread(unsigned int _thread){
 }
 
 void TaskManager::markThreadIdle(unsigned int _thread){
-		LoggerInstance.logMessage(concatenate("MarkThreadIdle: ",_thread));
 	if(this->isThreadRunning_[_thread]==true){
 		this->isThreadRunning_[_thread]=false;
 		--this->runningThreads_;
-		LoggerInstance.logMessage(concatenate("Running Threads: ",this->runningThreads_.load()));
 	} else {
 		LoggerInstance.logWarning(concatenate("Thread ",_thread," already idle"));
 	}
@@ -130,10 +134,9 @@ void TaskManager::signalAllIdle(){
 	}
 }
 
-
 void TaskManager::markThreadRunning(unsigned int _thread){
 	if(this->isThreadRunning_[_thread]==false){
-		++(this->runningThreads_);
+		++this->runningThreads_;
 		this->isThreadRunning_[_thread]=true;
 		this->areAllIdle_=false;
 	} else {
@@ -141,20 +144,9 @@ void TaskManager::markThreadRunning(unsigned int _thread){
 	}
 }
 
-
 void TaskManager::markAllRunning(){
 	for(unsigned int i=0;i<this->threadCount_;++i){
 		this->markThreadRunning(i);
-	}
-}
-
-void TaskManager::beginCycle(){
-	if(this->runningThreads_==0){
-		this->proceedMain_=false;
-		this->markAllRunning();
-		this->areAllIdleCV_.notify_all();
-	} else {
-		LoggerInstance.logWarning(concatenate("Some threads are still running: ",this->runningThreads_.load()));
 	}
 }
 
@@ -197,18 +189,6 @@ unsigned int TaskManager::getCores() const{
 	return cores;
 }
 
-//ThreadPool Methods
-
-void TaskManager::initThread(unsigned int _thread){
-	if(this->active_[_thread]==true){
-		LoggerInstance.logMessage("Initializing already active thread");
-		this->stopThread(_thread);
-		this->joinThread(_thread);
-	}
-	this->active_[_thread]=true;
-	printf("starting thread %i\n",_thread);
-	this->threads_[_thread]=(std::make_shared<std::thread>(std::bind(&TaskManager::threadLoop,this,std::placeholders::_1),_thread));
-}
 
 void TaskManager::stopThread(unsigned int _thread){
 	LoggerInstance.logMessage(concatenate("Stopping thread ",_thread));

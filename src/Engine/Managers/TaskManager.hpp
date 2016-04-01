@@ -3,6 +3,7 @@
 #include <atomic>
 #include <thread>
 #include <condition_variable>
+#include <iostream>
 
 #include "./Manager.hpp"
 #include "../../Utilities/Logger.hpp"
@@ -30,7 +31,6 @@ public:
 
 protected:
 
-	void initThread(unsigned int);
 	void stopThread(unsigned int);
 	void joinThread(unsigned int);
 
@@ -45,7 +45,6 @@ protected:
 	void markThreadIdle(unsigned int);
 
 	void signalAllIdle();
-	void beginCycle();
 	void joinAll();
 
 	unsigned int getCores() const;
