@@ -17,7 +17,7 @@ public:
 
 	std::string printRule(){
 		std::string ret(OBJPATH);
-		system(("g++ -std=c++14 -MM "+this->filename+" >> temp.txt").c_str());
+		system(("g++ -std=c++1y -MM "+this->filename+" >> temp.txt").c_str());
 		std::ifstream dStream("temp.txt");
 		std::string filesText((std::istreambuf_iterator<char>(dStream))
 			                 ,(std::istreambuf_iterator<char>()));

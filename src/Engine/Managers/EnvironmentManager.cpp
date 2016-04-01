@@ -2,7 +2,7 @@
 
 EnvironmentManager::EnvironmentManager():
 	Manager(ENVIRONMENT),
-	errorTexture_(new sf::Texture),
+	errorTexture_(new sf::Texture)
 {
 
 }
@@ -38,11 +38,11 @@ std::shared_ptr<sf::Texture> EnvironmentManager::loadTexture(std::string _fileNa
 //OUT_OF_RANGE ALERT
 void EnvironmentManager::processCache()
 {
-	for (auto __it this->texturePtrMap_.begin(); __it!=this->texturePtrMap_.end(); __it++)
+	for (auto __it = this->texturePtrMap_.begin(); __it!=this->texturePtrMap_.end(); __it++)
 	{
 		if (__it->second.unique())
 		{
-			__it = this->texturePtrMap_.erase(__it)--;
+			__it = this->texturePtrMap_.erase(__it);
 			if (__it == this->texturePtrMap_.end())
 			{
 				break;

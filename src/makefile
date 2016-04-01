@@ -6,10 +6,6 @@ FFLAGS = -o $@
 LIBS = -lsfml-system -lsfml-window -lsfml-graphics -lsfml-network -lsfml-audio
 EXEC = game
 
-../obj/Logger.o: Utilities/Logger.cpp Utilities/./Logger.hpp
-	$(CC) $(CFLAGS) ./Utilities/Logger.cpp $(FFLAGS)
-
-
 ../obj/main.o: main.cpp Systems/SystemInterface.hpp Systems/System.hpp \
  Systems/helixStructures.hpp Engine/Managers/TaskManagerInterface.hpp \
  Engine/Managers/./ManagerInterface.hpp Engine/Managers/./Manager.hpp \
@@ -27,84 +23,6 @@ EXEC = game
  Engine/./Managers/PlatformManagerInterface.hpp \
  Engine/./Managers/./PlatformManager.hpp
 	$(CC) $(CFLAGS) ./main.cpp $(FFLAGS)
-
-
-../obj/TaskManagerInterface.o: Engine/Managers/TaskManagerInterface.cpp \
- Engine/Managers/./TaskManagerInterface.hpp \
- Engine/Managers/././ManagerInterface.hpp Engine/Managers/././Manager.hpp \
- Engine/Managers/././TaskManager.hpp \
- Engine/Managers/././../../Utilities/Logger.hpp
-	$(CC) $(CFLAGS) ./Engine/Managers/TaskManagerInterface.cpp $(FFLAGS)
-
-
-../obj/EnvironmentManager.o: Engine/Managers/EnvironmentManager.cpp \
- Engine/Managers/./EnvironmentManager.hpp Engine/Managers/./Manager.hpp
-	$(CC) $(CFLAGS) ./Engine/Managers/EnvironmentManager.cpp $(FFLAGS)
-
-
-../obj/StateManager.o: Engine/Managers/StateManager.cpp \
- Engine/Managers/./StateManager.hpp Engine/Managers/././Manager.hpp
-	$(CC) $(CFLAGS) ./Engine/Managers/StateManager.cpp $(FFLAGS)
-
-
-../obj/ServiceManager.o: Engine/Managers/ServiceManager.cpp \
- Engine/Managers/./ServiceManager.hpp Engine/Managers/././Manager.hpp
-	$(CC) $(CFLAGS) ./Engine/Managers/ServiceManager.cpp $(FFLAGS)
-
-
-../obj/PlatformManagerInterface.o: Engine/Managers/PlatformManagerInterface.cpp \
- Engine/Managers/./PlatformManagerInterface.hpp \
- Engine/Managers/././PlatformManager.hpp \
- Engine/Managers/./././Manager.hpp \
- Engine/Managers/././ManagerInterface.hpp
-	$(CC) $(CFLAGS) ./Engine/Managers/PlatformManagerInterface.cpp $(FFLAGS)
-
-
-../obj/TaskManager.o: Engine/Managers/TaskManager.cpp \
- Engine/Managers/./TaskManager.hpp Engine/Managers/././Manager.hpp \
- Engine/Managers/./../../Utilities/Logger.hpp
-	$(CC) $(CFLAGS) ./Engine/Managers/TaskManager.cpp $(FFLAGS)
-
-
-../obj/ServiceManagerInterface.o: Engine/Managers/ServiceManagerInterface.cpp \
- Engine/Managers/ServiceManagerInterface.hpp \
- Engine/Managers/./ServiceManager.hpp Engine/Managers/././Manager.hpp \
- Engine/Managers/./ManagerInterface.hpp
-	$(CC) $(CFLAGS) ./Engine/Managers/ServiceManagerInterface.cpp $(FFLAGS)
-
-
-../obj/Manager.o: Engine/Managers/Manager.cpp Engine/Managers/Manager.hpp
-	$(CC) $(CFLAGS) ./Engine/Managers/Manager.cpp $(FFLAGS)
-
-
-../obj/EnvironmentManagerInterface.o: \
- Engine/Managers/EnvironmentManagerInterface.cpp \
- Engine/Managers/./EnvironmentManagerInterface.hpp \
- Engine/Managers/././ManagerInterface.hpp Engine/Managers/././Manager.hpp \
- Engine/Managers/././EnvironmentManager.hpp
-	$(CC) $(CFLAGS) ./Engine/Managers/EnvironmentManagerInterface.cpp $(FFLAGS)
-
-
-../obj/StateManagerInterface.o: Engine/Managers/StateManagerInterface.cpp \
- Engine/Managers/./StateManagerInterface.hpp \
- Engine/Managers/././StateManager.hpp Engine/Managers/./././Manager.hpp \
- Engine/Managers/././ManagerInterface.hpp
-	$(CC) $(CFLAGS) ./Engine/Managers/StateManagerInterface.cpp $(FFLAGS)
-
-
-../obj/PlatformManager.o: Engine/Managers/PlatformManager.cpp \
- Engine/Managers/./PlatformManager.hpp Engine/Managers/././Manager.hpp
-	$(CC) $(CFLAGS) ./Engine/Managers/PlatformManager.cpp $(FFLAGS)
-
-
-../obj/UObject.o: Engine/Framework/UEntities/UObject.cpp \
- Engine/Framework/UEntities/UObject.hpp
-	$(CC) $(CFLAGS) ./Engine/Framework/UEntities/UObject.cpp $(FFLAGS)
-
-
-../obj/UScene.o: Engine/Framework/UEntities/UScene.cpp \
- Engine/Framework/UEntities/UScene.hpp
-	$(CC) $(CFLAGS) ./Engine/Framework/UEntities/UScene.cpp $(FFLAGS)
 
 
 ../obj/Framework.o: Engine/Framework/Framework.cpp \
@@ -135,6 +53,16 @@ EXEC = game
 	$(CC) $(CFLAGS) ./Engine/Framework/Scheduler/Scheduler.cpp $(FFLAGS)
 
 
+../obj/UScene.o: Engine/Framework/UEntities/UScene.cpp \
+ Engine/Framework/UEntities/UScene.hpp
+	$(CC) $(CFLAGS) ./Engine/Framework/UEntities/UScene.cpp $(FFLAGS)
+
+
+../obj/UObject.o: Engine/Framework/UEntities/UObject.cpp \
+ Engine/Framework/UEntities/UObject.hpp
+	$(CC) $(CFLAGS) ./Engine/Framework/UEntities/UObject.cpp $(FFLAGS)
+
+
 ../obj/Engine.o: Engine/Engine.cpp Engine/./Engine.hpp \
  Engine/././Framework/Framework.hpp \
  Engine/././Framework/./Scheduler/Scheduler.hpp \
@@ -158,6 +86,103 @@ EXEC = game
 	$(CC) $(CFLAGS) ./Engine/Engine.cpp $(FFLAGS)
 
 
+../obj/StateManagerInterface.o: Engine/Managers/StateManagerInterface.cpp \
+ Engine/Managers/./StateManagerInterface.hpp \
+ Engine/Managers/././StateManager.hpp Engine/Managers/./././Manager.hpp \
+ Engine/Managers/././ManagerInterface.hpp
+	$(CC) $(CFLAGS) ./Engine/Managers/StateManagerInterface.cpp $(FFLAGS)
+
+
+../obj/ServiceManagerInterface.o: Engine/Managers/ServiceManagerInterface.cpp \
+ Engine/Managers/ServiceManagerInterface.hpp \
+ Engine/Managers/./ServiceManager.hpp Engine/Managers/././Manager.hpp \
+ Engine/Managers/./ManagerInterface.hpp
+	$(CC) $(CFLAGS) ./Engine/Managers/ServiceManagerInterface.cpp $(FFLAGS)
+
+
+../obj/TaskManager.o: Engine/Managers/TaskManager.cpp \
+ Engine/Managers/./TaskManager.hpp Engine/Managers/././Manager.hpp \
+ Engine/Managers/./../../Utilities/Logger.hpp
+	$(CC) $(CFLAGS) ./Engine/Managers/TaskManager.cpp $(FFLAGS)
+
+
+../obj/Manager.o: Engine/Managers/Manager.cpp Engine/Managers/Manager.hpp
+	$(CC) $(CFLAGS) ./Engine/Managers/Manager.cpp $(FFLAGS)
+
+
+../obj/StateManager.o: Engine/Managers/StateManager.cpp \
+ Engine/Managers/./StateManager.hpp Engine/Managers/././Manager.hpp
+	$(CC) $(CFLAGS) ./Engine/Managers/StateManager.cpp $(FFLAGS)
+
+
+../obj/EnvironmentManagerInterface.o: \
+ Engine/Managers/EnvironmentManagerInterface.cpp \
+ Engine/Managers/./EnvironmentManagerInterface.hpp \
+ Engine/Managers/././ManagerInterface.hpp Engine/Managers/././Manager.hpp \
+ Engine/Managers/././EnvironmentManager.hpp
+	$(CC) $(CFLAGS) ./Engine/Managers/EnvironmentManagerInterface.cpp $(FFLAGS)
+
+
+../obj/TaskManagerInterface.o: Engine/Managers/TaskManagerInterface.cpp \
+ Engine/Managers/./TaskManagerInterface.hpp \
+ Engine/Managers/././ManagerInterface.hpp Engine/Managers/././Manager.hpp \
+ Engine/Managers/././TaskManager.hpp \
+ Engine/Managers/././../../Utilities/Logger.hpp
+	$(CC) $(CFLAGS) ./Engine/Managers/TaskManagerInterface.cpp $(FFLAGS)
+
+
+../obj/PlatformManagerInterface.o: Engine/Managers/PlatformManagerInterface.cpp \
+ Engine/Managers/./PlatformManagerInterface.hpp \
+ Engine/Managers/././PlatformManager.hpp \
+ Engine/Managers/./././Manager.hpp \
+ Engine/Managers/././ManagerInterface.hpp
+	$(CC) $(CFLAGS) ./Engine/Managers/PlatformManagerInterface.cpp $(FFLAGS)
+
+
+../obj/PlatformManager.o: Engine/Managers/PlatformManager.cpp \
+ Engine/Managers/./PlatformManager.hpp Engine/Managers/././Manager.hpp
+	$(CC) $(CFLAGS) ./Engine/Managers/PlatformManager.cpp $(FFLAGS)
+
+
+../obj/ServiceManager.o: Engine/Managers/ServiceManager.cpp \
+ Engine/Managers/./ServiceManager.hpp Engine/Managers/././Manager.hpp
+	$(CC) $(CFLAGS) ./Engine/Managers/ServiceManager.cpp $(FFLAGS)
+
+
+../obj/EnvironmentManager.o: Engine/Managers/EnvironmentManager.cpp \
+ Engine/Managers/./EnvironmentManager.hpp Engine/Managers/./Manager.hpp
+	$(CC) $(CFLAGS) ./Engine/Managers/EnvironmentManager.cpp $(FFLAGS)
+
+
+../obj/System.o: Systems/System.cpp Systems/System.hpp \
+ Systems/helixStructures.hpp
+	$(CC) $(CFLAGS) ./Systems/System.cpp $(FFLAGS)
+
+
+../obj/LogicSystem.o: Systems/Logic/LogicSystem.cpp \
+ Systems/Logic/./LogicSystem.hpp Systems/Logic/./../System.hpp \
+ Systems/Logic/./../helixStructures.hpp Systems/Logic/././LogicScene.hpp \
+ Systems/Logic/././../EntityExtensions/SceneExtension.hpp \
+ Systems/Logic/./././LogicObject.hpp \
+ Systems/Logic/./././../EntityExtensions/ObjectExtension.hpp
+	$(CC) $(CFLAGS) ./Systems/Logic/LogicSystem.cpp $(FFLAGS)
+
+
+../obj/LogicScene.o: Systems/Logic/LogicScene.cpp Systems/Logic/./LogicScene.hpp \
+ Systems/Logic/./../EntityExtensions/SceneExtension.hpp \
+ Systems/Logic/./../EntityExtensions/../helixStructures.hpp \
+ Systems/Logic/././LogicObject.hpp \
+ Systems/Logic/././../EntityExtensions/ObjectExtension.hpp
+	$(CC) $(CFLAGS) ./Systems/Logic/LogicScene.cpp $(FFLAGS)
+
+
+../obj/LogicObject.o: Systems/Logic/LogicObject.cpp \
+ Systems/Logic/./LogicObject.hpp \
+ Systems/Logic/./../EntityExtensions/ObjectExtension.hpp \
+ Systems/Logic/./../EntityExtensions/../helixStructures.hpp
+	$(CC) $(CFLAGS) ./Systems/Logic/LogicObject.cpp $(FFLAGS)
+
+
 ../obj/SceneExtension.o: Systems/EntityExtensions/SceneExtension.cpp \
  Systems/EntityExtensions/SceneExtension.hpp \
  Systems/EntityExtensions/../helixStructures.hpp
@@ -178,39 +203,14 @@ EXEC = game
 	$(CC) $(CFLAGS) ./Systems/EntityExtensions/GraphicObjectExtension.cpp $(FFLAGS)
 
 
-../obj/LogicObject.o: Systems/Logic/LogicObject.cpp \
- Systems/Logic/./LogicObject.hpp \
- Systems/Logic/./../EntityExtensions/ObjectExtension.hpp \
- Systems/Logic/./../EntityExtensions/../helixStructures.hpp
-	$(CC) $(CFLAGS) ./Systems/Logic/LogicObject.cpp $(FFLAGS)
-
-
-../obj/LogicSystem.o: Systems/Logic/LogicSystem.cpp \
- Systems/Logic/./LogicSystem.hpp Systems/Logic/./../System.hpp \
- Systems/Logic/./../helixStructures.hpp Systems/Logic/././LogicScene.hpp \
- Systems/Logic/././../EntityExtensions/SceneExtension.hpp \
- Systems/Logic/./././LogicObject.hpp \
- Systems/Logic/./././../EntityExtensions/ObjectExtension.hpp
-	$(CC) $(CFLAGS) ./Systems/Logic/LogicSystem.cpp $(FFLAGS)
-
-
-../obj/LogicScene.o: Systems/Logic/LogicScene.cpp Systems/Logic/./LogicScene.hpp \
- Systems/Logic/./../EntityExtensions/SceneExtension.hpp \
- Systems/Logic/./../EntityExtensions/../helixStructures.hpp \
- Systems/Logic/././LogicObject.hpp \
- Systems/Logic/././../EntityExtensions/ObjectExtension.hpp
-	$(CC) $(CFLAGS) ./Systems/Logic/LogicScene.cpp $(FFLAGS)
-
-
 ../obj/SystemInterface.o: Systems/SystemInterface.cpp \
  Systems/SystemInterface.hpp Systems/System.hpp \
  Systems/helixStructures.hpp
 	$(CC) $(CFLAGS) ./Systems/SystemInterface.cpp $(FFLAGS)
 
 
-../obj/System.o: Systems/System.cpp Systems/System.hpp \
- Systems/helixStructures.hpp
-	$(CC) $(CFLAGS) ./Systems/System.cpp $(FFLAGS)
+../obj/Logger.o: Utilities/Logger.cpp Utilities/./Logger.hpp
+	$(CC) $(CFLAGS) ./Utilities/Logger.cpp $(FFLAGS)
 
 
 clean:
@@ -219,32 +219,32 @@ clean:
 	mkdir ../obj/
 OBJDIR:|../obj/
 
-$(EXEC): OBJDIR ../obj/Logger.o \
-../obj/main.o \
-../obj/TaskManagerInterface.o \
-../obj/EnvironmentManager.o \
-../obj/StateManager.o \
-../obj/ServiceManager.o \
-../obj/PlatformManagerInterface.o \
-../obj/TaskManager.o \
-../obj/ServiceManagerInterface.o \
-../obj/Manager.o \
-../obj/EnvironmentManagerInterface.o \
-../obj/StateManagerInterface.o \
-../obj/PlatformManager.o \
-../obj/UObject.o \
-../obj/UScene.o \
+$(EXEC): OBJDIR ../obj/main.o \
 ../obj/Framework.o \
 ../obj/Scheduler.o \
+../obj/UScene.o \
+../obj/UObject.o \
 ../obj/Engine.o \
+../obj/StateManagerInterface.o \
+../obj/ServiceManagerInterface.o \
+../obj/TaskManager.o \
+../obj/Manager.o \
+../obj/StateManager.o \
+../obj/EnvironmentManagerInterface.o \
+../obj/TaskManagerInterface.o \
+../obj/PlatformManagerInterface.o \
+../obj/PlatformManager.o \
+../obj/ServiceManager.o \
+../obj/EnvironmentManager.o \
+../obj/System.o \
+../obj/LogicSystem.o \
+../obj/LogicScene.o \
+../obj/LogicObject.o \
 ../obj/SceneExtension.o \
 ../obj/ObjectExtension.o \
 ../obj/GraphicObjectExtension.o \
-../obj/LogicObject.o \
-../obj/LogicSystem.o \
-../obj/LogicScene.o \
 ../obj/SystemInterface.o \
-../obj/System.o 
+../obj/Logger.o 
 	$(CC) $(LFLAGS) -o $(EXEC) ../obj/*.o $(LIBS)
 
 
