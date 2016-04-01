@@ -26,6 +26,7 @@ void Scheduler::Execute(){
 	} else {
 		if(std::chrono::milliseconds(10)<-this->unusedTime_){
 			LoggerInstance.logWarning("Clock is lagging by more than 10 ms");
+			this->unusedTime_=std::chrono::system_clock::duration(0);
 		}
 	}
 	this->pastTick_=std::chrono::system_clock::now();
