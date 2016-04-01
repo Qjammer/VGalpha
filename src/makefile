@@ -3,7 +3,7 @@ DEBUG = -g
 CFLAGS = -Wall -pedantic -pthread -std=c++11 -c $(DEBUG)
 LFLAGS = -Wall $(DEBUG) -pthread
 FFLAGS = -o $@
-LIBS = -lsfml-system -lsfml-window -lsfml-graphics -lsfml-network -lsfml-audio
+LIBS = -lsfml-system -lsfml-window -lsfml-graphics -lsfml-network -lsfml-audio -lX11
 EXEC = game
 
 ../obj/Logger.o: Utilities/Logger.cpp Utilities/./Logger.hpp
@@ -11,10 +11,14 @@ EXEC = game
 
 
 ../obj/main.o: main.cpp Systems/SystemInterface.hpp Systems/System.hpp \
- Systems/helixStructures.hpp Engine/Managers/TaskManagerInterface.hpp \
- Engine/Managers/./ManagerInterface.hpp Engine/Managers/./Manager.hpp \
- Engine/Managers/./TaskManager.hpp \
- Engine/Managers/./../../Utilities/Logger.hpp Engine/Engine.hpp \
+ Systems/helixStructures.hpp \
+ Systems/../Engine/Managers/TaskManagerInterface.hpp \
+ Systems/../Engine/Managers/./ManagerInterface.hpp \
+ Systems/../Engine/Managers/./Manager.hpp \
+ Systems/../Engine/Managers/./TaskManager.hpp \
+ Systems/../Engine/Managers/./../../Utilities/Logger.hpp \
+ Systems/Graphics/GraphicSystemInterface.hpp \
+ Systems/Graphics/./GraphicSystem.hpp Engine/Engine.hpp \
  Engine/./Framework/Framework.hpp \
  Engine/./Framework/./Scheduler/Scheduler.hpp \
  Engine/./Framework/./UEntities/UScene.hpp \
@@ -187,7 +191,13 @@ EXEC = game
 
 ../obj/LogicSystem.o: Systems/Logic/LogicSystem.cpp \
  Systems/Logic/./LogicSystem.hpp Systems/Logic/./../System.hpp \
- Systems/Logic/./../helixStructures.hpp Systems/Logic/././LogicScene.hpp \
+ Systems/Logic/./../helixStructures.hpp \
+ Systems/Logic/./../../Engine/Managers/TaskManagerInterface.hpp \
+ Systems/Logic/./../../Engine/Managers/./ManagerInterface.hpp \
+ Systems/Logic/./../../Engine/Managers/./Manager.hpp \
+ Systems/Logic/./../../Engine/Managers/./TaskManager.hpp \
+ Systems/Logic/./../../Engine/Managers/./../../Utilities/Logger.hpp \
+ Systems/Logic/././LogicScene.hpp \
  Systems/Logic/././../EntityExtensions/SceneExtension.hpp \
  Systems/Logic/./././LogicObject.hpp \
  Systems/Logic/./././../EntityExtensions/ObjectExtension.hpp
@@ -202,14 +212,49 @@ EXEC = game
 	$(CC) $(CFLAGS) ./Systems/Logic/LogicScene.cpp $(FFLAGS)
 
 
+../obj/GraphicSystem.o: Systems/Graphics/GraphicSystem.cpp \
+ Systems/Graphics/./GraphicSystem.hpp Systems/Graphics/./../System.hpp \
+ Systems/Graphics/./../helixStructures.hpp \
+ Systems/Graphics/./../../Engine/Managers/TaskManagerInterface.hpp \
+ Systems/Graphics/./../../Engine/Managers/./ManagerInterface.hpp \
+ Systems/Graphics/./../../Engine/Managers/./Manager.hpp \
+ Systems/Graphics/./../../Engine/Managers/./TaskManager.hpp \
+ Systems/Graphics/./../../Engine/Managers/./../../Utilities/Logger.hpp
+	$(CC) $(CFLAGS) ./Systems/Graphics/GraphicSystem.cpp $(FFLAGS)
+
+
+../obj/GraphicSystemInterface.o: Systems/Graphics/GraphicSystemInterface.cpp \
+ Systems/Graphics/./GraphicSystemInterface.hpp \
+ Systems/Graphics/././GraphicSystem.hpp \
+ Systems/Graphics/././../System.hpp \
+ Systems/Graphics/././../helixStructures.hpp \
+ Systems/Graphics/././../../Engine/Managers/TaskManagerInterface.hpp \
+ Systems/Graphics/././../../Engine/Managers/./ManagerInterface.hpp \
+ Systems/Graphics/././../../Engine/Managers/./Manager.hpp \
+ Systems/Graphics/././../../Engine/Managers/./TaskManager.hpp \
+ Systems/Graphics/././../../Engine/Managers/./../../Utilities/Logger.hpp \
+ Systems/Graphics/./../SystemInterface.hpp
+	$(CC) $(CFLAGS) ./Systems/Graphics/GraphicSystemInterface.cpp $(FFLAGS)
+
+
 ../obj/SystemInterface.o: Systems/SystemInterface.cpp \
  Systems/SystemInterface.hpp Systems/System.hpp \
- Systems/helixStructures.hpp
+ Systems/helixStructures.hpp \
+ Systems/../Engine/Managers/TaskManagerInterface.hpp \
+ Systems/../Engine/Managers/./ManagerInterface.hpp \
+ Systems/../Engine/Managers/./Manager.hpp \
+ Systems/../Engine/Managers/./TaskManager.hpp \
+ Systems/../Engine/Managers/./../../Utilities/Logger.hpp
 	$(CC) $(CFLAGS) ./Systems/SystemInterface.cpp $(FFLAGS)
 
 
 ../obj/System.o: Systems/System.cpp Systems/System.hpp \
- Systems/helixStructures.hpp
+ Systems/helixStructures.hpp \
+ Systems/../Engine/Managers/TaskManagerInterface.hpp \
+ Systems/../Engine/Managers/./ManagerInterface.hpp \
+ Systems/../Engine/Managers/./Manager.hpp \
+ Systems/../Engine/Managers/./TaskManager.hpp \
+ Systems/../Engine/Managers/./../../Utilities/Logger.hpp
 	$(CC) $(CFLAGS) ./Systems/System.cpp $(FFLAGS)
 
 
@@ -243,6 +288,8 @@ $(EXEC): OBJDIR ../obj/Logger.o \
 ../obj/LogicObject.o \
 ../obj/LogicSystem.o \
 ../obj/LogicScene.o \
+../obj/GraphicSystem.o \
+../obj/GraphicSystemInterface.o \
 ../obj/SystemInterface.o \
 ../obj/System.o 
 	$(CC) $(LFLAGS) -o $(EXEC) ../obj/*.o $(LIBS)
