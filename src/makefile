@@ -10,27 +10,28 @@ EXEC = game
 	$(CC) $(CFLAGS) ./Utilities/Logger.cpp $(FFLAGS)
 
 
-../obj/main.o: main.cpp Systems/SystemInterface.hpp Systems/System.hpp \
- Systems/helixStructures.hpp Systems/../Engine/Managers/IntBundle.hpp \
- Systems/../Engine/Managers/./MgrBundle.hpp \
- Systems/../Engine/Managers/././TaskManagerInterface.hpp \
- Systems/../Engine/Managers/./././ManagerInterface.hpp \
- Systems/../Engine/Managers/./././Manager.hpp \
- Systems/../Engine/Managers/./././TaskManager.hpp \
- Systems/../Engine/Managers/./././../../Utilities/Logger.hpp \
- Systems/../Engine/Managers/././StateManagerInterface.hpp \
- Systems/../Engine/Managers/./././StateManager.hpp \
- Systems/../Engine/Managers/././ServiceManagerInterface.hpp \
- Systems/../Engine/Managers/./././ServiceManager.hpp \
- Systems/../Engine/Managers/././EnvironmentManagerInterface.hpp \
- Systems/../Engine/Managers/./././EnvironmentManager.hpp \
- Systems/../Engine/Managers/././PlatformManagerInterface.hpp \
- Systems/../Engine/Managers/./././PlatformManager.hpp \
- Systems/Graphics/GraphicSystemInterface.hpp \
- Systems/Graphics/./GraphicSystem.hpp \
+../obj/main.o: main.cpp Systems/Graphics/GraphicSystemInterface.hpp \
+ Systems/Graphics/./GraphicSystem.hpp Systems/Graphics/./../System.hpp \
+ Systems/Graphics/./../helixStructures.hpp \
+ Systems/Graphics/./../../Engine/Managers/IntBundle.hpp \
+ Systems/Graphics/./../../Engine/Managers/./MgrBundle.hpp \
+ Systems/Graphics/./../../Engine/Managers/././TaskManagerInterface.hpp \
+ Systems/Graphics/./../../Engine/Managers/./././ManagerInterface.hpp \
+ Systems/Graphics/./../../Engine/Managers/./././Manager.hpp \
+ Systems/Graphics/./../../Engine/Managers/./././TaskManager.hpp \
+ Systems/Graphics/./../../Engine/Managers/./././../../Utilities/Logger.hpp \
+ Systems/Graphics/./../../Engine/Managers/././StateManagerInterface.hpp \
+ Systems/Graphics/./../../Engine/Managers/./././StateManager.hpp \
+ Systems/Graphics/./../../Engine/Managers/././ServiceManagerInterface.hpp \
+ Systems/Graphics/./../../Engine/Managers/./././ServiceManager.hpp \
+ Systems/Graphics/./../../Engine/Managers/././EnvironmentManagerInterface.hpp \
+ Systems/Graphics/./../../Engine/Managers/./././EnvironmentManager.hpp \
+ Systems/Graphics/./../../Engine/Managers/././PlatformManagerInterface.hpp \
+ Systems/Graphics/./../../Engine/Managers/./././PlatformManager.hpp \
  Systems/Graphics/./../EntityExtensions/GraphicObjectExtension.hpp \
  Systems/Graphics/./../EntityExtensions/ObjectExtension.hpp \
- Engine/Engine.hpp Engine/./Framework/Framework.hpp \
+ Systems/Graphics/../SystemInterface.hpp Engine/Engine.hpp \
+ Engine/./Framework/Framework.hpp \
  Engine/./Framework/./Scheduler/Scheduler.hpp \
  Engine/./Framework/./UEntities/UScene.hpp
 	$(CC) $(CFLAGS) ./main.cpp $(FFLAGS)

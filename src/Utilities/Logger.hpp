@@ -3,6 +3,7 @@
 #include <fstream>
 #include <sstream>
 #include <memory>
+#include <mutex>
 
 #define DEFAULT_LOGGER_OUTPUT "./log.log"
 #define LOGGER_STATUS true
@@ -25,6 +26,7 @@ protected:
 	bool logStatus_;
 	bool consoleStatus_;
 	std::weak_ptr<std::stringstream> consoleStream_;
+	std::mutex logMutex_;
 };
 
 extern Logger LoggerInstance;
