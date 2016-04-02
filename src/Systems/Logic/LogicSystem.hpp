@@ -5,7 +5,7 @@
 
 class LogicSystem : public System{
 public:
-	LogicSystem();
+	LogicSystem(ManagerInterfaceBundle);
 	~LogicSystem();
 	int mainTask(std::weak_ptr<TaskManagerInterface>);
 

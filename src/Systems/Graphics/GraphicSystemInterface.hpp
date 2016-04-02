@@ -5,6 +5,6 @@
 
 class GraphicSystemInterface: public SystemInterface{
 public:
-	GraphicSystemInterface(std::weak_ptr<GraphicSystem>, std::weak_ptr<TaskManagerInterface>);
+	GraphicSystemInterface(std::weak_ptr<GraphicSystem>);
 	~GraphicSystemInterface();
 };

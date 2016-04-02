@@ -1,7 +1,7 @@
 #include "./LogicSystem.hpp"
 
-LogicSystem::LogicSystem():
-	System(EntityType::LOGIC)
+LogicSystem::LogicSystem(ManagerInterfaceBundle _bndl):
+	System(EntityType::LOGIC,_bndl)
 {
 
 }

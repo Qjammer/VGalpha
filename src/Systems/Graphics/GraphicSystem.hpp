@@ -1,15 +1,15 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-
 #include "../System.hpp"
+#include "../EntityExtensions/GraphicObjectExtension.hpp"
 
 
 class GraphicSystem: public System{
 public:
-	GraphicSystem();
+	GraphicSystem(ManagerInterfaceBundle);
 	~GraphicSystem();
-	int mainTask(std::weak_ptr<TaskManagerInterface>);
+	int mainTask();
 
 protected:
 	sf::RenderWindow rwindow_;
