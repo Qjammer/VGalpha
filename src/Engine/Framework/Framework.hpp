@@ -9,7 +9,7 @@
 class Framework{
 public:
 
-	Framework(std::weak_ptr<TaskManager>, std::vector<std::weak_ptr<SystemInterface>>);
+	Framework(ManagerInterfaceBundle, std::vector<std::weak_ptr<SystemInterface>>);
 	~Framework();
 
 	void gameLoop();

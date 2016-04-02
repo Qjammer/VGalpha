@@ -11,25 +11,28 @@ EXEC = game
 
 
 ../obj/main.o: main.cpp Systems/SystemInterface.hpp Systems/System.hpp \
- Systems/helixStructures.hpp \
- Systems/../Engine/Managers/TaskManagerInterface.hpp \
- Systems/../Engine/Managers/./ManagerInterface.hpp \
- Systems/../Engine/Managers/./Manager.hpp \
- Systems/../Engine/Managers/./TaskManager.hpp \
- Systems/../Engine/Managers/./../../Utilities/Logger.hpp \
+ Systems/helixStructures.hpp Systems/../Engine/Managers/IntBundle.hpp \
+ Systems/../Engine/Managers/./MgrBundle.hpp \
+ Systems/../Engine/Managers/././TaskManagerInterface.hpp \
+ Systems/../Engine/Managers/./././ManagerInterface.hpp \
+ Systems/../Engine/Managers/./././Manager.hpp \
+ Systems/../Engine/Managers/./././TaskManager.hpp \
+ Systems/../Engine/Managers/./././../../Utilities/Logger.hpp \
+ Systems/../Engine/Managers/././StateManagerInterface.hpp \
+ Systems/../Engine/Managers/./././StateManager.hpp \
+ Systems/../Engine/Managers/././ServiceManagerInterface.hpp \
+ Systems/../Engine/Managers/./././ServiceManager.hpp \
+ Systems/../Engine/Managers/././EnvironmentManagerInterface.hpp \
+ Systems/../Engine/Managers/./././EnvironmentManager.hpp \
+ Systems/../Engine/Managers/././PlatformManagerInterface.hpp \
+ Systems/../Engine/Managers/./././PlatformManager.hpp \
  Systems/Graphics/GraphicSystemInterface.hpp \
- Systems/Graphics/./GraphicSystem.hpp Engine/Engine.hpp \
- Engine/./Framework/Framework.hpp \
+ Systems/Graphics/./GraphicSystem.hpp \
+ Systems/Graphics/./../EntityExtensions/GraphicObjectExtension.hpp \
+ Systems/Graphics/./../EntityExtensions/ObjectExtension.hpp \
+ Engine/Engine.hpp Engine/./Framework/Framework.hpp \
  Engine/./Framework/./Scheduler/Scheduler.hpp \
- Engine/./Framework/./UEntities/UScene.hpp \
- Engine/./Managers/StateManagerInterface.hpp \
- Engine/./Managers/./StateManager.hpp \
- Engine/./Managers/ServiceManagerInterface.hpp \
- Engine/./Managers/./ServiceManager.hpp \
- Engine/./Managers/EnvironmentManagerInterface.hpp \
- Engine/./Managers/./EnvironmentManager.hpp \
- Engine/./Managers/PlatformManagerInterface.hpp \
- Engine/./Managers/./PlatformManager.hpp
+ Engine/./Framework/./UEntities/UScene.hpp
 	$(CC) $(CFLAGS) ./main.cpp $(FFLAGS)
 
 
@@ -44,6 +47,24 @@ EXEC = game
 ../obj/EnvironmentManager.o: Engine/Managers/EnvironmentManager.cpp \
  Engine/Managers/./EnvironmentManager.hpp Engine/Managers/./Manager.hpp
 	$(CC) $(CFLAGS) ./Engine/Managers/EnvironmentManager.cpp $(FFLAGS)
+
+
+../obj/IntBundle.o: Engine/Managers/IntBundle.cpp \
+ Engine/Managers/./IntBundle.hpp Engine/Managers/././MgrBundle.hpp \
+ Engine/Managers/./././TaskManagerInterface.hpp \
+ Engine/Managers/././././ManagerInterface.hpp \
+ Engine/Managers/././././Manager.hpp \
+ Engine/Managers/././././TaskManager.hpp \
+ Engine/Managers/././././../../Utilities/Logger.hpp \
+ Engine/Managers/./././StateManagerInterface.hpp \
+ Engine/Managers/././././StateManager.hpp \
+ Engine/Managers/./././ServiceManagerInterface.hpp \
+ Engine/Managers/././././ServiceManager.hpp \
+ Engine/Managers/./././EnvironmentManagerInterface.hpp \
+ Engine/Managers/././././EnvironmentManager.hpp \
+ Engine/Managers/./././PlatformManagerInterface.hpp \
+ Engine/Managers/././././PlatformManager.hpp
+	$(CC) $(CFLAGS) ./Engine/Managers/IntBundle.cpp $(FFLAGS)
 
 
 ../obj/StateManager.o: Engine/Managers/StateManager.cpp \
@@ -75,6 +96,23 @@ EXEC = game
  Engine/Managers/./ServiceManager.hpp Engine/Managers/././Manager.hpp \
  Engine/Managers/./ManagerInterface.hpp
 	$(CC) $(CFLAGS) ./Engine/Managers/ServiceManagerInterface.cpp $(FFLAGS)
+
+
+../obj/MgrBundle.o: Engine/Managers/MgrBundle.cpp \
+ Engine/Managers/./MgrBundle.hpp \
+ Engine/Managers/././TaskManagerInterface.hpp \
+ Engine/Managers/./././ManagerInterface.hpp \
+ Engine/Managers/./././Manager.hpp Engine/Managers/./././TaskManager.hpp \
+ Engine/Managers/./././../../Utilities/Logger.hpp \
+ Engine/Managers/././StateManagerInterface.hpp \
+ Engine/Managers/./././StateManager.hpp \
+ Engine/Managers/././ServiceManagerInterface.hpp \
+ Engine/Managers/./././ServiceManager.hpp \
+ Engine/Managers/././EnvironmentManagerInterface.hpp \
+ Engine/Managers/./././EnvironmentManager.hpp \
+ Engine/Managers/././PlatformManagerInterface.hpp \
+ Engine/Managers/./././PlatformManager.hpp
+	$(CC) $(CFLAGS) ./Engine/Managers/MgrBundle.cpp $(FFLAGS)
 
 
 ../obj/Manager.o: Engine/Managers/Manager.cpp Engine/Managers/Manager.hpp
@@ -122,6 +160,16 @@ EXEC = game
  Engine/Framework/././Scheduler/../../../Systems/SystemInterface.hpp \
  Engine/Framework/././Scheduler/../../../Systems/System.hpp \
  Engine/Framework/././Scheduler/../../../Systems/helixStructures.hpp \
+ Engine/Framework/././Scheduler/../../../Systems/../Engine/Managers/IntBundle.hpp \
+ Engine/Framework/././Scheduler/../../../Systems/../Engine/Managers/./MgrBundle.hpp \
+ Engine/Framework/././Scheduler/../../../Systems/../Engine/Managers/././StateManagerInterface.hpp \
+ Engine/Framework/././Scheduler/../../../Systems/../Engine/Managers/./././StateManager.hpp \
+ Engine/Framework/././Scheduler/../../../Systems/../Engine/Managers/././ServiceManagerInterface.hpp \
+ Engine/Framework/././Scheduler/../../../Systems/../Engine/Managers/./././ServiceManager.hpp \
+ Engine/Framework/././Scheduler/../../../Systems/../Engine/Managers/././EnvironmentManagerInterface.hpp \
+ Engine/Framework/././Scheduler/../../../Systems/../Engine/Managers/./././EnvironmentManager.hpp \
+ Engine/Framework/././Scheduler/../../../Systems/../Engine/Managers/././PlatformManagerInterface.hpp \
+ Engine/Framework/././Scheduler/../../../Systems/../Engine/Managers/./././PlatformManager.hpp \
  Engine/Framework/././UEntities/UScene.hpp
 	$(CC) $(CFLAGS) ./Engine/Framework/Framework.cpp $(FFLAGS)
 
@@ -135,7 +183,17 @@ EXEC = game
  Engine/Framework/Scheduler/../../Managers/./../../Utilities/Logger.hpp \
  Engine/Framework/Scheduler/../../../Systems/SystemInterface.hpp \
  Engine/Framework/Scheduler/../../../Systems/System.hpp \
- Engine/Framework/Scheduler/../../../Systems/helixStructures.hpp
+ Engine/Framework/Scheduler/../../../Systems/helixStructures.hpp \
+ Engine/Framework/Scheduler/../../../Systems/../Engine/Managers/IntBundle.hpp \
+ Engine/Framework/Scheduler/../../../Systems/../Engine/Managers/./MgrBundle.hpp \
+ Engine/Framework/Scheduler/../../../Systems/../Engine/Managers/././StateManagerInterface.hpp \
+ Engine/Framework/Scheduler/../../../Systems/../Engine/Managers/./././StateManager.hpp \
+ Engine/Framework/Scheduler/../../../Systems/../Engine/Managers/././ServiceManagerInterface.hpp \
+ Engine/Framework/Scheduler/../../../Systems/../Engine/Managers/./././ServiceManager.hpp \
+ Engine/Framework/Scheduler/../../../Systems/../Engine/Managers/././EnvironmentManagerInterface.hpp \
+ Engine/Framework/Scheduler/../../../Systems/../Engine/Managers/./././EnvironmentManager.hpp \
+ Engine/Framework/Scheduler/../../../Systems/../Engine/Managers/././PlatformManagerInterface.hpp \
+ Engine/Framework/Scheduler/../../../Systems/../Engine/Managers/./././PlatformManager.hpp
 	$(CC) $(CFLAGS) ./Engine/Framework/Scheduler/Scheduler.cpp $(FFLAGS)
 
 
@@ -150,15 +208,17 @@ EXEC = game
  Engine/././Framework/./Scheduler/../../../Systems/SystemInterface.hpp \
  Engine/././Framework/./Scheduler/../../../Systems/System.hpp \
  Engine/././Framework/./Scheduler/../../../Systems/helixStructures.hpp \
- Engine/././Framework/./UEntities/UScene.hpp \
- Engine/././Managers/StateManagerInterface.hpp \
- Engine/././Managers/./StateManager.hpp \
- Engine/././Managers/ServiceManagerInterface.hpp \
- Engine/././Managers/./ServiceManager.hpp \
- Engine/././Managers/EnvironmentManagerInterface.hpp \
- Engine/././Managers/./EnvironmentManager.hpp \
- Engine/././Managers/PlatformManagerInterface.hpp \
- Engine/././Managers/./PlatformManager.hpp
+ Engine/././Framework/./Scheduler/../../../Systems/../Engine/Managers/IntBundle.hpp \
+ Engine/././Framework/./Scheduler/../../../Systems/../Engine/Managers/./MgrBundle.hpp \
+ Engine/././Framework/./Scheduler/../../../Systems/../Engine/Managers/././StateManagerInterface.hpp \
+ Engine/././Framework/./Scheduler/../../../Systems/../Engine/Managers/./././StateManager.hpp \
+ Engine/././Framework/./Scheduler/../../../Systems/../Engine/Managers/././ServiceManagerInterface.hpp \
+ Engine/././Framework/./Scheduler/../../../Systems/../Engine/Managers/./././ServiceManager.hpp \
+ Engine/././Framework/./Scheduler/../../../Systems/../Engine/Managers/././EnvironmentManagerInterface.hpp \
+ Engine/././Framework/./Scheduler/../../../Systems/../Engine/Managers/./././EnvironmentManager.hpp \
+ Engine/././Framework/./Scheduler/../../../Systems/../Engine/Managers/././PlatformManagerInterface.hpp \
+ Engine/././Framework/./Scheduler/../../../Systems/../Engine/Managers/./././PlatformManager.hpp \
+ Engine/././Framework/./UEntities/UScene.hpp
 	$(CC) $(CFLAGS) ./Engine/Engine.cpp $(FFLAGS)
 
 
@@ -192,11 +252,21 @@ EXEC = game
 ../obj/LogicSystem.o: Systems/Logic/LogicSystem.cpp \
  Systems/Logic/./LogicSystem.hpp Systems/Logic/./../System.hpp \
  Systems/Logic/./../helixStructures.hpp \
- Systems/Logic/./../../Engine/Managers/TaskManagerInterface.hpp \
- Systems/Logic/./../../Engine/Managers/./ManagerInterface.hpp \
- Systems/Logic/./../../Engine/Managers/./Manager.hpp \
- Systems/Logic/./../../Engine/Managers/./TaskManager.hpp \
- Systems/Logic/./../../Engine/Managers/./../../Utilities/Logger.hpp \
+ Systems/Logic/./../../Engine/Managers/IntBundle.hpp \
+ Systems/Logic/./../../Engine/Managers/./MgrBundle.hpp \
+ Systems/Logic/./../../Engine/Managers/././TaskManagerInterface.hpp \
+ Systems/Logic/./../../Engine/Managers/./././ManagerInterface.hpp \
+ Systems/Logic/./../../Engine/Managers/./././Manager.hpp \
+ Systems/Logic/./../../Engine/Managers/./././TaskManager.hpp \
+ Systems/Logic/./../../Engine/Managers/./././../../Utilities/Logger.hpp \
+ Systems/Logic/./../../Engine/Managers/././StateManagerInterface.hpp \
+ Systems/Logic/./../../Engine/Managers/./././StateManager.hpp \
+ Systems/Logic/./../../Engine/Managers/././ServiceManagerInterface.hpp \
+ Systems/Logic/./../../Engine/Managers/./././ServiceManager.hpp \
+ Systems/Logic/./../../Engine/Managers/././EnvironmentManagerInterface.hpp \
+ Systems/Logic/./../../Engine/Managers/./././EnvironmentManager.hpp \
+ Systems/Logic/./../../Engine/Managers/././PlatformManagerInterface.hpp \
+ Systems/Logic/./../../Engine/Managers/./././PlatformManager.hpp \
  Systems/Logic/././LogicScene.hpp \
  Systems/Logic/././../EntityExtensions/SceneExtension.hpp \
  Systems/Logic/./././LogicObject.hpp \
@@ -215,11 +285,23 @@ EXEC = game
 ../obj/GraphicSystem.o: Systems/Graphics/GraphicSystem.cpp \
  Systems/Graphics/./GraphicSystem.hpp Systems/Graphics/./../System.hpp \
  Systems/Graphics/./../helixStructures.hpp \
- Systems/Graphics/./../../Engine/Managers/TaskManagerInterface.hpp \
- Systems/Graphics/./../../Engine/Managers/./ManagerInterface.hpp \
- Systems/Graphics/./../../Engine/Managers/./Manager.hpp \
- Systems/Graphics/./../../Engine/Managers/./TaskManager.hpp \
- Systems/Graphics/./../../Engine/Managers/./../../Utilities/Logger.hpp
+ Systems/Graphics/./../../Engine/Managers/IntBundle.hpp \
+ Systems/Graphics/./../../Engine/Managers/./MgrBundle.hpp \
+ Systems/Graphics/./../../Engine/Managers/././TaskManagerInterface.hpp \
+ Systems/Graphics/./../../Engine/Managers/./././ManagerInterface.hpp \
+ Systems/Graphics/./../../Engine/Managers/./././Manager.hpp \
+ Systems/Graphics/./../../Engine/Managers/./././TaskManager.hpp \
+ Systems/Graphics/./../../Engine/Managers/./././../../Utilities/Logger.hpp \
+ Systems/Graphics/./../../Engine/Managers/././StateManagerInterface.hpp \
+ Systems/Graphics/./../../Engine/Managers/./././StateManager.hpp \
+ Systems/Graphics/./../../Engine/Managers/././ServiceManagerInterface.hpp \
+ Systems/Graphics/./../../Engine/Managers/./././ServiceManager.hpp \
+ Systems/Graphics/./../../Engine/Managers/././EnvironmentManagerInterface.hpp \
+ Systems/Graphics/./../../Engine/Managers/./././EnvironmentManager.hpp \
+ Systems/Graphics/./../../Engine/Managers/././PlatformManagerInterface.hpp \
+ Systems/Graphics/./../../Engine/Managers/./././PlatformManager.hpp \
+ Systems/Graphics/./../EntityExtensions/GraphicObjectExtension.hpp \
+ Systems/Graphics/./../EntityExtensions/ObjectExtension.hpp
 	$(CC) $(CFLAGS) ./Systems/Graphics/GraphicSystem.cpp $(FFLAGS)
 
 
@@ -228,33 +310,63 @@ EXEC = game
  Systems/Graphics/././GraphicSystem.hpp \
  Systems/Graphics/././../System.hpp \
  Systems/Graphics/././../helixStructures.hpp \
- Systems/Graphics/././../../Engine/Managers/TaskManagerInterface.hpp \
- Systems/Graphics/././../../Engine/Managers/./ManagerInterface.hpp \
- Systems/Graphics/././../../Engine/Managers/./Manager.hpp \
- Systems/Graphics/././../../Engine/Managers/./TaskManager.hpp \
- Systems/Graphics/././../../Engine/Managers/./../../Utilities/Logger.hpp \
+ Systems/Graphics/././../../Engine/Managers/IntBundle.hpp \
+ Systems/Graphics/././../../Engine/Managers/./MgrBundle.hpp \
+ Systems/Graphics/././../../Engine/Managers/././TaskManagerInterface.hpp \
+ Systems/Graphics/././../../Engine/Managers/./././ManagerInterface.hpp \
+ Systems/Graphics/././../../Engine/Managers/./././Manager.hpp \
+ Systems/Graphics/././../../Engine/Managers/./././TaskManager.hpp \
+ Systems/Graphics/././../../Engine/Managers/./././../../Utilities/Logger.hpp \
+ Systems/Graphics/././../../Engine/Managers/././StateManagerInterface.hpp \
+ Systems/Graphics/././../../Engine/Managers/./././StateManager.hpp \
+ Systems/Graphics/././../../Engine/Managers/././ServiceManagerInterface.hpp \
+ Systems/Graphics/././../../Engine/Managers/./././ServiceManager.hpp \
+ Systems/Graphics/././../../Engine/Managers/././EnvironmentManagerInterface.hpp \
+ Systems/Graphics/././../../Engine/Managers/./././EnvironmentManager.hpp \
+ Systems/Graphics/././../../Engine/Managers/././PlatformManagerInterface.hpp \
+ Systems/Graphics/././../../Engine/Managers/./././PlatformManager.hpp \
+ Systems/Graphics/././../EntityExtensions/GraphicObjectExtension.hpp \
+ Systems/Graphics/././../EntityExtensions/ObjectExtension.hpp \
  Systems/Graphics/./../SystemInterface.hpp
 	$(CC) $(CFLAGS) ./Systems/Graphics/GraphicSystemInterface.cpp $(FFLAGS)
 
 
 ../obj/SystemInterface.o: Systems/SystemInterface.cpp \
  Systems/SystemInterface.hpp Systems/System.hpp \
- Systems/helixStructures.hpp \
- Systems/../Engine/Managers/TaskManagerInterface.hpp \
- Systems/../Engine/Managers/./ManagerInterface.hpp \
- Systems/../Engine/Managers/./Manager.hpp \
- Systems/../Engine/Managers/./TaskManager.hpp \
- Systems/../Engine/Managers/./../../Utilities/Logger.hpp
+ Systems/helixStructures.hpp Systems/../Engine/Managers/IntBundle.hpp \
+ Systems/../Engine/Managers/./MgrBundle.hpp \
+ Systems/../Engine/Managers/././TaskManagerInterface.hpp \
+ Systems/../Engine/Managers/./././ManagerInterface.hpp \
+ Systems/../Engine/Managers/./././Manager.hpp \
+ Systems/../Engine/Managers/./././TaskManager.hpp \
+ Systems/../Engine/Managers/./././../../Utilities/Logger.hpp \
+ Systems/../Engine/Managers/././StateManagerInterface.hpp \
+ Systems/../Engine/Managers/./././StateManager.hpp \
+ Systems/../Engine/Managers/././ServiceManagerInterface.hpp \
+ Systems/../Engine/Managers/./././ServiceManager.hpp \
+ Systems/../Engine/Managers/././EnvironmentManagerInterface.hpp \
+ Systems/../Engine/Managers/./././EnvironmentManager.hpp \
+ Systems/../Engine/Managers/././PlatformManagerInterface.hpp \
+ Systems/../Engine/Managers/./././PlatformManager.hpp
 	$(CC) $(CFLAGS) ./Systems/SystemInterface.cpp $(FFLAGS)
 
 
 ../obj/System.o: Systems/System.cpp Systems/System.hpp \
- Systems/helixStructures.hpp \
- Systems/../Engine/Managers/TaskManagerInterface.hpp \
- Systems/../Engine/Managers/./ManagerInterface.hpp \
- Systems/../Engine/Managers/./Manager.hpp \
- Systems/../Engine/Managers/./TaskManager.hpp \
- Systems/../Engine/Managers/./../../Utilities/Logger.hpp
+ Systems/helixStructures.hpp Systems/../Engine/Managers/IntBundle.hpp \
+ Systems/../Engine/Managers/./MgrBundle.hpp \
+ Systems/../Engine/Managers/././TaskManagerInterface.hpp \
+ Systems/../Engine/Managers/./././ManagerInterface.hpp \
+ Systems/../Engine/Managers/./././Manager.hpp \
+ Systems/../Engine/Managers/./././TaskManager.hpp \
+ Systems/../Engine/Managers/./././../../Utilities/Logger.hpp \
+ Systems/../Engine/Managers/././StateManagerInterface.hpp \
+ Systems/../Engine/Managers/./././StateManager.hpp \
+ Systems/../Engine/Managers/././ServiceManagerInterface.hpp \
+ Systems/../Engine/Managers/./././ServiceManager.hpp \
+ Systems/../Engine/Managers/././EnvironmentManagerInterface.hpp \
+ Systems/../Engine/Managers/./././EnvironmentManager.hpp \
+ Systems/../Engine/Managers/././PlatformManagerInterface.hpp \
+ Systems/../Engine/Managers/./././PlatformManager.hpp
 	$(CC) $(CFLAGS) ./Systems/System.cpp $(FFLAGS)
 
 
@@ -268,11 +380,13 @@ $(EXEC): OBJDIR ../obj/Logger.o \
 ../obj/main.o \
 ../obj/TaskManagerInterface.o \
 ../obj/EnvironmentManager.o \
+../obj/IntBundle.o \
 ../obj/StateManager.o \
 ../obj/ServiceManager.o \
 ../obj/PlatformManagerInterface.o \
 ../obj/TaskManager.o \
 ../obj/ServiceManagerInterface.o \
+../obj/MgrBundle.o \
 ../obj/Manager.o \
 ../obj/EnvironmentManagerInterface.o \
 ../obj/StateManagerInterface.o \
