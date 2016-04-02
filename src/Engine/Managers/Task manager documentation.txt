@@ -1,6 +1,6 @@
 Task manager documentation
 
-Threads can be in two states: Active and Inactive. While Active a thread can be running or idle.
+Threads can be in two status: Active and Inactive. While Active a thread can be in two activities: running or idle.
 
 Like a car, it can be off or on, and while on, it can be stopped or in circulation.
 
