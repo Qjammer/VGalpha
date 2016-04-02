@@ -44,6 +44,10 @@ void Scheduler::Execute(){
 	taskManager_.lock()->mainProcess();
 }
 
+void Scheduler::addSystems(std::vector<std::weak_ptr<SystemInterface>> _sys){
+	this->systems_.insert(this->systems_.end(),_sys.begin(),_sys.end());
+}
+
 std::list<std::weak_ptr<SystemInterface>> Scheduler::viableSystems(){//TODO: Make it actually intelligent. Right now it's returning all systems.
 	return std::list<std::weak_ptr<SystemInterface>>(systems_.begin(),systems_.end());
 }

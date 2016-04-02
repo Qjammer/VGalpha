@@ -13,6 +13,7 @@ public:
 	~Framework();
 
 	void gameLoop();
+	void addSystems(std::vector<std::weak_ptr<SystemInterface>>);
 
 
 protected:

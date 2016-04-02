@@ -1,11 +1,7 @@
 #pragma once
 
 #include "./Framework/Framework.hpp"
-#include "./Managers/TaskManagerInterface.hpp"
-#include "./Managers/StateManagerInterface.hpp"
-#include "./Managers/ServiceManagerInterface.hpp"
-#include "./Managers/EnvironmentManagerInterface.hpp"
-#include "./Managers/PlatformManagerInterface.hpp"
+#include "./Managers/MgrBundle.hpp"
 
 class Engine {
 public:
@@ -14,9 +10,10 @@ public:
 		std::shared_ptr<StateManager>,
 		std::shared_ptr<ServiceManager>,
 		std::shared_ptr<EnvironmentManager>,
-		std::shared_ptr<PlatformManager>,
-		std::vector<std::weak_ptr<SystemInterface>>);
+		std::shared_ptr<PlatformManager>);
+	Engine(ManagerBundle&);
 	~Engine();
+	void addSystemVector(std::vector<std::weak_ptr<SystemInterface>>);
 	void gameLoop();
 protected:
 	Framework framework_;

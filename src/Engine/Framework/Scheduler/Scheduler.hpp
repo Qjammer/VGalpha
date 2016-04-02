@@ -13,6 +13,7 @@ public:
 	~Scheduler();
 
 	void Execute();
+	void addSystems(std::vector<std::weak_ptr<SystemInterface>>);
 protected:
 	std::list<std::weak_ptr<SystemInterface>> viableSystems();
 
