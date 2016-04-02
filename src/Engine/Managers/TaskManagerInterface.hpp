@@ -4,9 +4,8 @@
 
 class TaskManagerInterface:public ManagerInterface<TaskManager>{
 public:
-	TaskManagerInterface(unsigned int);
-	TaskManagerInterface(std::shared_ptr<TaskManager>);
-	TaskManagerInterface();
+	TaskManagerInterface(std::shared_ptr<TaskManager>&);
+	TaskManagerInterface()=delete;
 	~TaskManagerInterface();
 	void mainProcess();
 	void addTask(std::function<int(void)>);
