@@ -21,7 +21,6 @@ public:
 	void addTask(std::function<int(void)>);
 	void addTaskList(std::list<std::function<int(void)>>);
 
-	void initThreadLoop(unsigned int);
 	void wakeUpandStopThread(unsigned int);
 	void wakeUpandStopAll();
 	void joinThreads();
@@ -45,7 +44,6 @@ protected:
 	void markThreadIdle(unsigned int);
 
 	void signalAllIdle();
-	void joinAll();
 
 	unsigned int getCores() const;
 
