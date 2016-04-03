@@ -2,7 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "../System.hpp"
-#include "../EntityExtensions/GraphicObjectExtension.hpp"
+#include "./GraphicObject.hpp"
 
 
 class GraphicSystem: public System{

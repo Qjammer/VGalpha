@@ -13,6 +13,9 @@ public:
 	System(EntityType,ManagerInterfaceBundle);
 	~System();
 	virtual int mainTask()=0;
+	virtual void loadScene(std::stringstream)=0;
+	virtual void saveScene(std::string)=0;
+	virtual void objectFactory(std::stringstream)=0;
 	EntityType getType() const;
 protected:
 	EntityType type_;
