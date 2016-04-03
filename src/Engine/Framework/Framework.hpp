@@ -8,7 +8,7 @@
 
 class Framework{
 public:
-
+	Framework()=delete;
 	Framework(ManagerInterfaceBundle, std::vector<std::weak_ptr<SystemInterface>>);
 	~Framework();
 

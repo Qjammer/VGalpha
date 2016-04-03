@@ -9,6 +9,7 @@
 
 class Scheduler {
 public:
+	Scheduler()=delete;
 	Scheduler(ManagerInterfaceBundle, std::vector<std::weak_ptr<SystemInterface>>);
 	~Scheduler();
 

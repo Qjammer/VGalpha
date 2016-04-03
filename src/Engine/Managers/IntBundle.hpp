@@ -4,6 +4,7 @@
 
 struct ManagerInterfaceBundle{
 public:
+	ManagerInterfaceBundle()=delete;
 	ManagerInterfaceBundle(ManagerBundle);
 	~ManagerInterfaceBundle();
 
