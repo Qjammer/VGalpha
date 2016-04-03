@@ -30,7 +30,7 @@ public:
 
 std::string createMakefile(std::list<file> files){
 	std::stringstream strm;
-	strm<<"CC = g++\nDEBUG = -g\nCFLAGS = -Wall -pedantic -pthread -std=c++11 -c $(DEBUG)\nLFLAGS = -Wall $(DEBUG) -pthread\nFFLAGS = -o $@\nLIBS = -lsfml-system -lsfml-window -lsfml-graphics -lsfml-network -lsfml-audio\nEXEC = game\n\n";
+	strm<<"CC = g++\nDEBUG = -g\nCFLAGS = -Wall -pedantic -pthread -std=c++11 -c $(DEBUG)\nLFLAGS = -Wall $(DEBUG) -pthread\nFFLAGS = -o $@\nLIBS = -lsfml-system -lsfml-window -lsfml-graphics -lsfml-network -lsfml-audio -lX11\nEXEC = game\n\n";
 
 	for(auto it=files.begin();it!=files.end();it++){
 		strm<<it->printRule()<<std::endl<<std::endl;

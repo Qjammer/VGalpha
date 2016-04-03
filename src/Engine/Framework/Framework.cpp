@@ -1,9 +1,8 @@
 #include "./Framework.hpp"
 
-Framework::Framework(std::weak_ptr<TaskManager> _tskmgr, std::vector<std::weak_ptr<SystemInterface>> _systems):
+Framework::Framework(ManagerInterfaceBundle _intBundle, std::vector<std::weak_ptr<SystemInterface>> _systems):
 	active_(true),
-	scheduler_(_tskmgr,_systems)
-
+	scheduler_(_intBundle,_systems)
 {
 
 }
@@ -27,6 +26,10 @@ void Framework::gameLoop(){
 	}
 }
 
+void Framework::addSystems(std::vector<std::weak_ptr<SystemInterface>> _sys){
+	this->scheduler_.addSystems(_sys);
+
+}
 std::atomic<bool>& Framework::getStatus(){
 	return this->active_;
 }

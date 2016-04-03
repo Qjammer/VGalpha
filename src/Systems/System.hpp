@@ -4,18 +4,21 @@
 #include <memory>
 
 #include "helixStructures.hpp"
-class TaskManagerInterface;
+#include "../Engine/Managers/IntBundle.hpp"
 
 class System
 {
 public:
 	friend class SystemInterface;
-	System();
-	System(EntityType _type);
+	System(EntityType,ManagerInterfaceBundle);
 	~System();
-	virtual int mainTask(std::weak_ptr<TaskManagerInterface>)=0;
+	virtual int mainTask()=0;
+	virtual void loadScene(std::stringstream)=0;
+	virtual void saveScene(std::string)=0;
+	virtual void objectFactory(std::stringstream)=0;
 	EntityType getType() const;
 protected:
 	EntityType type_;
+	ManagerInterfaceBundle intBundle_;
 	std::list<std::function<void(void)>> taskList_;
 };

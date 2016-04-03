@@ -9,10 +9,12 @@
 
 class Scheduler {
 public:
-	Scheduler(std::weak_ptr<TaskManager>, std::vector<std::weak_ptr<SystemInterface>>);
+	Scheduler()=delete;
+	Scheduler(ManagerInterfaceBundle, std::vector<std::weak_ptr<SystemInterface>>);
 	~Scheduler();
 
 	void Execute();
+	void addSystems(std::vector<std::weak_ptr<SystemInterface>>);
 protected:
 	std::list<std::weak_ptr<SystemInterface>> viableSystems();
 
@@ -20,6 +22,8 @@ protected:
 	std::chrono::system_clock::duration leftoverTickTime() const;
 	void updateTimer();
 	std::string clockUnits() const;
+
+	ManagerInterfaceBundle mgrBundle_;
 
 	std::atomic<bool> active_;
 
@@ -30,4 +34,5 @@ protected:
 
 	std::weak_ptr<TaskManager> taskManager_;
 	std::vector<std::weak_ptr<SystemInterface>> systems_;
+
 };

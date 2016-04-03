@@ -8,12 +8,11 @@ class SystemInterface
 {
 public:
 	SystemInterface();
-	SystemInterface(System*, std::weak_ptr<TaskManagerInterface>);
+	SystemInterface(std::weak_ptr<System>);
 	~SystemInterface();
 	int mainTask();
 
 	EntityType getType() const;
 protected:
-	std::shared_ptr<System> system_;
-	std::weak_ptr<TaskManagerInterface> taskManager_;
+	std::weak_ptr<System> system_;
 };

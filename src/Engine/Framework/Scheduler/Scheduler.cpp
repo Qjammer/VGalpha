@@ -1,12 +1,12 @@
 #include "Scheduler.hpp"
 
-Scheduler::Scheduler(std::weak_ptr<TaskManager> _tskmgr, std::vector<std::weak_ptr<SystemInterface>> _sys):
+Scheduler::Scheduler(ManagerInterfaceBundle _mgrBn, std::vector<std::weak_ptr<SystemInterface>> _sys):
+	mgrBundle_(_mgrBn),
 	active_(true),
 	timePerTick_(std::chrono::milliseconds(17)),//Roughly 60fps
 	unusedTime_(0),
 	sleepTick_(std::chrono::system_clock::now()),
 	pastTick_(std::chrono::system_clock::now()),
-	taskManager_(_tskmgr),
 	systems_(_sys)
 {
 
@@ -26,6 +26,7 @@ void Scheduler::Execute(){
 	} else {
 		if(std::chrono::milliseconds(10)<-this->unusedTime_){
 			LoggerInstance.logWarning("Clock is lagging by more than 10 ms");
+			this->unusedTime_=std::chrono::system_clock::duration(0);
 		}
 	}
 	this->pastTick_=std::chrono::system_clock::now();
@@ -37,10 +38,14 @@ void Scheduler::Execute(){
 	for(auto it=viable.begin();it!=viable.end();++it){
 		viableTasks.push_back(std::bind(&SystemInterface::mainTask,it->lock()));
 	}
-	taskManager_.lock()->addTaskList(viableTasks);
+	this->mgrBundle_.tskMgrI_->addTaskList(viableTasks);
 
 	//3.Wait for completion
-	taskManager_.lock()->mainProcess();
+	this->mgrBundle_.tskMgrI_->mainProcess();
+}
+
+void Scheduler::addSystems(std::vector<std::weak_ptr<SystemInterface>> _sys){
+	this->systems_.insert(this->systems_.end(),_sys.begin(),_sys.end());
 }
 
 std::list<std::weak_ptr<SystemInterface>> Scheduler::viableSystems(){//TODO: Make it actually intelligent. Right now it's returning all systems.

@@ -1,12 +1,14 @@
 #pragma once
 
+#include <SFML/Graphics.hpp>
 #include "../System.hpp"
-#include "./LogicScene.hpp"
+#include "./GraphicScene.hpp"
 
-class LogicSystem : public System{
+
+class GraphicSystem: public System{
 public:
-	LogicSystem(ManagerInterfaceBundle);
-	~LogicSystem();
+	GraphicSystem(ManagerInterfaceBundle);
+	~GraphicSystem();
 	int mainTask();
 
 	void loadScene(std::stringstream){};
@@ -14,5 +16,5 @@ public:
 	void objectFactory(std::stringstream){};
 
 protected:
-	LogicScene scene_;
+	GraphicScene scene_;
 };

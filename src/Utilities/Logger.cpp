@@ -12,7 +12,9 @@ Logger::Logger(std::string _fileDir,bool _logStatus,bool _consoleStatus,std::wea
 
 std::shared_ptr<std::stringstream> consoleStream(new std::stringstream());//TODO:  THis is temporary, as soon as we get a console it should construct from there
 Logger::Logger():Logger(DEFAULT_LOGGER_OUTPUT,LOGGER_STATUS,CONSOLE_STATUS,consoleStream){
-
+	this->logString("");
+	this->logString("New session");
+	this->logString("");
 }
 
 Logger::~Logger(){
@@ -20,6 +22,7 @@ Logger::~Logger(){
 }
 
 void Logger::logString(std::string _message){
+	std::unique_lock<std::mutex> lk(this->logMutex_);
 	std::string tstring(this->getTimestamp()+" "+_message+"\n");
 	if(this->logStatus_){
 		this->fileOutputStream_<<tstring;

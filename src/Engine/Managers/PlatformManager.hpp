@@ -4,6 +4,7 @@
 
 
 class PlatformManager:public Manager{
+public:
 	PlatformManager();
 	~PlatformManager();
 };

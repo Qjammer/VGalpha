@@ -3,30 +3,30 @@
 TaskManager::TaskManager(unsigned int _threads):
 	Manager(Manager::MNGR_TYPE::TASK),
 
-	active_(_threads,true),
 	threadCount_(_threads),
 
-	queueMtx_(),
+	active_(_threads),
+	statusMtx_(),
+
 	taskQueue_(0),
+	queueMtx_(),
 
-	areAllIdleCV_(),
-	areAllIdleMtx_(),
-	areAllIdle_(true),
+	threadCV_(),
+	mainCV_(),
+	mainMtx_(),
 
-	proceedMainCV_(),
-	proceedMainMtx_(),
 	proceedMain_(true),
 
-	runningThreads_(0),
-	isThreadRunning_(_threads,false),
+	isThreadRunning_(_threads),
+	activityMtx_(),
 
 	threads_(_threads,std::shared_ptr<std::thread>())
 {
 	for(unsigned int i=0;i<_threads;++i){
-		this->threads_[i]=std::make_shared<std::thread>(std::bind(&TaskManager::threadLoop,this,std::placeholders::_1),i);
+		this->setThreadStatus(i,true);//INIT active_
+		this->setThreadActivity(i,false);
+		this->threads_[i]=std::make_shared<std::thread>(std::bind(&TaskManager::threadLoop,this,i));
 	}
-	LoggerInstance.logMessage("End of ThreadPool Constructor");
-
 }
 
 TaskManager::TaskManager():TaskManager(this->getCores())
@@ -40,13 +40,18 @@ TaskManager::~TaskManager()
 }
 
 void TaskManager::mainProcess(){
-	//TODO:Add main system tasks here
-	this->beginCycle();
+	if(this->countActive()!=0){
+		LoggerInstance.logWarning(concatenate("Some threads are still running: ",this->countActive()));
+	}
+	this->proceedMain_=false;
+	this->markAllRunning();
+	this->threadCV_.notify_all();
+
 	LoggerInstance.logMessage("Main Thread Stopping");
 	{
-	std::unique_lock<std::mutex> lk(this->proceedMainMtx_);
+	std::unique_lock<std::mutex> lk(this->mainMtx_);
 	while(!this->proceedMain_){
-		this->proceedMainCV_.wait(lk);
+		this->mainCV_.wait(lk);
 	}
 	}
 	LoggerInstance.logMessage("Main Thread Proceeding");
@@ -70,68 +75,65 @@ void TaskManager::addTask(std::function<int(void)> _task){
 void TaskManager::addTaskList(std::list<std::function<int(void)>> _list){
 	std::unique_lock<std::mutex> lk(this->queueMtx_);
 	this->taskQueue_.splice(this->taskQueue_.end(),_list);
-
 }
 
 int TaskManager::callTask(unsigned int _thread){
 	std::function<int(void)> task;
-	//LoggerInstance.logMessage(concatenate("calling task,thread ",_thread)); //Too many calls to this appears to make data races show up.
 	{
 	std::unique_lock<std::mutex> lk(this->queueMtx_);
 	if(this->taskQueue_.empty()){
 		this->markThreadIdle(_thread);
 		task=[](){return 1;};
 	} else {
-	task=this->taskQueue_.front();
-	this->taskQueue_.pop_front();
-	}
+		if(this->countActive()!=this->threadCount_){
+			this->markAllRunning();
+			this->threadCV_.notify_all();
+		}
+		task=this->taskQueue_.front();
+		this->taskQueue_.pop_front();
+		}
 	}
 	return task();
 }
 
 void TaskManager::idleThread(unsigned int _thread){
 	{
-	std::unique_lock<std::mutex> lk(this->areAllIdleMtx_);
-	while(!(this->isThreadRunning_[_thread])){
+	std::unique_lock<std::mutex> lk(this->mainMtx_);
+	while(this->getThreadActivity(_thread)==false){
+		if(this->countActive()==0){
+			this->signalAllIdle();
+		}
 		LoggerInstance.logMessage(concatenate("Sleeping thread: ",_thread));
-		this->areAllIdleCV_.wait(lk);
+		this->threadCV_.wait(lk);
 		LoggerInstance.logMessage(concatenate("Waking up thread: ",_thread));
 	}
 	}
 }
 
 void TaskManager::markThreadIdle(unsigned int _thread){
-	if(this->isThreadRunning_[_thread]==true){
-		this->isThreadRunning_[_thread]=false;
-		if(--(this->runningThreads_)==0){
-			this->signalAllIdle();
-		}
+	if(this->getThreadActivity(_thread)==true){
+		this->setThreadActivity(_thread,false);
 	} else {
 		LoggerInstance.logWarning(concatenate("Thread ",_thread," already idle"));
 	}
 }
 
 void TaskManager::signalAllIdle(){
-	if(this->runningThreads_==0){
-		this->areAllIdle_=true;
+	if(this->countActive()==0){
 		this->proceedMain_=true;
-		this->proceedMainCV_.notify_all();
+		this->mainCV_.notify_all();
 	} else {
 		LoggerInstance.logWarning(concatenate("Not all threads are idle"));
 	}
 }
 
-
 void TaskManager::markThreadRunning(unsigned int _thread){
-	if(this->isThreadRunning_[_thread]==false){
-		++(this->runningThreads_);
-		this->isThreadRunning_[_thread]=true;
-		this->areAllIdle_=false;
+	if(this->getThreadActivity(_thread)==false){
+		this->setThreadActivity(_thread,true);
 	} else {
 		LoggerInstance.logWarning(concatenate("Thread ",_thread," already running"));
 	}
 }
-
 
 void TaskManager::markAllRunning(){
 	for(unsigned int i=0;i<this->threadCount_;++i){
@@ -139,87 +141,67 @@ void TaskManager::markAllRunning(){
 	}
 }
 
-void TaskManager::beginCycle(){
-	if(this->runningThreads_==0){
-		this->proceedMain_=false;
-		this->markAllRunning();
-		this->areAllIdleCV_.notify_all();
-	} else {
-		LoggerInstance.logWarning(concatenate("Some threads are still running: ",this->runningThreads_.load()));
-	}
-}
-
 void TaskManager::wakeUpandStopThread(unsigned int _thread){
 	this->stopThread(_thread);
 	this->markThreadRunning(_thread);
-	this->areAllIdleCV_.notify_all();
-	this->joinThread(_thread);
+	this->threadCV_.notify_all();
 }
 
 void TaskManager::wakeUpandStopAll(){
-	if(this->runningThreads_==0){
-		unsigned int i;
-		for(i=0;i<threadCount_;++i){
-			this->stopThread(i);
-		}
-		for(i=0;i<threadCount_;++i){
-			this->isThreadRunning_[i]=true;
-		}
-		this->areAllIdleCV_.notify_all();
-	} else {
-		LoggerInstance.logWarning(concatenate("Trying to wake up non idle threads: ",this->runningThreads_.load()));
+	if(this->countActive()!=0){
+		LoggerInstance.logWarning(concatenate("Trying to wake up non idle threads: ",this->countActive()));
 	}
+
+	unsigned int i;
+	for(i=0;i<threadCount_;++i){
+		this->stopThread(i);
+	}
+	for(i=0;i<threadCount_;++i){
+		this->markThreadRunning(i);
+	}
+	this->threadCV_.notify_all();
 }
 
-void TaskManager::joinAll(){
-	for(unsigned int i=0;i<threadCount_;++i){
-		LoggerInstance.logMessage(concatenate("Trying to join thread ",i));
-		this->joinThread(i);
+unsigned int TaskManager::countActive(){
+	unsigned int c=0;
+	{
+	std::unique_lock<std::recursive_mutex> lk(this->activityMtx_);
+	for (unsigned int i=0; i<this->threadCount_; ++i){
+		if (this->getThreadActivity(i)){
+			++c;
+		}
 	}
+	}
+	return c;
 }
 
 unsigned int TaskManager::getCores() const{
 	unsigned int cores=std::thread::hardware_concurrency();
 	LoggerInstance.logMessage(concatenate("Detected ",cores," cores."));
-	if (cores==0){
+	if (cores<1){
 		LoggerInstance.logMessage("Defaulting to 1 core");
 		return 1;
 	}
 	return cores;
 }
 
-//ThreadPool Methods
-
-void TaskManager::initThread(unsigned int _thread){
-	if(this->active_[_thread]==true){
-		LoggerInstance.logMessage("Initializing already active thread");
-		this->stopThread(_thread);
-		this->joinThread(_thread);
-	}
-	this->active_[_thread]=true;
-	printf("starting thread %i\n",_thread);
-	this->threads_[_thread]=(std::make_shared<std::thread>(std::bind(&TaskManager::threadLoop,this,std::placeholders::_1),_thread));
-}
-
 void TaskManager::stopThread(unsigned int _thread){
 	LoggerInstance.logMessage(concatenate("Stopping thread ",_thread));
-	this->active_[_thread]=false;
+	this->setThreadStatus(_thread,false);
 }
 
 void TaskManager::joinThread(unsigned int _thread){
 	LoggerInstance.logMessage(concatenate("Joining Thread ",_thread));
-	this->threads_[_thread]->join();
+	if(this->threads_[_thread]->joinable()){
+		this->threads_[_thread]->join();
+	} else {
+		this->threads_[_thread]->detach();
+	}
 }
 
 void TaskManager::joinThreads(){
 	LoggerInstance.logMessage("Joining or detaching threads");
 	for(unsigned int i=0;i<threadCount_;++i){
-		if(this->threads_[i]->joinable()){
-			this->threads_[i]->join();
-		} else {
-			this->threads_[i]->detach();
-		}
+		this->joinThread(i);
 	}
 }
-
-

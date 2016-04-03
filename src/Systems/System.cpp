@@ -1,11 +1,6 @@
 #include "System.hpp"
 
-System::System()
-{
-
-}
-
-System::System(EntityType _type):type_(_type)
+System::System(EntityType _type, ManagerInterfaceBundle _intBundle):type_(_type),intBundle_(_intBundle)
 {
 
 }

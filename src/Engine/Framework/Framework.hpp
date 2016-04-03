@@ -8,11 +8,12 @@
 
 class Framework{
 public:
-
-	Framework(std::weak_ptr<TaskManager>, std::vector<std::weak_ptr<SystemInterface>>);
+	Framework()=delete;
+	Framework(ManagerInterfaceBundle, std::vector<std::weak_ptr<SystemInterface>>);
 	~Framework();
 
 	void gameLoop();
+	void addSystems(std::vector<std::weak_ptr<SystemInterface>>);
 
 
 protected:
