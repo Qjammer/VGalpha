@@ -2,7 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "../System.hpp"
-#include "./GraphicObject.hpp"
+#include "./GraphicScene.hpp"
 
 
 class GraphicSystem: public System{
@@ -11,6 +11,10 @@ public:
 	~GraphicSystem();
 	int mainTask();
 
+	void loadScene(std::stringstream){};
+	void saveScene(std::string){};
+	void objectFactory(std::stringstream){};
+
 protected:
-	sf::RenderWindow rwindow_;
+	GraphicScene scene_;
 };

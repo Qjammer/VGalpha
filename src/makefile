@@ -28,10 +28,14 @@ EXEC = game
  Systems/Graphics/./../../Engine/Managers/./././EnvironmentManager.hpp \
  Systems/Graphics/./../../Engine/Managers/././PlatformManagerInterface.hpp \
  Systems/Graphics/./../../Engine/Managers/./././PlatformManager.hpp \
- Systems/Graphics/././GraphicObject.hpp \
- Systems/Graphics/././../EntityExtensions/ObjectExtension.hpp \
- Systems/Graphics/../SystemInterface.hpp Engine/Engine.hpp \
- Engine/./Framework/Framework.hpp \
+ Systems/Graphics/././GraphicScene.hpp \
+ Systems/Graphics/./././GraphicObject.hpp \
+ Systems/Graphics/./././../EntityExtensions/ObjectExtension.hpp \
+ Systems/Graphics/././../EntityExtensions/SceneExtension.hpp \
+ Systems/Graphics/../SystemInterface.hpp \
+ Systems/Logic/LogicSystemInterface.hpp Systems/Logic/./LogicSystem.hpp \
+ Systems/Logic/././LogicScene.hpp Systems/Logic/./././LogicObject.hpp \
+ Engine/Engine.hpp Engine/./Framework/Framework.hpp \
  Engine/./Framework/./Scheduler/Scheduler.hpp \
  Engine/./Framework/./UEntities/UScene.hpp
 	$(CC) $(CFLAGS) ./main.cpp $(FFLAGS)
@@ -242,6 +246,33 @@ EXEC = game
 	$(CC) $(CFLAGS) ./Systems/Logic/LogicObject.cpp $(FFLAGS)
 
 
+../obj/LogicSystemInterface.o: Systems/Logic/LogicSystemInterface.cpp \
+ Systems/Logic/./LogicSystemInterface.hpp \
+ Systems/Logic/././LogicSystem.hpp Systems/Logic/././../System.hpp \
+ Systems/Logic/././../helixStructures.hpp \
+ Systems/Logic/././../../Engine/Managers/IntBundle.hpp \
+ Systems/Logic/././../../Engine/Managers/./MgrBundle.hpp \
+ Systems/Logic/././../../Engine/Managers/././TaskManagerInterface.hpp \
+ Systems/Logic/././../../Engine/Managers/./././ManagerInterface.hpp \
+ Systems/Logic/././../../Engine/Managers/./././Manager.hpp \
+ Systems/Logic/././../../Engine/Managers/./././TaskManager.hpp \
+ Systems/Logic/././../../Engine/Managers/./././../../Utilities/Logger.hpp \
+ Systems/Logic/././../../Engine/Managers/././StateManagerInterface.hpp \
+ Systems/Logic/././../../Engine/Managers/./././StateManager.hpp \
+ Systems/Logic/././../../Engine/Managers/././ServiceManagerInterface.hpp \
+ Systems/Logic/././../../Engine/Managers/./././ServiceManager.hpp \
+ Systems/Logic/././../../Engine/Managers/././EnvironmentManagerInterface.hpp \
+ Systems/Logic/././../../Engine/Managers/./././EnvironmentManager.hpp \
+ Systems/Logic/././../../Engine/Managers/././PlatformManagerInterface.hpp \
+ Systems/Logic/././../../Engine/Managers/./././PlatformManager.hpp \
+ Systems/Logic/./././LogicScene.hpp \
+ Systems/Logic/./././../EntityExtensions/SceneExtension.hpp \
+ Systems/Logic/././././LogicObject.hpp \
+ Systems/Logic/././././../EntityExtensions/ObjectExtension.hpp \
+ Systems/Logic/./../SystemInterface.hpp
+	$(CC) $(CFLAGS) ./Systems/Logic/LogicSystemInterface.cpp $(FFLAGS)
+
+
 ../obj/LogicSystem.o: Systems/Logic/LogicSystem.cpp \
  Systems/Logic/./LogicSystem.hpp Systems/Logic/./../System.hpp \
  Systems/Logic/./../helixStructures.hpp \
@@ -293,12 +324,18 @@ EXEC = game
  Systems/Graphics/./../../Engine/Managers/./././EnvironmentManager.hpp \
  Systems/Graphics/./../../Engine/Managers/././PlatformManagerInterface.hpp \
  Systems/Graphics/./../../Engine/Managers/./././PlatformManager.hpp \
- Systems/Graphics/././GraphicObject.hpp \
- Systems/Graphics/././../EntityExtensions/ObjectExtension.hpp
+ Systems/Graphics/././GraphicScene.hpp \
+ Systems/Graphics/./././GraphicObject.hpp \
+ Systems/Graphics/./././../EntityExtensions/ObjectExtension.hpp \
+ Systems/Graphics/././../EntityExtensions/SceneExtension.hpp
 	$(CC) $(CFLAGS) ./Systems/Graphics/GraphicSystem.cpp $(FFLAGS)
 
 
-../obj/GraphicScene.o: Systems/Graphics/GraphicScene.cpp
+../obj/GraphicScene.o: Systems/Graphics/GraphicScene.cpp \
+ Systems/Graphics/GraphicScene.hpp Systems/Graphics/./GraphicObject.hpp \
+ Systems/Graphics/./../EntityExtensions/ObjectExtension.hpp \
+ Systems/Graphics/./../EntityExtensions/../helixStructures.hpp \
+ Systems/Graphics/../EntityExtensions/SceneExtension.hpp
 	$(CC) $(CFLAGS) ./Systems/Graphics/GraphicScene.cpp $(FFLAGS)
 
 
@@ -322,8 +359,10 @@ EXEC = game
  Systems/Graphics/././../../Engine/Managers/./././EnvironmentManager.hpp \
  Systems/Graphics/././../../Engine/Managers/././PlatformManagerInterface.hpp \
  Systems/Graphics/././../../Engine/Managers/./././PlatformManager.hpp \
- Systems/Graphics/./././GraphicObject.hpp \
- Systems/Graphics/./././../EntityExtensions/ObjectExtension.hpp \
+ Systems/Graphics/./././GraphicScene.hpp \
+ Systems/Graphics/././././GraphicObject.hpp \
+ Systems/Graphics/././././../EntityExtensions/ObjectExtension.hpp \
+ Systems/Graphics/./././../EntityExtensions/SceneExtension.hpp \
  Systems/Graphics/./../SystemInterface.hpp
 	$(CC) $(CFLAGS) ./Systems/Graphics/GraphicSystemInterface.cpp $(FFLAGS)
 
@@ -403,6 +442,7 @@ $(EXEC): OBJDIR ../obj/Logger.o \
 ../obj/SceneExtension.o \
 ../obj/ObjectExtension.o \
 ../obj/LogicObject.o \
+../obj/LogicSystemInterface.o \
 ../obj/LogicSystem.o \
 ../obj/LogicScene.o \
 ../obj/GraphicSystem.o \
