@@ -2,9 +2,9 @@
 
 #include <memory>
 #include <string>
-#include "../EntityExtensions/ObjectExtension.hpp"
 #include <SFML/Graphics.hpp> // HAPPINESS
 
+#include "../EntityExtensions/ObjectExtension.hpp"
 
 class GraphicObject: public ObjectExtension
 {
@@ -30,9 +30,9 @@ public:
 	const sf::Sprite& getSprite ();
 	std::shared_ptr<sf::Texture> getTexturePtr(std::string _fileDir);
 
-	virtual void draw();
-	virtual void onGraphicTick();
-	virtual void updateData(int _flag, void* _data);
+	virtual void draw()=0;
+	virtual void onGraphicTick()=0;
+	virtual void updateData(int _flag, void* _data)=0;
 
 protected:
 	std::shared_ptr<sf::Texture> texture_;
