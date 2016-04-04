@@ -36,10 +36,50 @@ int TheOneTrueMain(){
 	return 1;
 }
 
+class TestClass1{
+public:
+	TestClass1(int i):testObject_(i){}
+	void setObject(int _obj){
+		printf("called setter!\n");
+		this->testObject_=_obj;
+	}
+
+	int getObject(){
+		printf("called getter!\n");
+		return this->testObject_;
+	}
+
+	int testObject_;
+};
+
+class TestClass2{
+public:
+	TestClass2(int i):testObject_(i){}
+	void setObject(int _obj){
+		printf("called setter!\n");
+		this->testObject_=_obj;
+	}
+
+	int getObject(){
+		printf("called getter!\n");
+		return this->testObject_;
+	}
+
+	int testObject_;
+};
+
 
 int main()
 {
-	TheOneTrueMain();
+	auto tObjGet(std::make_shared<TestClass1>(5));
+	auto tObjSet(std::make_shared<TestClass2>(1));
+	printf("Sender Value Before Transfer:%i\nReceiver Value Before Transfer:%i\n",tObjGet->getObject(),tObjSet->getObject());
+	Change<int,TestClass1> change1(tObjGet,&TestClass1::getObject);
+	Request<int,TestClass1,TestClass2> req1(tObjSet,&TestClass2::setObject,tObjGet,&TestClass1::getObject);
+	req1.transferData();
+
+	printf("Sender Value After Transfer:%i\nReceiver Value After Transfer:%i\n",tObjGet->getObject(),tObjSet->getObject());
+	// TheOneTrueMain();
 	return 1;
 }
 

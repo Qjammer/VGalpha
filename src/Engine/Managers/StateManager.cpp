@@ -1,15 +1,13 @@
 #include "./StateManager.hpp"
 
-BasicRequest::BasicRequest(void*_par):param_(_par){
-
-}
-
-Change::Change(void* _par,std::weak_ptr<void> _obj):param_(_par),obj_(_obj){
-
-}
-
-bool operator<(const Change _l, const Change _r){
+template<typename O1, typename S1, typename O2, typename S2>
+bool operator<(const Change<O1,S1> _l, const Change<O2,S2> _r){//This needs to be reworked severely
 	return _l.param_<_r.param_;
+}
+
+template<typename O1,typename S1,typename O2,typename S2,typename R2>
+bool operator==(const Change<O1,S1> _l,const Request<O2,S2,R2> _r){
+	return (_l.getSetterPointer()==_r.getSetterPointer())&&(_l.getSenderPointer()==_r.getSenderPointer());
 }
 
 StateManager::StateManager():
@@ -24,27 +22,28 @@ StateManager::~StateManager(){
 
 }
 
-void StateManager::addChange(void* _par,std::weak_ptr<void> _obj){
-	this->changeMap_.emplace(Change(_par,_obj),true);
+template<typename OBJ, typename SEN>
+void StateManager::addChange(std::shared_ptr<Change<OBJ,SEN>> _change){
+	this->changeMap_.emplace(_change,true);
 
 }
 
-void StateManager::addRequest(Change _target,std::shared_ptr<BasicRequest> _req){
+void StateManager::addRequest(std::shared_ptr<BaseChange> _target,std::shared_ptr<BaseRequest> _req){
 	this->requestMap_.emplace(_target,_req);
 }
 
 void StateManager::checkRequestValidity(){
 	for(auto it=this->requestMap_.begin();it!=this->requestMap_.end();++it){
-		if(it->first.obj_.use_count()==0){
+		if(!it->first->getValidity()){
 			this->requestMap_.erase(it--);//This moves the iterator back BEFORE deleting it, but returns a copy of the previous object
 		}
 	}
 }
 
-void StateManager::shareChanges(){
+void StateManager::transferChanges(){
 	for(auto it=this->requestMap_.begin();it!=this->requestMap_.end();++it){
 		if(this->changeMap_.find(it->first)!=this->changeMap_.end()){//We don't need checking if the value is true, since it CAN ONLY BE TRUE
-			it->second->setData();
+			it->second->transferData();
 		}
 	}
 }
