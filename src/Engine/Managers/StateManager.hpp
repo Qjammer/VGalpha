@@ -37,7 +37,7 @@ public:
 	StateManager();
 	~StateManager();
 	void addChange(void*,std::weak_ptr<void>);
-	void addRequest(Change,std::weak_ptr<BasicRequest>)
+	void addRequest(Change,std::shared_ptr<BasicRequest>);
 
 	void checkValidity();
 	void shareChanges();

@@ -28,8 +28,8 @@ void StateManager::addChange(void* _par,std::weak_ptr<void> _obj){
 
 }
 
-void StateManager::addRequest(Change,std::weak_ptr<BasicRequest>){
-
+void StateManager::addRequest(Change _target,std::shared_ptr<BasicRequest> _req){
+	this->requestMap_.emplace(_target,_req);
 }
 
 void StateManager::checkValidity(){
