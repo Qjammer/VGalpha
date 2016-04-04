@@ -12,9 +12,10 @@ bool operator<(const Change _l, const Change _r){
 	return _l.param_<_r.param_;
 }
 
-
 StateManager::StateManager():
-	Manager(STATE)
+	Manager(STATE),
+	requestMap_(),
+	changeMap_()
 {
 
 }
@@ -32,7 +33,7 @@ void StateManager::addRequest(Change _target,std::shared_ptr<BasicRequest> _req)
 	this->requestMap_.emplace(_target,_req);
 }
 
-void StateManager::checkValidity(){
+void StateManager::checkRequestValidity(){
 	for(auto it=this->requestMap_.begin();it!=this->requestMap_.end();++it){
 		if(it->first.obj_.use_count()==0){
 			this->requestMap_.erase(it--);//This moves the iterator back BEFORE deleting it, but returns a copy of the previous object

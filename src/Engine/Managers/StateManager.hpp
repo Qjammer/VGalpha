@@ -19,7 +19,7 @@ public:
 	void setData(){
 		this->setOBJ_(*static_cast<OBJ*>(this->param_));
 	}
-	std::function<void(void*)> setOBJ_;
+	std::function<void(OBJ)> setOBJ_;
 
 };
 
@@ -32,20 +32,28 @@ public:
 
 bool operator<(const Change _l, const Change _r);
 
+template<typename OBJ>
+inline bool operator==(const Change _l,const Request<OBJ> _r){
+	return _l.param_==_r.param_;
+}
+
 class StateManager: public Manager {
 public:
 	StateManager();
 	~StateManager();
 	void addChange(void*,std::weak_ptr<void>);
 	void addRequest(Change,std::shared_ptr<BasicRequest>);
+	template<typename OBJ,typename SEN>
+	void addRequest(OBJ* _par, std::weak_ptr<SEN> _sender, std::function<void(OBJ)> _setter){
+		this->addRequest(Change(_par,_sender),std::make_shared<Request<OBJ>>(_par,_setter));
+	}
 
-	void checkValidity();
+protected:
+	void checkRequestValidity();
 	void shareChanges();
 
 	void clearChanges();
 
-
-protected:
 	std::multimap<Change,std::shared_ptr<BasicRequest>> requestMap_;
 	std::map<Change,bool> changeMap_;
 
