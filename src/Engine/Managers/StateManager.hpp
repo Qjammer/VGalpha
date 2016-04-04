@@ -13,18 +13,18 @@ public:
 	virtual void* getGetterPointer()=0;
 };
 
-template<typename OBJ,typename SEN,typename REC>//All template parameters should be deduced from the constructor
+template<typename OBJS,typename SEN,typename OBJR,typename REC>//All template parameters should be deduced from the constructor
 class Request: public BaseRequest{
 public:
 	Request(
-		    std::weak_ptr<REC> _receiver,
-		    void(REC::*_setter)(OBJ),
+		    OBJS(SEN::*_getter)(void),
 		    std::weak_ptr<SEN> _sender,
-		    OBJ(SEN::*_getter)(void)):
-		receiver_(_receiver),
-		setter_(_setter),
+		    void(REC::*_setter)(OBJR),
+		    std::weak_ptr<REC> _receiver):
+		getter_(_getter),
 		sender_(_sender),
-		getter_(_getter)
+		setter_(_setter),
+		receiver_(_receiver)
 	{
 
 	}
@@ -39,15 +39,14 @@ public:
 
 	void transferData(){
 		//Fuck these motherfuckin function pointers in this motherfuckin state manager!!
-		(this->receiver_.lock().get()->*setter_)((this->sender_.lock().get()->*getter_)());
+		(this->receiver_.lock().get()->*setter_)(OBJR((this->sender_.lock().get()->*getter_)()));
 	}
 
-	std::weak_ptr<REC> receiver_;
-	void(REC::*setter_)(OBJ);
-
+	OBJS(SEN::*getter_)(void);
 	std::weak_ptr<SEN> sender_;
-	OBJ(SEN::*getter_)(void);
 
+	void(REC::*setter_)(OBJR);
+	std::weak_ptr<REC> receiver_;
 };
 
 
@@ -58,12 +57,12 @@ public:
 	virtual bool getValidity()=0;
 };
 
-template<typename OBJ,typename SEN>
+template<typename OBJS,typename SEN>
 class Change:public BaseChange{
 public:
-	Change(std::weak_ptr<SEN> _sender,OBJ(SEN::*_getter)(void)):
-		sender_(_sender),
-		getter_(_getter)
+	Change(OBJS(SEN::*_getter)(void),std::weak_ptr<SEN> _sender):
+		getter_(_getter),
+		sender_(_sender)
 	{
 
 	}
@@ -79,28 +78,34 @@ public:
 		return !this->sender_.expired();
 	}
 
+	OBJS(SEN::*getter_)(void);
 	std::weak_ptr<SEN> sender_;
-	OBJ(SEN::*getter_)(void);
 };
 
 template<typename O1, typename S1, typename O2, typename S2>
 bool operator<(const Change<O1,S1> _l, const Change<O2,S2> _r);
 
-template<typename O1,typename S1,typename O2,typename S2,typename R2>
-bool operator==(const Change<O1,S1> _l,const Request<O2,S2,R2> _r);
+template<typename OS1,typename S1,typename OS2,typename S2,typename OR2,typename R2>
+bool operator==(const Change<OS1,S1> _l,const Request<OS2,S2,OR2,R2> _r);
 
 class StateManager: public Manager {
 public:
 	StateManager();
 	~StateManager();
 
-	template<typename OBJ, typename SEN>
-	void addChange(std::shared_ptr<Change<OBJ,SEN>>);
+	template<typename OBJS, typename SEN>
+	void addChange(std::shared_ptr<Change<OBJS,SEN>>);
 
 	void addRequest(std::shared_ptr<BaseChange>,std::shared_ptr<BaseRequest>);
-	template<typename OBJ,typename SEN, typename REC>
-	void addRequest(std::weak_ptr<REC> _receiver,void(REC::*_setter)(OBJ),std::weak_ptr<SEN> _sender,OBJ(SEN::*_getter)(void)){
-		this->addRequest(std::shared_ptr<Change<OBJ,SEN>>(_sender,_getter),std::make_shared<Request<OBJ,SEN,REC>>(_receiver,_setter,_sender,_getter));
+
+	template<typename OBJS,typename SEN,typename OBJR, typename REC>
+	void addRequest(OBJS(SEN::*_getter)(void),
+		            std::weak_ptr<SEN> _sender,
+		            void(REC::*_setter)(OBJR),
+		            std::weak_ptr<REC> _receiver){
+		this->addRequest(
+			std::make_shared<Change<OBJS,SEN>>(_getter,_sender),
+			std::make_shared<Request<OBJS,SEN,OBJR,REC>>(_getter,_sender,_setter,_receiver));
 	}
 
 protected:

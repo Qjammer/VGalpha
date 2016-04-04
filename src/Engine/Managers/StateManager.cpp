@@ -5,8 +5,8 @@ bool operator<(const Change<O1,S1> _l, const Change<O2,S2> _r){//This needs to b
 	return _l.param_<_r.param_;
 }
 
-template<typename O1,typename S1,typename O2,typename S2,typename R2>
-bool operator==(const Change<O1,S1> _l,const Request<O2,S2,R2> _r){
+template<typename OS1,typename S1,typename OS2,typename S2,typename OR2,typename R2>
+bool operator==(const Change<OS1,S1> _l,const Request<OS2,S2,OR2,R2> _r){
 	return (_l.getSetterPointer()==_r.getSetterPointer())&&(_l.getSenderPointer()==_r.getSenderPointer());
 }
 

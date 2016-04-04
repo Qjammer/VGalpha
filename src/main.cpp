@@ -74,8 +74,8 @@ int main()
 	auto tObjGet(std::make_shared<TestClass1>(5));
 	auto tObjSet(std::make_shared<TestClass2>(1));
 	printf("Sender Value Before Transfer:%i\nReceiver Value Before Transfer:%i\n",tObjGet->getObject(),tObjSet->getObject());
-	Change<int,TestClass1> change1(tObjGet,&TestClass1::getObject);
-	Request<int,TestClass1,TestClass2> req1(tObjSet,&TestClass2::setObject,tObjGet,&TestClass1::getObject);
+	Change<int,TestClass1> change1(&TestClass1::getObject,tObjGet);
+	Request<int,TestClass1,int,TestClass2> req1(&TestClass1::getObject,tObjGet,&TestClass2::setObject,tObjSet);
 	req1.transferData();
 
 	printf("Sender Value After Transfer:%i\nReceiver Value After Transfer:%i\n",tObjGet->getObject(),tObjSet->getObject());
