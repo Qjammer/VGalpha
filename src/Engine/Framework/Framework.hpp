@@ -21,6 +21,8 @@ protected:
 	std::atomic<bool> active_;
 	Scheduler scheduler_;
 
+	ManagerInterfaceBundle mgrBundle_;
+
 	std::shared_ptr<UScene> scene_;
 
 };

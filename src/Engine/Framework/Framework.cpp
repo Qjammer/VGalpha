@@ -2,7 +2,9 @@
 
 Framework::Framework(ManagerInterfaceBundle _intBundle, std::vector<std::weak_ptr<SystemInterface>> _systems):
 	active_(true),
-	scheduler_(_intBundle,_systems)
+	scheduler_(_intBundle,_systems),
+	mgrBundle_(_intBundle),
+	scene_()
 {
 
 }
@@ -20,7 +22,7 @@ void Framework::gameLoop(){
 		this->scheduler_.Execute();
 
 		//3.Distribute Changes
-
+		this->mgrBundle_.sttMgrI_->transferChanges();
 		//4. Check Execution Status (Change scene, quit, etc)
 
 	}
