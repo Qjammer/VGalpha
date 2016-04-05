@@ -71,7 +71,8 @@ public:
 
 int main()
 {
-	StateManager sttMgr;
+	std::shared_ptr<StateManager> sttMgrr(std::make_shared<StateManager>());
+	StateManagerInterface sttMgr(sttMgrr);
 	auto tObjGet(std::make_shared<TestClass1>(5.0f));
 	auto tObjSet(std::make_shared<TestClass2>(1));
 	sttMgr.addRequest(&TestClass1::getObject,std::weak_ptr<TestClass1>(tObjGet),&TestClass2::setObject,std::weak_ptr<TestClass2>(tObjSet));
