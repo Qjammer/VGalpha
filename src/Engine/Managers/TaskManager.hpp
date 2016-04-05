@@ -31,6 +31,8 @@ public:
 
 	bool getThreadActivity(unsigned int);
 	void setThreadActivity(unsigned int, bool);
+
+	static unsigned int getCores();
 protected:
 
 	void stopThread(unsigned int);
@@ -48,7 +50,6 @@ protected:
 
 	void signalAllIdle();
 
-	unsigned int getCores() const;
 
 	unsigned int countActive();
 

@@ -1,19 +1,10 @@
 #include "./StateManager.hpp"
 
-template<typename O1, typename S1, typename O2, typename S2>
-bool operator<(const Change<O1,S1> _l, const Change<O2,S2> _r){//This needs to be reworked severely
-	return _l.param_<_r.param_;
-}
-
-template<typename OS1,typename S1,typename OS2,typename S2,typename OR2,typename R2>
-bool operator==(const Change<OS1,S1> _l,const Request<OS2,S2,OR2,R2> _r){
-	return (_l.getSetterPointer()==_r.getSetterPointer())&&(_l.getSenderPointer()==_r.getSenderPointer());
-}
-
 StateManager::StateManager():
 	Manager(STATE),
 	requestMap_(),
-	changeMap_()
+	mutexVector_(TaskManager::getCores()),
+	changeMapVector_(TaskManager::getCores())
 {
 
 }
@@ -22,9 +13,19 @@ StateManager::~StateManager(){
 
 }
 
-template<typename OBJ, typename SEN>
-void StateManager::addChange(std::shared_ptr<Change<OBJ,SEN>> _change){
-	this->changeMap_.emplace(_change,true);
+void StateManager::addChange(std::shared_ptr<BaseChange> _change,int _thread){
+	this->changeMapVector_[_thread].emplace(_change,true);
+}
+
+void StateManager::addChange(std::shared_ptr<BaseChange> _change){
+	unsigned int i=0;
+	while(true){
+		if(this->mutexVector_[i].try_lock()){
+			this->addChange(_change,i);
+			return;
+		}
+		i=(i+1)%this->mutexVector_.size();
+	}
 
 }
 
@@ -40,12 +41,22 @@ void StateManager::checkRequestValidity(){
 	}
 }
 
+void StateManager::aggregateChanges(){
+	for(unsigned int i=0;i<this->changeMapVector_.size();++i){
+		this->changeMap_.insert(this->changeMapVector_[i].begin(),this->changeMapVector_[i].end());
+		this->changeMapVector_[i].clear();
+	}
+}
+
 void StateManager::transferChanges(){
+	this->checkRequestValidity();
+	this->aggregateChanges();
 	for(auto it=this->requestMap_.begin();it!=this->requestMap_.end();++it){
-		if(this->changeMap_.find(it->first)!=this->changeMap_.end()){//We don't need checking if the value is true, since it CAN ONLY BE TRUE
+		if(this->changeMap_.find(it->first)!=this->changeMap_.end()){//We don't need checking if the value is true, since only changes done this tick should be in here
 			it->second->transferData();
 		}
 	}
+	this->clearChanges();
 }
 
 void StateManager::clearChanges(){

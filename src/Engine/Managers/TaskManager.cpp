@@ -29,7 +29,7 @@ TaskManager::TaskManager(unsigned int _threads):
 	}
 }
 
-TaskManager::TaskManager():TaskManager(this->getCores())
+TaskManager::TaskManager():TaskManager(TaskManager::getCores())
 {
 
 }
@@ -175,7 +175,7 @@ unsigned int TaskManager::countActive(){
 	return c;
 }
 
-unsigned int TaskManager::getCores() const{
+unsigned int TaskManager::getCores(){
 	unsigned int cores=std::thread::hardware_concurrency();
 	LoggerInstance.logMessage(concatenate("Detected ",cores," cores."));
 	if (cores<1){

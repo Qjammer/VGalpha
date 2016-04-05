@@ -38,18 +38,18 @@ int TheOneTrueMain(){
 
 class TestClass1{
 public:
-	TestClass1(int i):testObject_(i){}
-	void setObject(int _obj){
+	TestClass1(float i):testObject_(i){}
+	void setObject(float _obj){
 		printf("called setter!\n");
 		this->testObject_=_obj;
 	}
 
-	int getObject(){
+	float getObject(){
 		printf("called getter!\n");
 		return this->testObject_;
 	}
 
-	int testObject_;
+	float testObject_;
 };
 
 class TestClass2{
@@ -71,14 +71,19 @@ public:
 
 int main()
 {
-	auto tObjGet(std::make_shared<TestClass1>(5));
+	StateManager sttMgr;
+	auto tObjGet(std::make_shared<TestClass1>(5.0f));
 	auto tObjSet(std::make_shared<TestClass2>(1));
-	printf("Sender Value Before Transfer:%i\nReceiver Value Before Transfer:%i\n",tObjGet->getObject(),tObjSet->getObject());
-	Change<int,TestClass1> change1(&TestClass1::getObject,tObjGet);
-	Request<int,TestClass1,int,TestClass2> req1(&TestClass1::getObject,tObjGet,&TestClass2::setObject,tObjSet);
-	req1.transferData();
+	sttMgr.addRequest(&TestClass1::getObject,std::weak_ptr<TestClass1>(tObjGet),&TestClass2::setObject,std::weak_ptr<TestClass2>(tObjSet));
+	sttMgr.addChange(&TestClass1::getObject,std::weak_ptr<TestClass1>(tObjGet));
 
-	printf("Sender Value After Transfer:%i\nReceiver Value After Transfer:%i\n",tObjGet->getObject(),tObjSet->getObject());
+	printf("Sender Value Before Transfer:%f\nReceiver Value Before Transfer:%i\n",tObjGet->getObject(),tObjSet->getObject());
+	// Change<float,TestClass1> change1(&TestClass1::getObject,tObjGet);
+	// Request<float,TestClass1,int,TestClass2> req1(&TestClass1::getObject,tObjGet,&TestClass2::setObject,tObjSet);
+	// req1.transferData();
+	sttMgr.transferChanges();
+	printf("Sender Value After Transfer:%f\nReceiver Value After Transfer:%i\n",tObjGet->getObject(),tObjSet->getObject());
+
 	// TheOneTrueMain();
 	return 1;
 }

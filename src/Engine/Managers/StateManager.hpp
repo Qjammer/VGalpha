@@ -5,12 +5,13 @@
 #include <iostream>
 
 #include "Manager.hpp"
+#include "TaskManager.hpp"
 
 class BaseRequest{
 public:
-	virtual void transferData()=0;
-	virtual void* getSenderPointer()=0;
-	virtual void* getGetterPointer()=0;
+	virtual void transferData(){};
+	virtual void* getSenderPointer(){return nullptr;}
+	virtual void* getGetterPointer(){return nullptr;}
 };
 
 template<typename OBJS,typename SEN,typename OBJR,typename REC>//All template parameters should be deduced from the constructor
@@ -34,7 +35,7 @@ public:
 	}
 
 	void* getGetterPointer(){
-		return (void*)this->getter_;
+		return (void*&)this->getter_;
 	}
 
 	void transferData(){
@@ -52,9 +53,9 @@ public:
 
 class BaseChange{
 public:
-	virtual void* getSenderPointer()=0;
-	virtual void* getGetterPointer()=0;
-	virtual bool getValidity()=0;
+	virtual void* getSenderPointer(){return nullptr;}
+	virtual void* getGetterPointer(){return nullptr;}
+	virtual bool getValidity(){return false;}
 };
 
 template<typename OBJS,typename SEN>
@@ -72,7 +73,7 @@ public:
 	}
 
 	void* getGetterPointer(){
-		return (void*)this->getter_;
+		return (void*&)this->getter_;
 	}
 	bool getValidity(){
 		return !this->sender_.expired();
@@ -82,19 +83,46 @@ public:
 	std::weak_ptr<SEN> sender_;
 };
 
-template<typename O1, typename S1, typename O2, typename S2>
-bool operator<(const Change<O1,S1> _l, const Change<O2,S2> _r);
+
+
+inline bool operator<(BaseChange _l, BaseChange _r){
+	if(_l.getSenderPointer()<_r.getSenderPointer()){//If the sender is smaller, directly return true
+		return true;
+	}
+	if(_l.getSenderPointer()>_r.getSenderPointer()){//If it is smaller, return false
+		return false;
+	}
+	if(_l.getGetterPointer()<_r.getGetterPointer()){//If they're equal, compare getters. Return true if smaller
+		return true;
+	}
+	return false;//Return false if getter is equal or bigger
+}
+
+class ChangeComparePtrs{
+public:
+	bool operator()(std::shared_ptr<BaseChange> _l, std::shared_ptr<BaseChange> _r){
+		return *_l<*_r;
+	}
+};
 
 template<typename OS1,typename S1,typename OS2,typename S2,typename OR2,typename R2>
-bool operator==(const Change<OS1,S1> _l,const Request<OS2,S2,OR2,R2> _r);
+bool operator==(const Change<OS1,S1> _l,const Request<OS2,S2,OR2,R2> _r){
+	return (_l.getSetterPointer()==_r.getSetterPointer())&&(_l.getSenderPointer()==_r.getSenderPointer());
+}
 
 class StateManager: public Manager {
 public:
 	StateManager();
 	~StateManager();
 
+	void addChange(std::shared_ptr<BaseChange> _change);
+
 	template<typename OBJS, typename SEN>
-	void addChange(std::shared_ptr<Change<OBJS,SEN>>);
+	void addChange(OBJS(SEN::*_getter)(void),std::weak_ptr<SEN> _sender){
+		this->addChange(std::make_shared<Change<OBJS,SEN>>(_getter,_sender));
+	}
+
+
 
 	void addRequest(std::shared_ptr<BaseChange>,std::shared_ptr<BaseRequest>);
 
@@ -108,13 +136,19 @@ public:
 			std::make_shared<Request<OBJS,SEN,OBJR,REC>>(_getter,_sender,_setter,_receiver));
 	}
 
-protected:
-	void checkRequestValidity();
 	void transferChanges();
 
+protected:
+
+	void checkRequestValidity();
+	void aggregateChanges();
 	void clearChanges();
 
+	void addChange(std::shared_ptr<BaseChange> _change,int _thread);
+
 	std::multimap<std::shared_ptr<BaseChange>,std::shared_ptr<BaseRequest>> requestMap_;
-	std::map<std::shared_ptr<BaseChange>,bool> changeMap_;
+	std::map<std::shared_ptr<BaseChange>,bool,ChangeComparePtrs> changeMap_;
+	std::vector<std::mutex> mutexVector_;
+	std::vector<std::map<std::shared_ptr<BaseChange>,bool,ChangeComparePtrs>> changeMapVector_;
 
 };
