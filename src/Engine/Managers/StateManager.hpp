@@ -12,6 +12,7 @@ public:
 	virtual void transferData(){};
 	virtual void* getSenderPointer(){return nullptr;}
 	virtual void* getGetterPointer(){return nullptr;}
+	virtual ~BaseRequest()=default;
 };
 
 template<typename OBJS,typename SEN,typename OBJR,typename REC>//All template parameters should be deduced from the constructor
@@ -56,6 +57,7 @@ public:
 	virtual void* getSenderPointer(){return nullptr;}
 	virtual void* getGetterPointer(){return nullptr;}
 	virtual bool getValidity(){return false;}
+	virtual ~BaseChange()=default;
 };
 
 template<typename OBJS,typename SEN>
