@@ -57,6 +57,7 @@ public:
 	TestClass2(int i):testObject_(i){}
 	void setObject(int _obj){
 		printf("called setter!\n");
+		printf("Pointer to %p\n",(void*)this);
 		this->testObject_=_obj;
 	}
 
@@ -83,6 +84,7 @@ int main()
 	// Request<float,TestClass1,int,TestClass2> req1(&TestClass1::getObject,tObjGet,&TestClass2::setObject,tObjSet);
 	// req1.transferData();
 	sttMgr.transferChanges();
+	printf("%p\n",(void*)tObjSet.get());
 	printf("Sender Value After Transfer:%f\nReceiver Value After Transfer:%i\n",tObjGet->getObject(),tObjSet->getObject());
 
 	// TheOneTrueMain();

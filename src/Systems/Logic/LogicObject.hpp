@@ -4,5 +4,7 @@
 
 class LogicObject : public ObjectExtension{
 	LogicObject(unsigned int);
-	~LogicObject();
+	virtual ~LogicObject()=default;
+
+	virtual int doStuff(){return 1;};
 };
