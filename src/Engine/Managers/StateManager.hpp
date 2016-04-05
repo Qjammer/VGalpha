@@ -12,6 +12,11 @@ public:
 	virtual void transferData(){};
 	virtual void* getSenderPointer(){return nullptr;}
 	virtual void* getGetterPointer(){return nullptr;}
+	virtual bool getValiditySender(){return false;}
+	virtual bool getValidityReceiver(){return false;}
+	bool trueValidity(){
+		return this->getValiditySender()&&this->getValidityReceiver();
+	}
 	virtual ~BaseRequest()=default;
 };
 
@@ -39,6 +44,13 @@ public:
 		return (void*&)this->getter_;
 	}
 
+	bool getValiditySender(){
+		return !this->sender_.expired();
+	}
+	bool getValidityReceiver(){
+		return !this->receiver_.expired();
+	}
+
 	void transferData(){
 		//Fuck these motherfuckin function pointers in this motherfuckin state manager!!
 		(this->receiver_.lock().get()->*setter_)(OBJR((this->sender_.lock().get()->*getter_)()));
@@ -56,7 +68,6 @@ class BaseChange{
 public:
 	virtual void* getSenderPointer(){return nullptr;}
 	virtual void* getGetterPointer(){return nullptr;}
-	virtual bool getValidity(){return false;}
 	virtual ~BaseChange()=default;
 };
 
@@ -77,9 +88,7 @@ public:
 	void* getGetterPointer(){
 		return (void*&)this->getter_;
 	}
-	bool getValidity(){
-		return !this->sender_.expired();
-	}
+
 
 	OBJS(SEN::*getter_)(void);
 	std::weak_ptr<SEN> sender_;

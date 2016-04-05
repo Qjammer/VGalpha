@@ -80,9 +80,7 @@ int main()
 	sttMgr.addChange(&TestClass1::getObject,std::weak_ptr<TestClass1>(tObjGet));
 
 	printf("Sender Value Before Transfer:%f\nReceiver Value Before Transfer:%i\n",tObjGet->getObject(),tObjSet->getObject());
-	// Change<float,TestClass1> change1(&TestClass1::getObject,tObjGet);
-	// Request<float,TestClass1,int,TestClass2> req1(&TestClass1::getObject,tObjGet,&TestClass2::setObject,tObjSet);
-	// req1.transferData();
+
 	sttMgr.transferChanges();
 	printf("%p\n",(void*)tObjSet.get());
 	printf("Sender Value After Transfer:%f\nReceiver Value After Transfer:%i\n",tObjGet->getObject(),tObjSet->getObject());

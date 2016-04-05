@@ -35,7 +35,7 @@ void StateManager::addRequest(std::shared_ptr<BaseChange> _target,std::shared_pt
 
 void StateManager::checkRequestValidity(){
 	for(auto it=this->requestMap_.begin();it!=this->requestMap_.end();++it){
-		if(!it->first->getValidity()){
+		if(!it->second->trueValidity()){
 			this->requestMap_.erase(it--);//This moves the iterator back BEFORE deleting it, but returns a copy of the previous object
 		}
 	}

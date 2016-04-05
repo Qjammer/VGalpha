@@ -73,7 +73,9 @@ EXEC = game
 
 
 ../obj/StateManager.o: Engine/Managers/StateManager.cpp \
- Engine/Managers/./StateManager.hpp Engine/Managers/./Manager.hpp
+ Engine/Managers/./StateManager.hpp Engine/Managers/./Manager.hpp \
+ Engine/Managers/./TaskManager.hpp \
+ Engine/Managers/./../../Utilities/Logger.hpp
 	$(CC) $(CFLAGS) ./Engine/Managers/StateManager.cpp $(FFLAGS)
 
 
@@ -135,6 +137,8 @@ EXEC = game
 ../obj/StateManagerInterface.o: Engine/Managers/StateManagerInterface.cpp \
  Engine/Managers/./StateManagerInterface.hpp \
  Engine/Managers/././StateManager.hpp Engine/Managers/././Manager.hpp \
+ Engine/Managers/././TaskManager.hpp \
+ Engine/Managers/././../../Utilities/Logger.hpp \
  Engine/Managers/././ManagerInterface.hpp
 	$(CC) $(CFLAGS) ./Engine/Managers/StateManagerInterface.cpp $(FFLAGS)
 
@@ -374,6 +378,46 @@ EXEC = game
 	$(CC) $(CFLAGS) ./Systems/Graphics/GraphicObject.cpp $(FFLAGS)
 
 
+../obj/InputScene.o: Systems/Input/InputScene.cpp Systems/Input/InputScene.hpp \
+ Systems/Input/../EntityExtensions/SceneExtension.hpp \
+ Systems/Input/../EntityExtensions/../helixStructures.hpp \
+ Systems/Input/InputObject.hpp \
+ Systems/Input/../EntityExtensions/ObjectExtension.hpp
+	$(CC) $(CFLAGS) ./Systems/Input/InputScene.cpp $(FFLAGS)
+
+
+../obj/InputSystem.o: Systems/Input/InputSystem.cpp \
+ Systems/Input/./InputSystem.hpp Systems/Input/./../System.hpp \
+ Systems/Input/./../helixStructures.hpp \
+ Systems/Input/./../../Engine/Managers/IntBundle.hpp \
+ Systems/Input/./../../Engine/Managers/./MgrBundle.hpp \
+ Systems/Input/./../../Engine/Managers/././TaskManagerInterface.hpp \
+ Systems/Input/./../../Engine/Managers/./././ManagerInterface.hpp \
+ Systems/Input/./../../Engine/Managers/./././Manager.hpp \
+ Systems/Input/./../../Engine/Managers/./././TaskManager.hpp \
+ Systems/Input/./../../Engine/Managers/./././../../Utilities/Logger.hpp \
+ Systems/Input/./../../Engine/Managers/././StateManagerInterface.hpp \
+ Systems/Input/./../../Engine/Managers/./././StateManager.hpp \
+ Systems/Input/./../../Engine/Managers/././ServiceManagerInterface.hpp \
+ Systems/Input/./../../Engine/Managers/./././ServiceManager.hpp \
+ Systems/Input/./../../Engine/Managers/././EnvironmentManagerInterface.hpp \
+ Systems/Input/./../../Engine/Managers/./././EnvironmentManager.hpp \
+ Systems/Input/./../../Engine/Managers/././PlatformManagerInterface.hpp \
+ Systems/Input/./../../Engine/Managers/./././PlatformManager.hpp \
+ Systems/Input/./InputScene.hpp \
+ Systems/Input/./../EntityExtensions/SceneExtension.hpp \
+ Systems/Input/./InputObject.hpp \
+ Systems/Input/./../EntityExtensions/ObjectExtension.hpp
+	$(CC) $(CFLAGS) ./Systems/Input/InputSystem.cpp $(FFLAGS)
+
+
+../obj/InputObject.o: Systems/Input/InputObject.cpp \
+ Systems/Input/InputObject.hpp \
+ Systems/Input/../EntityExtensions/ObjectExtension.hpp \
+ Systems/Input/../EntityExtensions/../helixStructures.hpp
+	$(CC) $(CFLAGS) ./Systems/Input/InputObject.cpp $(FFLAGS)
+
+
 ../obj/SystemInterface.o: Systems/SystemInterface.cpp \
  Systems/SystemInterface.hpp Systems/System.hpp \
  Systems/helixStructures.hpp Systems/../Engine/Managers/IntBundle.hpp \
@@ -449,6 +493,9 @@ $(EXEC): OBJDIR ../obj/Logger.o \
 ../obj/GraphicScene.o \
 ../obj/GraphicSystemInterface.o \
 ../obj/GraphicObject.o \
+../obj/InputScene.o \
+../obj/InputSystem.o \
+../obj/InputObject.o \
 ../obj/SystemInterface.o \
 ../obj/System.o 
 	$(CC) $(LFLAGS) -o $(EXEC) ../obj/*.o $(LIBS)
